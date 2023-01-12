@@ -1,0 +1,87 @@
+[
+    {
+        "name": "Fibbonaci",
+        "description": "Fibbonaci sequence values up to 89.",
+        "cards": [
+            { "value": 0, "symbol": "?","type": "Ambiguous", "order": 0, "fileName": "Card-Q.svg" },
+            { "value": 0, "symbol": "0","type": "Points", "order": 1, "fileName": "Card-0.svg" },
+            { "value": 0.5, "symbol": "½","type": "Points", "order": 2, "fileName": "Card-Half.svg" },
+            { "value": 1, "symbol": "1","type": "Points", "order": 3, "fileName": "Card-1.svg" },
+            { "value": 2, "symbol": "2","type": "Points", "order": 4, "fileName": "Card-2.svg" },
+            { "value": 3, "symbol": "3","type": "Points", "order": 5, "fileName": "Card-3.svg" },
+            { "value": 5, "symbol": "5","type": "Points", "order": 6, "fileName": "Card-5.svg" },
+            { "value": 8, "symbol": "8","type": "Points", "order": 7, "fileName": "Card-8.svg" },
+            { "value": 13, "symbol": "13","type": "Points", "order": 8, "fileName": "Card-13.svg" },
+            { "value": 21, "symbol": "21","type": "Points", "order": 9, "fileName": "Card-21.svg" },
+            { "value": 34, "symbol": "34","type": "Points", "order": 10, "fileName": "Card-34.svg" },
+            { "value": 55, "symbol": "55","type": "Points", "order": 11, "fileName": "Card-55.svg" },
+            { "value": 89, "symbol": "89","type": "Points", "order": 12, "fileName": "Card-89.svg" },
+            { "value": 0, "symbol": "∞","type": "Unattainable", "order": 13, "fileName": "Card-Infinity.svg" },
+            { "value": 0, "symbol": "!","type": "Abstain", "order": 14, "fileName": "Card-Abstain.svg" }
+        ]
+    },
+    {
+        "name": "Extended Fibbonaci",
+        "description": "Fibbonaci sequence values up to 233.",
+        "cards": [
+            { "value": 0, "symbol": "?","type": "Ambiguous", "order": 0, "fileName": "Card-Q.svg" },
+            { "value": 0, "symbol": "0","type": "Points", "order": 1, "fileName": "Card-0.svg" },
+            { "value": 0.5, "symbol": "½","type": "Points", "order": 2, "fileName": "Card-Half.svg" },
+            { "value": 1, "symbol": "1","type": "Points", "order": 3, "fileName": "Card-1.svg" },
+            { "value": 2, "symbol": "2","type": "Points", "order": 4, "fileName": "Card-2.svg" },
+            { "value": 3, "symbol": "3","type": "Points", "order": 5, "fileName": "Card-3.svg" },
+            { "value": 5, "symbol": "5","type": "Points", "order": 6, "fileName": "Card-5.svg" },
+            { "value": 8, "symbol": "8","type": "Points", "order": 7, "fileName": "Card-8.svg" },
+            { "value": 13, "symbol": "13","type": "Points", "order": 8, "fileName": "Card-13.svg" },
+            { "value": 21, "symbol": "21","type": "Points", "order": 9, "fileName": "Card-21.svg" },
+            { "value": 34, "symbol": "34","type": "Points", "order": 10, "fileName": "Card-34.svg" },
+            { "value": 55, "symbol": "55","type": "Points", "order": 11, "fileName": "Card-55.svg" },
+            { "value": 89, "symbol": "89","type": "Points", "order": 12, "fileName": "Card-89.svg" },
+            { "value": 144, "symbol": "144","type": "Points", "order": 13, "fileName": "Card-144.svg" },
+            { "value": 233, "symbol": "233","type": "Points", "order": 14, "fileName": "Card-233.svg" },
+            { "value": 0, "symbol": "∞","type": "Unattainable", "order": 15, "fileName": "Card-Infinity.svg" },
+            { "value": 0, "symbol": "!","type": "Abstain", "order": 16, "fileName": "Card-Abstain.svg" }
+        ]
+    },
+    {
+        "name": "Pseudo-Fibbonaci",
+        "description": "Estimation values up to 100, similar to Fibbonaci sequence.",
+        "cards": [
+            { "value": 0, "symbol": "?","type": "Ambiguous", "order": 0, "fileName": "Card-Q.svg" },
+            { "value": 0, "symbol": "0","type": "Points", "order": 1, "fileName": "Card-0.svg" },
+            { "value": 0.5, "symbol": "½","type": "Points", "order": 2, "fileName": "Card-Half.svg" },
+            { "value": 1, "symbol": "1","type": "Points", "order": 3, "fileName": "Card-1.svg" },
+            { "value": 2, "symbol": "2","type": "Points", "order": 4, "fileName": "Card-2.svg" },
+            { "value": 3, "symbol": "3","type": "Points", "order": 5, "fileName": "Card-3.svg" },
+            { "value": 5, "symbol": "5","type": "Points", "order": 6, "fileName": "Card-5.svg" },
+            { "value": 8, "symbol": "8","type": "Points", "order": 7, "fileName": "Card-8.svg" },
+            { "value": 13, "symbol": "13","type": "Points", "order": 8, "fileName": "Card-13.svg" },
+            { "value": 20, "symbol": "20","type": "Points", "order": 9, "fileName": "Card-20.svg" },
+            { "value": 40, "symbol": "40","type": "Points", "order": 10, "fileName": "Card-40.svg" },
+            { "value": 100, "symbol": "100","type": "Points", "order": 11, "fileName": "Card-100.svg" },
+            { "value": 0, "symbol": "∞","type": "Unattainable", "order": 15, "fileName": "Card-Infinity.svg" },
+            { "value": 0, "symbol": "!","type": "Abstain", "order": 16, "fileName": "Card-Abstain.svg" }
+        ]
+    },
+    {
+        "name": "Integral",
+        "description": "Estimation scale values from 1 to 10.",
+        "cards": [
+            { "value": 0, "symbol": "?","type": "Ambiguous", "order": 0, "fileName": "Card-Q.svg" },
+            { "value": 0, "symbol": "0","type": "Points", "order": 1, "fileName": "Card-0.svg" },
+            { "value": 0.5, "symbol": "½","type": "Points", "order": 2, "fileName": "Card-Half.svg" },
+            { "value": 1, "symbol": "1","type": "Points", "order": 3, "fileName": "Card-1.svg" },
+            { "value": 2, "symbol": "2","type": "Points", "order": 4, "fileName": "Card-2.svg" },
+            { "value": 3, "symbol": "3","type": "Points", "order": 5, "fileName": "Card-3.svg" },
+            { "value": 4, "symbol": "4","type": "Points", "order": 6, "fileName": "Card-4.svg" },
+            { "value": 5, "symbol": "5","type": "Points", "order": 7, "fileName": "Card-5.svg" },
+            { "value": 6, "symbol": "6","type": "Points", "order": 8, "fileName": "Card-6.svg" },
+            { "value": 7, "symbol": "7","type": "Points", "order": 9, "fileName": "Card-7.svg" },
+            { "value": 8, "symbol": "8","type": "Points", "order": 10, "fileName": "Card-8.svg" },
+            { "value": 9, "symbol": "9","type": "Points", "order": 11, "fileName": "Card-9.svg" },
+            { "value": 10, "symbol": "10","type": "Points", "order": 12, "fileName": "Card-10.svg" },
+            { "value": 0, "symbol": "∞","type": "Unattainable", "order": 15, "fileName": "Card-Infinity.svg" },
+            { "value": 0, "symbol": "!","type": "Abstain", "order": 16, "fileName": "Card-Abstain.svg" }
+        ]
+    }
+]
