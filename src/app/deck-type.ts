@@ -1,6 +1,6 @@
 import { CardDefinition } from './card-definition';
-import { SheetDefinition } from './sheet-definition';
 import { ImageFileDimensions } from './image-file-dimensions';
+import { OrderedSheetDefinition } from './ordered-sheet-definition';
 
 export interface DeckType {
   id: number;
@@ -8,5 +8,5 @@ export interface DeckType {
   description: string;
   preview: ImageFileDimensions;
   cards: CardDefinition[];
-  sheets: SheetDefinition[];
+  sheets: OrderedSheetDefinition[];
 }

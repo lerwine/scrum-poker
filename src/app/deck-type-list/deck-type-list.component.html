@@ -2,5 +2,6 @@
 <ul>
   <li *ngFor="let deck of deckTypes">
     <a routerLink="/deckType/{{deck.id}}"><strong>{{deck.name}}</strong></a>: {{deck.description}}
+    <br/><img [src]="deck.preview.uri" width="{{deck.preview.width}}" height="{{deck.preview.height}}" alt="{{deck.name}} preview image" />
   </li>
 </ul>

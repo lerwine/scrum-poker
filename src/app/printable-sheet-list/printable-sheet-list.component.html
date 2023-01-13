@@ -1,0 +1,7 @@
+<h3>Printable Sheets</h3>
+Note: You may need to adjust the scale options when printing card sheets so they all print on a single page.
+<ul>
+  <li *ngFor="let ps of printableSheets">
+    <a [href]="ps.uri" target="_blank">Sheet # {{ps.sheetNumber}}</a>
+  </li>
+</ul>

@@ -3,6 +3,7 @@ import { DeckType } from './deck-type';
 import { CardDefinition } from './card-definition';
 import { CardType } from './card-type';
 import { SheetDefinition } from './sheet-definition';
+import { OrderedSheetDefinition } from './ordered-sheet-definition';
 
 const CARD_5_DEFINITION: CardDefinition = { value: 5, symbol: "5", type: CardType.points, baseName: "Card-5" };
 const CARD_8_DEFINITION: CardDefinition = { value: 8, symbol: "8", type: CardType.points, baseName: "Card-8" };
@@ -35,54 +36,62 @@ const EXT_Fibonacci_CARDS: CardDefinition[] = MIN_Fibonacci_CARDS.concat([
   { value: 233, symbol: "233", type: CardType.points, baseName: "Card-233" }
 ]);
 const COMMON_CARD_SHEETS: SheetDefinition[] = [
-  { uri: "LargeCards-1.svg", maxValue: 5 },
-  { uri: "LargeCards-2.svg", maxValue: 5 },
-  { uri: "LargeCards-3.svg", maxValue: 5 },
-  { uri: "LargeCards-4.svg", maxValue: 5 },
+  { uri: "../../assets/LargeCards-1.svg", maxValue: 5 },
+  { uri: "../../assets/LargeCards-2.svg", maxValue: 5 },
+  { uri: "../../assets/LargeCards-3.svg", maxValue: 5 },
+  { uri: "../../assets/LargeCards-4.svg", maxValue: 5 },
 ];
 
-const FIBBONACCI_SHEET_1: SheetDefinition = { uri: "LargeCards-Fibonacci-1.svg", maxValue: 13 };
+const FIBBONACCI_SHEET_1: SheetDefinition = { uri: "../../assets/LargeCards-Fibonacci-1.svg", maxValue: 13 };
 
 const MINIMAL_FIBONACCI_SHEET_DEFINITIONS: SheetDefinition[] = COMMON_CARD_SHEETS.concat([
   FIBBONACCI_SHEET_1,
-  { uri: "LargeCards-Fibonacci-2.svg", maxValue: 34 }
+  { uri: "../../assets/LargeCards-Fibonacci-2.svg", maxValue: 34 }
 ]);
 
 const FIBONACCI_SHEET_DEFINITIONS: SheetDefinition[] = MINIMAL_FIBONACCI_SHEET_DEFINITIONS.concat([
-  { uri: "LargeCards-Fibonacci-3.svg", maxValue: 34 }
+  { uri: "../../assets/LargeCards-Fibonacci-3.svg", maxValue: 34 }
 ]);
+
+function toOrderedSheetDefinition(value: SheetDefinition, index: number): OrderedSheetDefinition {
+  return {
+    uri: value.uri,
+    maxValue: value.maxValue,
+    sheetNumber: index + 1
+  };
+}
 
 const DECK_TYPES: DeckType[] = [
   {
     id: 1,
     name: "Minimal Fibonacci",
-    preview: { uri: "MinimalFibonacci-Preview.svg", width: 210, height: 166 },
+    preview: { uri: "../../assets/MinimalFibonacci-Preview.svg", width: 210, height: 166 },
     description: "Fibonacci sequence values up to 34.",
-    cards:MIN_Fibonacci_CARDS.concat(COMMON_CARDS2),
-    sheets: MINIMAL_FIBONACCI_SHEET_DEFINITIONS
+    cards: MIN_Fibonacci_CARDS.concat(COMMON_CARDS2),
+    sheets: MINIMAL_FIBONACCI_SHEET_DEFINITIONS.map(toOrderedSheetDefinition)
   },
   {
     id: 2,
     name: "Fibonacci",
-    preview: { uri: "Fibonacci-Preview.svg", width: 210, height: 176 },
+    preview: { uri: "../../assets/Fibonacci-Preview.svg", width: 210, height: 176 },
     description: "Fibonacci sequence values up to 89.",
     cards: Fibonacci_CARDS.concat(COMMON_CARDS2),
-    sheets: FIBONACCI_SHEET_DEFINITIONS
+    sheets: FIBONACCI_SHEET_DEFINITIONS.map(toOrderedSheetDefinition)
   },
   {
     id: 3,
     name: "Extended Fibonacci",
-    preview: { uri: "ExtFibonacci-Preview.svg", width: 210, height: 187 },
+    preview: { uri: "../../assets/ExtFibonacci-Preview.svg", width: 210, height: 187 },
     description: "Fibonacci sequence values up to 233.",
     cards: EXT_Fibonacci_CARDS.concat(COMMON_CARDS2),
     sheets: FIBONACCI_SHEET_DEFINITIONS.concat([
-      { uri: "LargeCards-Fibonacci-4.svg", maxValue: 233 }
-    ])
+      { uri: "../../assets/LargeCards-Fibonacci-4.svg", maxValue: 233 }
+    ]).map(toOrderedSheetDefinition)
   },
   {
     id: 4,
     name: "Alternative Exponential",
-    preview: { uri: "PseudoFibonacci-Preview.svg", width: 210, height: 165 },
+    preview: { uri: "../../assets/PseudoFibonacci-Preview.svg", width: 210, height: 165 },
     description: "Estimation values up to 100 using exponential sequence values.",
     cards: COMMON_CARDS1.concat([
       CARD_5_DEFINITION,
@@ -94,15 +103,15 @@ const DECK_TYPES: DeckType[] = [
     ]).concat(COMMON_CARDS2),
     sheets: COMMON_CARD_SHEETS.concat([
       FIBBONACCI_SHEET_1,
-        { uri: "LargeCards-SimplifiedAgile-1.svg", maxValue: 100 },
-        { uri: "LargeCards-SimplifiedAgile-2.svg", maxValue: 100 }
-      ])
+        { uri: "../../assets/LargeCards-SimplifiedAgile-1.svg", maxValue: 100 },
+        { uri: "../../assets/LargeCards-SimplifiedAgile-2.svg", maxValue: 100 }
+      ]).map(toOrderedSheetDefinition)
   },
   {
     id: 5,
     name: "Integral",
-    preview: { uri: "Integral-Preview.svg", width: 210, height: 176 },
-    description: "Absolute estimation values from up to 10.",
+    preview: { uri: "../../assets/Integral-Preview.svg", width: 210, height: 176 },
+    description: "Absolute estimation values up to 10.",
     cards: COMMON_CARDS1.concat([
       { value: 4, symbol: "4", type: CardType.points, baseName: "Card-4" },
       CARD_5_DEFINITION,
@@ -113,10 +122,10 @@ const DECK_TYPES: DeckType[] = [
       { value: 10, symbol: "10", type: CardType.points, baseName: "Card-10" }
     ]).concat(COMMON_CARDS2),
     sheets: COMMON_CARD_SHEETS.concat([
-      { uri: "LargeCards-TenScale-1.svg", maxValue: 10 },
-      { uri: "LargeCards-TenScale-2.svg", maxValue: 10 },
-      { uri: "LargeCards-TenScale-3.svg", maxValue: 10 }
-    ])
+      { uri: "../../assets/LargeCards-TenScale-1.svg", maxValue: 10 },
+      { uri: "../../assets/LargeCards-TenScale-2.svg", maxValue: 10 },
+      { uri: "../../assets/LargeCards-TenScale-3.svg", maxValue: 10 }
+    ]).map(toOrderedSheetDefinition)
   }
 ];
 

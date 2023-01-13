@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DeckType } from '../deck-type';
 import { DeckTypeService } from '../deck-type.service';
 
@@ -9,9 +9,7 @@ import { DeckTypeService } from '../deck-type.service';
 })
 export class DeckTypeListComponent implements OnInit {
 
-  @Input() deckTypes: DeckType[] = [];
-
-  @Output() selectedDeckType = new EventEmitter<DeckType>();
+  deckTypes: DeckType[] = [];
 
   constructor(private deckTypeService: DeckTypeService) {
 
@@ -19,9 +17,5 @@ export class DeckTypeListComponent implements OnInit {
 
   ngOnInit(): void {
     this.deckTypes = this.deckTypeService.getDeckTypes();
-  }
-
-  selectDeckType(deckType: DeckType) {
-    this.selectedDeckType.emit(deckType);
   }
 }

@@ -6,12 +6,14 @@ import { AppComponent } from './app.component';
 import { DeckTypeListComponent } from './deck-type-list/deck-type-list.component';
 import { DeckTypeDetailsComponent } from './deck-type-details/deck-type-details.component';
 import { AppRoutingModule } from './app-routing.module';
+import { PrintableSheetListComponent } from './printable-sheet-list/printable-sheet-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DeckTypeListComponent,
-    DeckTypeDetailsComponent
+    DeckTypeDetailsComponent,
+    PrintableSheetListComponent
   ],
   imports: [
     BrowserModule,
