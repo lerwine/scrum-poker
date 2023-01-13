@@ -12,13 +12,24 @@ foreach ($File in (Get-ChildItem -FIlter '*.svg' -Path ($PSScriptRoot | Join-Pat
     $Nsmgr.AddNamespace("l", "http://www.w3.org/1999/xlink");
     $Nsmgr.AddNamespace("h", "http://www.w3.org/1999/xhtml");
     $Changed = $false;
-    foreach ($TextElement in $Xml.DocumentElement.SelectSingleNode('s:g[1]/s:g[1]/s:switch/s:text', $Nsmgr)) {
-      if (-not $TextElement.InnerText.Trim().Contains(' ')) {
-        $TextElement.ParentNode.RemoveChild($TextElement) | Out-Null;
-        $ToRemove = $TextElement.ParentNode.ParentNode;
-        $ToRemove.ParentNode.InsertAfter($TextElement, $ToRemove) | Out-Null;
-        $ToRemove.ParentNode.RemoveChild($ToRemove) | Out-Null;
-        $Changed = $true;
+    foreach ($GroupParent in $Xml.DocumentElement.SelectNodes('s:g', $Nsmgr))
+    {
+      foreach ($GroupElement in $GroupParent.SelectNodes('s:g', $Nsmgr))
+      {
+        $FoundText = $false;
+        foreach ($TextElement in $GroupElement.SelectNodes('s:switch[1]/s:text[1]', $Nsmgr)) {
+          if (-not $TextElement.InnerText.Trim().Contains(' ')) {
+              $TextElement.ParentNode.RemoveChild($TextElement) | Out-Null;
+              $GroupParent.InsertAfter($TextElement, $GroupElement) | Out-Null;
+              $FoundText = $true;
+              break;
+          }
+        }
+        if ($FoundText) {
+          $Changed = $true;
+          $GroupParent.RemoveChild($GroupElement) | Out-Null;
+          break;
+        }
       }
     }
     if ($Changed) {

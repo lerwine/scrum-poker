@@ -3,18 +3,7 @@
   <g id="card-q" transform="translate(85,36)rotate(300 123 173)">
     <rect x="0" y="0" width="123" height="173" rx="8" ry="8" fill="#dae8fc" stroke="#6c8ebf" pointer-events="all" />
     <ellipse cx="21" cy="21" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" pointer-events="all" />
-    <g transform="translate(-0.5 -0.5)">
-      <switch>
-        <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
-          <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 26px; height: 1px; padding-top: 21px; margin-left: 8px;">
-            <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: center;">
-              <div style="display: inline-block; font-size: 16px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; font-weight: bold; white-space: normal; overflow-wrap: normal;">?</div>
-            </div>
-          </div>
-        </foreignObject>
-        <text x="21" y="26" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="16px" text-anchor="middle" font-weight="bold">?</text>
-      </switch>
-    </g>
+    <text x="21" y="28" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="16px" text-anchor="middle" font-weight="bold">?</text>
     <ellipse cx="104" cy="153" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" transform="rotate(180,104,153)" pointer-events="all" />
     <g transform="translate(-0.5 -0.5)rotate(180 104 153)">
       <switch>
@@ -25,7 +14,7 @@
             </div>
           </div>
         </foreignObject>
-        <text x="104" y="158" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="16px" text-anchor="middle" font-weight="bold">?</text>
+        <text x="104" y="160" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="16px" text-anchor="middle" font-weight="bold">?</text>
       </switch>
     </g>
     <rect x="2" y="37" width="120" height="62" fill="none" stroke="none" pointer-events="all" />
@@ -88,18 +77,7 @@
   <g id="card-0" transform="translate(85,36)rotate(315, 123 173)">
     <rect x="0" y="0" width="123" height="173" rx="8" ry="8" fill="#fff2cc" stroke="#d6b656" pointer-events="all" />
     <ellipse cx="21" cy="21" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" pointer-events="all" />
-    <g>
-      <switch>
-        <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
-          <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 26px; height: 1px; padding-top: 21px; margin-left: 8px;">
-            <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: center;">
-              <div style="display: inline-block; font-size: 20px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; font-weight: bold; white-space: normal; overflow-wrap: normal;">0</div>
-            </div>
-          </div>
-        </foreignObject>
-        <text x="21" y="26" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">0</text>
-      </switch>
-    </g>
+    <text x="21" y="28" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">0</text>
     <ellipse cx="104" cy="153" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" transform="rotate(180,104,153)" pointer-events="all" />
     <g transform="rotate(180 104.00000000000011 153)">
       <switch>
@@ -110,7 +88,7 @@
             </div>
           </div>
         </foreignObject>
-        <text x="104" y="158" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">0</text>
+        <text x="104" y="160" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">0</text>
       </switch>
     </g>
     <rect x="2" y="37" width="120" height="62" fill="none" stroke="none" pointer-events="all" />
@@ -173,18 +151,7 @@
   <g id="card-half" transform="translate(85,36)rotate(330, 123 173)">
     <rect x="0" y="0" width="123" height="173" rx="8" ry="8" fill="#d5e8d4" stroke="#82b366" pointer-events="all" />
     <ellipse cx="21" cy="21" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" pointer-events="all" />
-    <g>
-      <switch>
-        <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
-          <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 26px; height: 1px; padding-top: 21px; margin-left: 8px;">
-            <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: center;">
-              <div style="display: inline-block; font-size: 20px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; font-weight: bold; white-space: normal; overflow-wrap: normal;">½</div>
-            </div>
-          </div>
-        </foreignObject>
-        <text x="21" y="26" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">½</text>
-      </switch>
-    </g>
+    <text x="21" y="28" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">½</text>
     <ellipse cx="104" cy="153" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" transform="rotate(180,104,153)" pointer-events="all" />
     <g transform="rotate(180 104.00000000000011 153)">
       <switch>
@@ -195,7 +162,7 @@
             </div>
           </div>
         </foreignObject>
-        <text x="104" y="158" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">½</text>
+        <text x="104" y="160" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">½</text>
       </switch>
     </g>
     <rect x="2" y="37" width="120" height="99" fill="none" stroke="none" pointer-events="all" />
@@ -241,18 +208,7 @@
   <g id="card-1" transform="translate(85,36)rotate(345, 123 173)">
     <rect x="0" y="0" width="123" height="173" rx="8" ry="8" fill="#f8cecc" stroke="#b85450" pointer-events="all" />
     <ellipse cx="21" cy="21" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" pointer-events="all" />
-    <g>
-      <switch>
-        <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
-          <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 26px; height: 1px; padding-top: 21px; margin-left: 8px;">
-            <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: center;">
-              <div style="display: inline-block; font-size: 20px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; font-weight: bold; white-space: normal; overflow-wrap: normal;">1</div>
-            </div>
-          </div>
-        </foreignObject>
-        <text x="21" y="26" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">1</text>
-      </switch>
-    </g>
+    <text x="21" y="28" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">1</text>
     <ellipse cx="104" cy="153" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" transform="rotate(180,104,153)" pointer-events="all" />
     <g transform="rotate(180 104.00000000000011 153)">
       <switch>
@@ -263,7 +219,7 @@
             </div>
           </div>
         </foreignObject>
-        <text x="104" y="158" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">1</text>
+        <text x="104" y="160" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">1</text>
       </switch>
     </g>
     <rect x="2" y="37" width="120" height="99" fill="none" stroke="none" pointer-events="all" />
@@ -309,18 +265,7 @@
   <g id="card-2" transform="translate(85,36)">
     <rect x="0" y="0" width="123" height="173" rx="8" ry="8" fill="#d5e8d4" stroke="#82b366" pointer-events="all" />
     <ellipse cx="21" cy="21" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" pointer-events="all" />
-    <g>
-      <switch>
-        <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
-          <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 26px; height: 1px; padding-top: 21px; margin-left: 8px;">
-            <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: center;">
-              <div style="display: inline-block; font-size: 20px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; font-weight: bold; white-space: normal; overflow-wrap: normal;">2</div>
-            </div>
-          </div>
-        </foreignObject>
-        <text x="21" y="26" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">2</text>
-      </switch>
-    </g>
+    <text x="21" y="28" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">2</text>
     <ellipse cx="104" cy="153" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" transform="rotate(180,104,153)" pointer-events="all" />
     <g transform="rotate(180 104.00000000000011 153)">
       <switch>
@@ -331,7 +276,7 @@
             </div>
           </div>
         </foreignObject>
-        <text x="104" y="158" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">2</text>
+        <text x="104" y="160" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">2</text>
       </switch>
     </g>
     <rect x="2" y="37" width="120" height="99" fill="none" stroke="none" pointer-events="all" />
@@ -377,18 +322,7 @@
   <g id="card-3" transform="translate(85,36)rotate(15, 123 173)">
     <rect x="0" y="0" width="123" height="173" rx="8" ry="8" fill="#dae8fc" stroke="#6c8ebf" pointer-events="all" />
     <ellipse cx="21" cy="21" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" pointer-events="all" />
-    <g>
-      <switch>
-        <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
-          <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 26px; height: 1px; padding-top: 21px; margin-left: 8px;">
-            <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: center;">
-              <div style="display: inline-block; font-size: 20px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; font-weight: bold; white-space: normal; overflow-wrap: normal;">3</div>
-            </div>
-          </div>
-        </foreignObject>
-        <text x="21" y="26" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">3</text>
-      </switch>
-    </g>
+    <text x="21" y="28" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">3</text>
     <ellipse cx="104" cy="153" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" transform="rotate(180,104,153)" pointer-events="all" />
     <g transform="rotate(180 104.00000000000011 153)">
       <switch>
@@ -399,7 +333,7 @@
             </div>
           </div>
         </foreignObject>
-        <text x="104" y="158" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">3</text>
+        <text x="104" y="160" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">3</text>
       </switch>
     </g>
     <rect x="2" y="37" width="120" height="99" fill="none" stroke="none" pointer-events="all" />
@@ -445,18 +379,7 @@
   <g id="card-5" transform="translate(85,36)rotate(30, 123 173)">
     <rect x="0" y="0" width="123" height="173" rx="8" ry="8" fill="#d5e8d4" stroke="#82b366" pointer-events="all" />
     <ellipse cx="21" cy="21" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" pointer-events="all" />
-    <g>
-      <switch>
-        <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
-          <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 26px; height: 1px; padding-top: 21px; margin-left: 8px;">
-            <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: center;">
-              <div style="display: inline-block; font-size: 20px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; font-weight: bold; white-space: normal; overflow-wrap: normal;">5</div>
-            </div>
-          </div>
-        </foreignObject>
-        <text x="21" y="26" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">5</text>
-      </switch>
-    </g>
+    <text x="21" y="28" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">5</text>
     <ellipse cx="104" cy="153" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" transform="rotate(180,104,153)" pointer-events="all" />
     <g transform="rotate(180 104.00000000000011 153)">
       <switch>
@@ -467,7 +390,7 @@
             </div>
           </div>
         </foreignObject>
-        <text x="104" y="158" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">5</text>
+        <text x="104" y="160" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">5</text>
       </switch>
     </g>
     <rect x="2" y="37" width="120" height="99" fill="none" stroke="none" pointer-events="all" />
@@ -513,18 +436,7 @@
   <g id="card-8" transform="translate(85,36)rotate(45, 123 173)">
     <rect x="0" y="0" width="123" height="173" rx="8" ry="8" fill="#dae8fc" stroke="#6c8ebf" pointer-events="all" />
     <ellipse cx="21" cy="21" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" pointer-events="all" />
-    <g>
-      <switch>
-        <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
-          <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 26px; height: 1px; padding-top: 21px; margin-left: 8px;">
-            <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: center;">
-              <div style="display: inline-block; font-size: 20px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; font-weight: bold; white-space: normal; overflow-wrap: normal;">8</div>
-            </div>
-          </div>
-        </foreignObject>
-        <text x="21" y="26" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">8</text>
-      </switch>
-    </g>
+    <text x="21" y="28" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">8</text>
     <ellipse cx="104" cy="153" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" transform="rotate(180,104,153)" pointer-events="all" />
     <g transform="rotate(180 104.00000000000011 153)">
       <switch>
@@ -535,7 +447,7 @@
             </div>
           </div>
         </foreignObject>
-        <text x="104" y="158" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">8</text>
+        <text x="104" y="160" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">8</text>
       </switch>
     </g>
     <rect x="2" y="37" width="120" height="99" fill="none" stroke="none" pointer-events="all" />
@@ -581,18 +493,7 @@
   <g id="card-13" transform="translate(85,36)rotate(60, 123 173)">
     <rect x="0" y="0" width="123" height="173" rx="8" ry="8" fill="#fff2cc" stroke="#d6b656" pointer-events="all" />
     <ellipse cx="21" cy="21" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" pointer-events="all" />
-    <g>
-      <switch>
-        <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
-          <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 26px; height: 1px; padding-top: 21px; margin-left: 8px;">
-            <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: center;">
-              <div style="display: inline-block; font-size: 20px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; font-weight: bold; white-space: normal; overflow-wrap: normal;">13</div>
-            </div>
-          </div>
-        </foreignObject>
-        <text x="21" y="26" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">13</text>
-      </switch>
-    </g>
+    <text x="21" y="28" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">13</text>
     <ellipse cx="104" cy="153" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" transform="rotate(180,104,153)" pointer-events="all" />
     <g transform="rotate(180 104.00000000000011 153)">
       <switch>
@@ -603,7 +504,7 @@
             </div>
           </div>
         </foreignObject>
-        <text x="104" y="158" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">13</text>
+        <text x="104" y="160" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">13</text>
       </switch>
     </g>
     <rect x="2" y="37" width="120" height="99" fill="none" stroke="none" pointer-events="all" />
@@ -649,18 +550,7 @@
   <g id="card-20" transform="translate(85,36)rotate(75, 123 173)">
     <rect x="0" y="0" width="123" height="173" rx="8" ry="8" fill="#f8cecc" stroke="#b85450" pointer-events="all" />
     <ellipse cx="21" cy="21" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" pointer-events="all" />
-    <g>
-      <switch>
-        <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
-          <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 26px; height: 1px; padding-top: 21px; margin-left: 8px;">
-            <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: center;">
-              <div style="display: inline-block; font-size: 20px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; font-weight: bold; white-space: normal; overflow-wrap: normal;">20</div>
-            </div>
-          </div>
-        </foreignObject>
-        <text x="21" y="26" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">20</text>
-      </switch>
-    </g>
+    <text x="21" y="28" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">20</text>
     <ellipse cx="104" cy="153" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" transform="rotate(180,104,153)" pointer-events="all" />
     <g transform="rotate(180 104.00000000000011 153)">
       <switch>
@@ -671,7 +561,7 @@
             </div>
           </div>
         </foreignObject>
-        <text x="104" y="158" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">20</text>
+        <text x="104" y="160" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">20</text>
       </switch>
     </g>
     <rect x="2" y="37" width="120" height="99" fill="none" stroke="none" pointer-events="all" />
@@ -717,18 +607,7 @@
   <g id="card-40" transform="translate(85,36)rotate(90, 123 173)">
     <rect x="0" y="0" width="123" height="173" rx="8" ry="8" fill="#fff2cc" stroke="#d6b656" pointer-events="all" />
     <ellipse cx="21" cy="21" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" pointer-events="all" />
-    <g>
-      <switch>
-        <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
-          <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 26px; height: 1px; padding-top: 21px; margin-left: 8px;">
-            <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: center;">
-              <div style="display: inline-block; font-size: 20px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; font-weight: bold; white-space: normal; overflow-wrap: normal;">40</div>
-            </div>
-          </div>
-        </foreignObject>
-        <text x="21" y="26" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">40</text>
-      </switch>
-    </g>
+    <text x="21" y="28" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">40</text>
     <ellipse cx="104" cy="153" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" transform="rotate(180,104,153)" pointer-events="all" />
     <g transform="rotate(180 104.00000000000011 153)">
       <switch>
@@ -739,7 +618,7 @@
             </div>
           </div>
         </foreignObject>
-        <text x="104" y="158" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">40</text>
+        <text x="104" y="160" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">40</text>
       </switch>
     </g>
     <rect x="2" y="37" width="120" height="99" fill="none" stroke="none" pointer-events="all" />
@@ -785,18 +664,7 @@
   <g id="card-100" transform="translate(85,36)rotate(105, 123 173)">
     <rect x="0" y="0" width="123" height="173" rx="8" ry="8" fill="#dae8fc" stroke="#6c8ebf" pointer-events="all" />
     <ellipse cx="21" cy="21" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" pointer-events="all" />
-    <g>
-      <switch>
-        <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
-          <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 26px; height: 1px; padding-top: 21px; margin-left: 8px;">
-            <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: center;">
-              <div style="display: inline-block; font-size: 14px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; font-weight: bold; white-space: normal; overflow-wrap: normal;">100</div>
-            </div>
-          </div>
-        </foreignObject>
-        <text x="21" y="26" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="14px" text-anchor="middle" font-weight="bold">100</text>
-      </switch>
-    </g>
+    <text x="21" y="28" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="14px" text-anchor="middle" font-weight="bold">100</text>
     <ellipse cx="104" cy="153" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" transform="rotate(180,104,153)" pointer-events="all" />
     <g transform="rotate(180 104.00000000000011 153)">
       <switch>
@@ -807,7 +675,7 @@
             </div>
           </div>
         </foreignObject>
-        <text x="104" y="158" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="14px" text-anchor="middle" font-weight="bold">100</text>
+        <text x="104" y="160" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="14px" text-anchor="middle" font-weight="bold">100</text>
       </switch>
     </g>
     <rect x="2" y="37" width="120" height="99" fill="none" stroke="none" pointer-events="all" />
@@ -909,18 +777,7 @@
   <g id="card-infinity" transform="translate(85,36)rotate(135, 123 173)">
     <rect x="0" y="0" width="123" height="173" rx="8" ry="8" fill="#f8cecc" stroke="#b85450" pointer-events="all" />
     <ellipse cx="21" cy="21" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" pointer-events="all" />
-    <g>
-      <switch>
-        <foreignObject pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" style="overflow: visible; text-align: left;">
-          <div xmlns="http://www.w3.org/1999/xhtml" style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 26px; height: 1px; padding-top: 21px; margin-left: 8px;">
-            <div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: center;">
-              <div style="display: inline-block; font-size: 28px; font-family: Helvetica; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; font-weight: bold; white-space: normal; overflow-wrap: normal;">∞</div>
-            </div>
-          </div>
-        </foreignObject>
-        <text x="21" y="26" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="28px" text-anchor="middle" font-weight="bold">∞</text>
-      </switch>
-    </g>
+    <text x="21" y="28" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="28px" text-anchor="middle" font-weight="bold">∞</text>
     <ellipse cx="104" cy="153" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" transform="rotate(180,104,153)" pointer-events="all" />
     <g transform="rotate(180 104.00000000000011 153)">
       <switch>
@@ -931,7 +788,7 @@
             </div>
           </div>
         </foreignObject>
-        <text x="104" y="158" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="28px" text-anchor="middle" font-weight="bold">∞</text>
+        <text x="104" y="160" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="28px" text-anchor="middle" font-weight="bold">∞</text>
       </switch>
     </g>
     <rect x="2" y="37" width="120" height="62" fill="none" stroke="none" pointer-events="all" />
