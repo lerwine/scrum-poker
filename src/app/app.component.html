@@ -1,0 +1,15 @@
+
+<main>
+  <header>
+    Scrum Poker
+  </header>
+  <section>
+    <app-deck-type-list [deckTypes]="deckTypeList" (selectedDeckType)="updateSelectedDeckType($event)"></app-deck-type-list>
+  </section>
+  <article>
+    <ng-container *ngIf="selectedDeckType">
+      <p>{{selectedDeckType.name}}</p>
+      <p>{{selectedDeckType.description}}</p>
+    </ng-container>
+  </article>
+</main>

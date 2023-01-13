@@ -1,0 +1,4 @@
+<article *ngFor="let deck of deckTypes">
+  <p><strong>{{deck.name}}</strong>: {{deck.description}}</p>
+  <button (click)="selectDeckType(deck)">Select</button>
+</article>
