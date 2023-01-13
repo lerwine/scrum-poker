@@ -492,7 +492,7 @@
   <g id="card-144" transform="translate(85,36)rotate(90, 123 173)">
     <rect x="0" y="0" width="123" height="173" rx="8" ry="8" fill="#fff2cc" stroke="#d6b656" pointer-events="all" />
     <ellipse cx="21" cy="21" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" pointer-events="all" />
-    <text x="21" y="28" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="14px" text-anchor="middle" font-weight="bold">144</text>
+    <text x="20" y="26" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="14px" text-anchor="middle" font-weight="bold">144</text>
     <ellipse cx="104" cy="153" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" transform="rotate(180,104,153)" pointer-events="all" />
     <text x="104" y="160" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="14px" text-anchor="middle" font-weight="bold" transform="rotate(180 104.00000000000011 153)">144</text>
     <rect x="2" y="37" width="120" height="99" fill="none" stroke="none" pointer-events="all" />
@@ -527,7 +527,7 @@
   <g id="card-233" transform="translate(85,36)rotate(105, 123 173)">
     <rect x="0" y="0" width="123" height="173" rx="8" ry="8" fill="#f8cecc" stroke="#b85450" pointer-events="all" />
     <ellipse cx="21" cy="21" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" pointer-events="all" />
-    <text x="21" y="28" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="14px" text-anchor="middle" font-weight="bold">233</text>
+    <text x="21" y="26" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="14px" text-anchor="middle" font-weight="bold">233</text>
     <ellipse cx="104" cy="153" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" transform="rotate(180,104,153)" pointer-events="all" />
     <text x="104" y="160" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="14px" text-anchor="middle" font-weight="bold" transform="rotate(180 104.00000000000011 153)">233</text>
     <rect x="2" y="37" width="120" height="99" fill="none" stroke="none" pointer-events="all" />
@@ -618,11 +618,11 @@
   <g id="card-infinity" transform="translate(85,36)rotate(145, 123 173)">
     <rect x="0" y="0" width="123" height="173" rx="8" ry="8" fill="#f8cecc" stroke="#b85450" pointer-events="all" />
     <ellipse cx="21" cy="21" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" pointer-events="all" />
-    <text x="21" y="28" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="28px" text-anchor="middle" font-weight="bold">∞</text>
+    <text x="21" y="31" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="28px" text-anchor="middle" font-weight="bold">∞</text>
     <ellipse cx="104" cy="153" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" transform="rotate(180,104,153)" pointer-events="all" />
-    <text x="104" y="160" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="28px" text-anchor="middle" font-weight="bold" transform="rotate(180 104.00000000000011 153)">∞</text>
+    <text x="104" y="163" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="28px" text-anchor="middle" font-weight="bold" transform="rotate(180 104.00000000000011 153)">∞</text>
     <rect x="2" y="37" width="120" height="62" fill="none" stroke="none" pointer-events="all" />
-    <text x="62" y="90" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="92px" text-anchor="middle">∞</text>
+    <text x="62" y="98" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="92px" text-anchor="middle">∞</text>
     <rect x="38" y="8" width="80" height="26" fill="none" stroke="none" pointer-events="all" />
     <text x="78" y="24" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="10px" text-anchor="middle">Unattainable</text>
     <rect x="6" y="140" width="80" height="26" fill="none" stroke="none" transform="rotate(180,46,153)" pointer-events="all" />
