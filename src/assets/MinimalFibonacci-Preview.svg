@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="418px" height="330px" viewBox="0 0 418 330">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="210px" height="166px" viewBox="0 0 210 166">
   <defs />
-  <g id="card-q" transform="translate(85,36)rotate(315 123 173)">
+  <g id="card-q" transform="scale(0.5, 0.5)translate(87,37)rotate(315 123 173)">
     <rect x="0" y="0" width="123" height="173" rx="8" ry="8" fill="#dae8fc" stroke="#6c8ebf" pointer-events="all" />
     <ellipse cx="21" cy="21" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" pointer-events="all" />
     <text x="21" y="28" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="16px" text-anchor="middle" font-weight="bold">?</text>
@@ -52,7 +52,7 @@
       </switch>
     </g>
   </g>
-  <g id="card-0" transform="translate(85,36)rotate(330, 123 173)">
+  <g id="card-0" transform="scale(0.5, 0.5)translate(87,37)rotate(330, 123 173)">
     <rect x="0" y="0" width="123" height="173" rx="8" ry="8" fill="#fff2cc" stroke="#d6b656" pointer-events="all" />
     <ellipse cx="21" cy="21" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" pointer-events="all" />
     <text x="21" y="28" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">0</text>
@@ -104,7 +104,7 @@
       </switch>
     </g>
   </g>
-  <g id="card-half" transform="translate(85,36)rotate(345, 123 173)">
+  <g id="card-half" transform="scale(0.5, 0.5)translate(87,37)rotate(345, 123 173)">
     <rect x="0" y="0" width="123" height="173" rx="8" ry="8" fill="#d5e8d4" stroke="#82b366" pointer-events="all" />
     <ellipse cx="21" cy="21" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" pointer-events="all" />
     <text x="21" y="28" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">½</text>
@@ -139,7 +139,7 @@
       </switch>
     </g>
   </g>
-  <g id="card-1" transform="translate(85,36)">
+  <g id="card-1" transform="scale(0.5, 0.5)translate(87,37)">
     <rect x="0" y="0" width="123" height="173" rx="8" ry="8" fill="#f8cecc" stroke="#b85450" pointer-events="all" />
     <ellipse cx="21" cy="21" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" pointer-events="all" />
     <text x="21" y="28" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">1</text>
@@ -174,7 +174,7 @@
       </switch>
     </g>
   </g>
-  <g id="card-2" transform="translate(85,36)rotate(15, 123 173)">
+  <g id="card-2" transform="scale(0.5, 0.5)translate(87,37)rotate(15, 123 173)">
     <rect x="0" y="0" width="123" height="173" rx="8" ry="8" fill="#d5e8d4" stroke="#82b366" pointer-events="all" />
     <ellipse cx="21" cy="21" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" pointer-events="all" />
     <text x="21" y="28" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">2</text>
@@ -209,7 +209,7 @@
       </switch>
     </g>
   </g>
-  <g id="card-3" transform="translate(85,36)rotate(30, 123 173)">
+  <g id="card-3" transform="scale(0.5, 0.5)translate(87,37)rotate(30, 123 173)">
     <rect x="0" y="0" width="123" height="173" rx="8" ry="8" fill="#dae8fc" stroke="#6c8ebf" pointer-events="all" />
     <ellipse cx="21" cy="21" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" pointer-events="all" />
     <text x="21" y="28" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">3</text>
@@ -244,7 +244,7 @@
       </switch>
     </g>
   </g>
-  <g id="card-5" transform="translate(85,36)rotate(45, 123 173)">
+  <g id="card-5" transform="scale(0.5, 0.5)translate(87,37)rotate(45, 123 173)">
     <rect x="0" y="0" width="123" height="173" rx="8" ry="8" fill="#d5e8d4" stroke="#82b366" pointer-events="all" />
     <ellipse cx="21" cy="21" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" pointer-events="all" />
     <text x="21" y="28" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">5</text>
@@ -279,7 +279,7 @@
       </switch>
     </g>
   </g>
-  <g id="card-8" transform="translate(85,36)rotate(60, 123 173)">
+  <g id="card-8" transform="scale(0.5, 0.5)translate(87,37)rotate(60, 123 173)">
     <rect x="0" y="0" width="123" height="173" rx="8" ry="8" fill="#dae8fc" stroke="#6c8ebf" pointer-events="all" />
     <ellipse cx="21" cy="21" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" pointer-events="all" />
     <text x="21" y="28" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">8</text>
@@ -314,7 +314,7 @@
       </switch>
     </g>
   </g>
-  <g id="card-13" transform="translate(85,36)rotate(75, 123 173)">
+  <g id="card-13" transform="scale(0.5, 0.5)translate(87,37)rotate(75, 123 173)">
     <rect x="0" y="0" width="123" height="173" rx="8" ry="8" fill="#fff2cc" stroke="#d6b656" pointer-events="all" />
     <ellipse cx="21" cy="21" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" pointer-events="all" />
     <text x="21" y="28" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">13</text>
@@ -349,7 +349,7 @@
       </switch>
     </g>
   </g>
-  <g id="card-21" transform="translate(85,36)rotate(90, 123 173)">
+  <g id="card-21" transform="scale(0.5, 0.5)translate(87,37)rotate(90, 123 173)">
     <rect x="0" y="0" width="123" height="173" rx="8" ry="8" fill="#f8cecc" stroke="#b85450" pointer-events="all" />
     <ellipse cx="21" cy="21" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" pointer-events="all" />
     <text x="21" y="28" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">21</text>
@@ -384,7 +384,7 @@
       </switch>
     </g>
   </g>
-  <g id="card-34" transform="translate(85,36)rotate(105, 123 173)">
+  <g id="card-34" transform="scale(0.5, 0.5)translate(87,37)rotate(105, 123 173)">
     <rect x="0" y="0" width="123" height="173" rx="8" ry="8" fill="#fff2cc" stroke="#d6b656" pointer-events="all" />
     <ellipse cx="21" cy="21" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" pointer-events="all" />
     <text x="21" y="28" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="20px" text-anchor="middle" font-weight="bold">34</text>
@@ -419,7 +419,7 @@
       </switch>
     </g>
   </g>
-  <g id="card-abstain" transform="translate(85,36)rotate(120, 123 173)">
+  <g id="card-abstain" transform="scale(0.5, 0.5)translate(87,37)rotate(120, 123 173)">
     <rect x="0" y="0" width="123" height="173" rx="8" ry="8" fill="#d5e8d4" stroke="#82b366" pointer-events="all" />
     <ellipse cx="21" cy="21" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" pointer-events="all" />
     <ellipse cx="104" cy="153" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" transform="rotate(180,104,153)" pointer-events="all" />
@@ -475,7 +475,7 @@
     <path d="M 14.5 21 C 14.5 17.41 17.41 14.5 21 14.5 C 24.59 14.5 27.5 17.41 27.5 21 C 27.5 24.59 24.59 27.5 21 27.5 C 17.41 27.5 14.5 24.59 14.5 21 Z M 24.76 23.56 C 26 21.75 25.77 19.32 24.23 17.77 C 22.68 16.23 20.25 16 18.44 17.24 Z M 17.25 18.44 C 16.02 20.24 16.24 22.67 17.79 24.22 C 19.33 25.76 21.75 26 23.56 24.77 Z" fill="#000000" stroke="none" pointer-events="all" />
     <path d="M 97.5 153 C 97.5 149.41 100.41 146.5 104 146.5 C 107.59 146.5 110.5 149.41 110.5 153 C 110.5 156.59 107.59 159.5 104 159.5 C 100.41 159.5 97.5 156.59 97.5 153 Z M 107.76 155.56 C 109 153.75 108.77 151.32 107.23 149.77 C 105.68 148.23 103.25 148 101.44 149.24 Z M 100.25 150.44 C 99.02 152.24 99.24 154.67 100.79 156.22 C 102.33 157.76 104.75 158 106.56 156.77 Z" fill="#000000" stroke="none" pointer-events="all" />
   </g>
-  <g id="card-infinity" transform="translate(85,36)rotate(135, 123 173)">
+  <g id="card-infinity" transform="scale(0.5, 0.5)translate(87,37)rotate(135, 123 173)">
     <rect x="0" y="0" width="123" height="173" rx="8" ry="8" fill="#f8cecc" stroke="#b85450" pointer-events="all" />
     <ellipse cx="21" cy="21" rx="14" ry="14" fill="rgb(255, 255, 255)" stroke="none" pointer-events="all" />
     <text x="21" y="31" fill="rgb(0, 0, 0)" font-family="Helvetica" font-size="28px" text-anchor="middle" font-weight="bold">∞</text>
