@@ -1,4 +1,6 @@
-<article *ngFor="let deck of deckTypes">
-  <p><strong>{{deck.name}}</strong>: {{deck.description}}</p>
-  <button (click)="selectDeckType(deck)">Select</button>
-</article>
+<h2>Deck Types</h2>
+<ul>
+  <li *ngFor="let deck of deckTypes">
+    <a routerLink="/deckType/{{deck.id}}"><strong>{{deck.name}}</strong></a>: {{deck.description}}
+  </li>
+</ul>

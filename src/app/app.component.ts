@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { DeckType, getDeckTypes } from './deck-type';
 
 
 @Component({
@@ -9,10 +8,5 @@ import { DeckType, getDeckTypes } from './deck-type';
 })
 
 export class AppComponent {
-  title = 'scrum-poker';
-  deckTypeList: DeckType[] = getDeckTypes();
-  selectedDeckType: DeckType | undefined;
-  updateSelectedDeckType(deck: DeckType) {
-    this.selectedDeckType = deck;
-  }
+  title = 'Scrum Poker';
 }

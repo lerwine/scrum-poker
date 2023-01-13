@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DeckType } from '../deck-type';
+import { DeckTypeService } from '../deck-type.service';
 
 @Component({
   selector: 'app-deck-type-list',
@@ -12,12 +13,12 @@ export class DeckTypeListComponent implements OnInit {
 
   @Output() selectedDeckType = new EventEmitter<DeckType>();
 
-  constructor() {
+  constructor(private deckTypeService: DeckTypeService) {
 
   }
 
   ngOnInit(): void {
-
+    this.deckTypes = this.deckTypeService.getDeckTypes();
   }
 
   selectDeckType(deckType: DeckType) {
