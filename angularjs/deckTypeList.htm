@@ -1,0 +1,16 @@
+
+<div class="card">
+    <div class="card-header">
+        <h2>Deck Types</h2>
+    </div>
+    <div class="card-body">
+        <div class="card" ng-repeat="deckType in deckTypes">
+            <img class="card-img-top" ng-src="{{deckType.previewUrl}}" height="{{deckType.height}}" width="{{deckType.width}}" alt="Image of {{deckType.name}}" />
+            <div class="card-body">
+                <h5 class="card-title">{{deckType.name}}</h5>
+                <p class="card-text">{{deckType.description}}</p>
+                <a href="#" class="btn btn-primary">New Session</a>
+            </div>
+        </div>
+    </div>
+</div>
