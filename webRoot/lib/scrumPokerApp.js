@@ -111,17 +111,21 @@
         function ($routeProvider, $locationProvider) {
             $routeProvider
                 .when('/newSession/:deckId', {
-                templateUrl: "newSession.htm", controller: NewSessionController
-            })
+                    templateUrl: "newSession.htm",
+                    controller: NewSessionController,
+                    controllerAs: "controller"
+                })
                 .when('/home', {
-                templateUrl: "home.htm" /*, controller: "MainController"*/,
-                resolve: {
-                    'DeckTypesService': function (DeckTypesService) {
-                        return DeckTypesService.promise;
+                    templateUrl: "home.htm" /*, controller: "MainController"*/,
+                    resolve: {
+                        'DeckTypesService': function (DeckTypesService) {
+                            return DeckTypesService.promise;
+                        }
                     }
-                }
-            })
-                .when('/', { redirectTo: "/home" });
+                })
+                .when('/', {
+                    redirectTo: "/home"
+                });
             // configure html5 to get links working on jsfiddle
             $locationProvider.html5Mode(true);
         },
