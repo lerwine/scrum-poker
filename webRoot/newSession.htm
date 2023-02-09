@@ -1,0 +1,120 @@
+<div ng-controller="NewSessionController">
+    <form novalidate>
+        <div class="accordion" id="sessionSettings">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="namesHeading">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#namesBody" aria-expanded="true" aria-controls="namesBody">
+                        Names and Description
+                        <span class="text-danger fw-bold ms-1" ng-hide="sprintName">*</span>
+                    </button>
+                </h2>
+                <div id="namesBody" class="accordion-collapse collapse show" aria-labelledby="namesHeading" data-bs-parent="#sessionSettings">
+                    <div class="accordion-body row">
+                        <div class="col-6">
+                            <label for="projectTextBox" class="form-label">Project (optional)</label>
+                            <input type="text" class="form-control" id="projectTextBox" ng-model="projectName" />
+                        </div>
+                        <div class="col-6">
+                            <label for="themeTextBox" class="form-label">Theme (optional)</label>
+                            <input type="text" class="form-control" id="themeTextBox" ng-model="themeName" />
+                        </div>
+                        <div class="col-6">
+                            <label for="initiativeTextBox" class="form-label">Initiative (optional)</label>
+                            <input type="text" class="form-control" id="initiativeTextBox" ng-model="initiativeName" />
+                        </div>
+                        <div class="col-6">
+                            <label for="epicTextBox" class="form-label">Epic (optional)</label>
+                            <input type="text" class="form-control" id="epicTextBox" ng-model="epicName" />
+                        </div>
+                        <div class="col-6">
+                            <label for="milestoneTextBox" class="form-label">Milestone (optional)</label>
+                            <input type="text" class="form-control" id="milestoneTextBox" ng-model="milestoneName" />
+                        </div>
+                        <div class="col-6">
+                            <label for="sprintTextBox" class="form-label fw-bold">Sprint<span class="badge rounded-pill bg-danger ms-2" ng-hide="sprintName">Required</span></label>
+                            <input type="text" class="form-control" id="sprintTextBox" ng-model="sprintName" />
+                        </div>
+                        <div class="col-12">
+                            <label for="detailsTextarea" class="form-label">Details (optional)</label>
+                            <textarea class="form-control" id="detailsTextarea" rows="3" ng-model="details"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="cardOptionsHeading">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#cardOptionsBody" aria-expanded="false" aria-controls="cardOptionsBody">
+                        Card Options
+                    </button>
+                </h2>
+                <div id="cardOptionsBody" class="accordion-collapse collapse" aria-labelledby="cardOptionsHeading" data-bs-parent="#sessionSettings">
+                    <div class="accordion-body row">
+                        <fieldset class="col-3 border">
+                            <legend class="col-form-label pt-0">Zero Points Card</legend>
+                            <div>
+                                <input type="radio" name="zeroPointsCard" id="zeroPointsCard1" ng-model="zeroPointsCard" ng-value="true" />
+                                <label class="form-check-label" for="zeroPointsCard1">Include</label>
+                                <input type="radio" name="zeroPointsCard" id="zeroPointsCard2" ng-model="zeroPointsCard" ng-value="false" />
+                                <label class="form-check-label" for="zeroPointsCard2">Exclude</label>
+                            </div>
+                        </fieldset>
+                        <fieldset class="col-3 border">
+                            <legend class="col-form-label pt-0">Half-Point Card</legend>
+                            <div>
+                                <input type="radio" name="halfPointCard" id="halfPointCard1" ng-model="halfPointCard" ng-value="true" />
+                                <label class="form-check-label" for="halfPointCard1">Include</label>
+                                <input type="radio" name="halfPointCard" id="halfPointCard2" ng-model="halfPointCard" ng-value="false" />
+                                <label class="form-check-label" for="halfPointCard2">Exclude</label>
+                            </div>
+                        </fieldset>
+                        <fieldset class="col-3 border">
+                            <legend class="col-form-label pt-0">Infinity Card</legend>
+                            <div>
+                                <input type="radio" name="infinityCard" id="infinityCard1" ng-model="infinityCard" ng-value="true" />
+                                <label class="form-check-label" for="infinityCard1">Include</label>
+                                <input type="radio" name="infinityCard" id="infinityCard2" ng-model="infinityCard" ng-value="false" />
+                                <label class="form-check-label" for="infinityCard2">Exclude</label>
+                            </div>
+                        </fieldset>
+                        <fieldset class="col-3 border">
+                            <legend class="col-form-label pt-0">Need More Info Card</legend>
+                            <div>
+                                <input type="radio" name="needInfoCard" id="needInfoCard1" ng-model="needInfoCard" ng-value="true" />
+                                <label class="form-check-label" for="needInfoCard1">Include</label>
+                                <input type="radio" name="needInfoCard" id="needInfoCard2" ng-model="needInfoCard" ng-value="false" />
+                                <label class="form-check-label" for="needInfoCard2">Exclude</label>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="userStoriesHeading">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#userStoriesBody" aria-expanded="false" aria-controls="userStoriesBody">
+                        User Stories
+                        <span class="text-danger fw-bold ms-1" ng-hide="userStories.length &gt; 0">*</span>
+                    </button>
+                </h2>
+                <div id="userStoriesBody" class="accordion-collapse collapse" aria-labelledby="userStoriesHeading" data-bs-parent="#sessionSettings">
+                    <div class="accordion-body">
+                        User stories will be listed here.
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="developersHeading">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#developersBody" aria-expanded="false" aria-controls="developersBody">
+                        Developers
+                        <span class="text-danger fw-bold ms-1" ng-hide="developers.length &gt; 0">*</span>
+                    </button>
+                </h2>
+                <div id="developersBody" class="accordion-collapse collapse" aria-labelledby="developersHeading" data-bs-parent="#sessionSettings">
+                    <div class="accordion-body">
+                        Developers will be listed here
+                    </div>
+                </div>
+            </div>
+        </div>
+        <input type="submit" ng-click="startNewSession()" value="Start" ng-disabled="controller.hasErrors" />
+    </form>
+</div>

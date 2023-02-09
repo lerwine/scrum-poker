@@ -1,7 +1,0 @@
-<div *ngIf="deckType">
-  <h2>{{deckType.name}}</h2>
-  {{deckType.description}}
-  <button>New Scrum Poker Session</button>
-  <app-printable-sheet-list [printableSheets]="printableSheets"></app-printable-sheet-list>
-</div>
-<button type="button" (click)="goBack()">Back</button>
