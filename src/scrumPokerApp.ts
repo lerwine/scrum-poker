@@ -201,7 +201,9 @@ interface INewSessionControllerScope extends ng.IScope {
         function ($routeProvider: ng.route.IRouteProvider, $locationProvider: ng.ILocationProvider) {
             $routeProvider
                 .when('/newSession/:deckId', {
-                    templateUrl: "newSession.htm", controller: NewSessionController
+                    templateUrl: "newSession.htm",
+                    controller: NewSessionController,
+                    controllerAs: "controller"
                 })
                 .when('/home', {
                     templateUrl: "home.htm"/*, controller: "MainController"*/,
@@ -211,7 +213,9 @@ interface INewSessionControllerScope extends ng.IScope {
                         }
                     }
                 })
-                .when('/', { redirectTo: "/home" });
+                .when('/', {
+                    redirectTo: "/home"
+                });
             // configure html5 to get links working on jsfiddle
             $locationProvider.html5Mode(true);
         },
