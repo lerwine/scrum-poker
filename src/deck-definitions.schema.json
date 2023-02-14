@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/lerwine/scrum-poker/blob/cb7208e7a37098c0b47cd018155cda66d685db18/webRoot/lib/deck-definitions.schema.json",
+  "title": "Product",
+  "description": "A product in the catalog",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "uniqueItems": true,
+    "properties": {
+      "name": {
+        "type": "string",
+        "description": "The name of the deck type."
+      },
+      "description": {
+        "type": "string",
+        "description": "A brief description of the deck type."
+      },
+      "previewImage": {
+        "description": "Defines the preview image for the current deck type.",
+        "type": "object",
+        "properties": {
+          "file": {
+            "type": "string",
+            "description": "The file name of the SVG file, relative to the assets subdirectory."
+          },
+          "width": {
+            "description": "The width of the graphic, in pixels.",
+            "type": "integer",
+            "minimum": 1
+          },
+          "height": {
+            "description": "The width of the graphic, in pixels.",
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      }
+    }
+  }
+}
