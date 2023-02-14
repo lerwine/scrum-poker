@@ -1,74 +1,25 @@
-declare type CardType = "Ambiguous" | "Points" | "Unattainable" | "Abstain";
-
-declare interface ICardDefinition {
-    value: number;
-    symbol: string;
-    type: CardType;
-    baseName: string;
-}
-
-declare interface ISheetDefinition {
-    fileName: string;
-    maxValue: number;
-}
-
 declare interface INameAndDescription {
     name: string;
     description: string;
 }
 
-declare interface IDeckTypeListItem extends INameAndDescription {
-    id: number;
-    previewUrl: string;
-    width: string;
-    height: string;
-}
+/**
+ * Defines graphical image dimensions.
+ */
+declare interface ISize {
+    /**
+     * The width of the graphic, in pixels.
+     */
+    width: number;
 
-declare interface IPreviewImage {
-    file: string;
-    width: string;
-    height: string;
-}
-
-declare interface IDeckTypeDefinition extends INameAndDescription {
-    previewImage: IPreviewImage;
-    cards: ICardDefinition[];
-    sheets: ISheetDefinition[];
-}
-
-declare interface ICardItem extends ICardDefinition {
-    id: number;
-}
-
-declare interface IDeckDetails {
-    name: string;
-    description: string;
-    previewImage: Omit<IPreviewImage, "file"> & {
-        url: string;
-    };
-    cards: ICardItem[];
-}
-
-declare type DeckColor = "Blue" | "Green" | "Red" | "Yellow";
-
-declare interface IParticpantCard extends Omit<ICardItem, "baseName"> {
-    url: string;
-}
-
-declare interface IDeckTypesServiceResult {
-    promise: angular.IPromise<void>;
-    getAllDeckTypes(): IDeckTypeListItem[];
-    getDeck(id: number): IDeckDetails | undefined;
-    getCards(deckId: number, color: DeckColor): IGetCardsResult | undefined;
+    /**
+     * The height of the graphic, in pixels.
+     */
+    height: number;
 }
 
 declare interface IDeckTypeControllerScope extends ng.IScope {
-    deckTypes: IDeckTypeListItem[];
-}
-
-declare interface IGetCardsResult {
-    votingCardUrl: string;
-    cards: IParticpantCard[];
+    deckTypes: deckTypesService.IDeckTypeListItem[];
 }
 
 declare interface INewSessionRouteParams extends ng.route.IRouteParamsService {
@@ -87,9 +38,9 @@ declare interface INewSessionControllerScope extends ng.IScope {
     name: string;
     description: string;
     previewImageUrl: string;
-    width: string;
-    height: string;
-    cards: ICardItem[];
+    width: number;
+    height: number;
+    cards: deckTypesService.ICardItem[];
     userStories: IUserStory[];
     developers: IDeveloper[];
     projectName: string;

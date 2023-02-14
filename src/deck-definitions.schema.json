@@ -1,41 +1,134 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/lerwine/scrum-poker/blob/cb7208e7a37098c0b47cd018155cda66d685db18/webRoot/lib/deck-definitions.schema.json",
-  "title": "Product",
-  "description": "A product in the catalog",
-  "type": "array",
-  "items": {
-    "type": "object",
-    "uniqueItems": true,
-    "properties": {
-      "name": {
-        "type": "string",
-        "description": "The name of the deck type."
-      },
-      "description": {
-        "type": "string",
-        "description": "A brief description of the deck type."
-      },
-      "previewImage": {
-        "description": "Defines the preview image for the current deck type.",
-        "type": "object",
-        "properties": {
-          "file": {
-            "type": "string",
-            "description": "The file name of the SVG file, relative to the assets subdirectory."
-          },
-          "width": {
-            "description": "The width of the graphic, in pixels.",
-            "type": "integer",
-            "minimum": 1
-          },
-          "height": {
-            "description": "The width of the graphic, in pixels.",
-            "type": "integer",
-            "minimum": 1
-          }
+  "$id": "https://raw.githubusercontent.com/lerwine/scrum-poker/main/webRoot/assets/deck-definitions.schema.json",
+  "title": "Scrum Poker Deck Types",
+  "description": "Defines the Scum Poker deck and card types that are available.",
+  "type": "object",
+  "properties": {
+    "deckColors": {
+      "type": "array",
+      "description": "Defines card colors. For each color of each card base name, there should be an SVG file in the assets folder with the file name baseName + '-' + color + '.svg'",
+      "items": { "$ref": "#/$defs/colorName" },
+      "minContains": 2
+    },
+    "deckTypes": {
+      "type": "array",
+      "description": "Defines card deck types.",
+      "items": { "$ref": "#/$defs/deckTypeEntity" },
+      "minContains": 2
+    }
+  },
+  "$defs": {
+    "colorName": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Za-z\\d]+$",
+      "minLength": 1
+    },
+    "baseFileName": {
+      "type": "string",
+      "pattern": "^\\w+( +\\w+)*\\$",
+      "minLength": 1
+    },
+    "svgFileName": {
+      "type": "string",
+      "pattern": "^\\w+( +\\w+)*\\.svg$",
+      "minLength": 5
+    },
+    "cardType": {
+      "enum": ["Ambiguous", "Points", "Unattainable", "Abstain" ],
+      "description": "Defines card types."
+    },
+    "cardEntity": {
+      "type": "object",
+      "description": "Defines a card within a Scrum Poker deck.",
+      "uniqueItems": true,
+      "properties": {
+        "value": {
+          "type": "integer",
+          "description": "The value of the card in points.",
+          "minimum": 0
+        },
+        "symbol": {
+          "type": "string",
+          "description": "The character symbol of the card or the string representation of its numeric value.",
+          "minLength": 1,
+          "maxLength": 2
+        },
+        "type": {
+          "$ref": "#/$defs/cardType",
+          "description": "The generalized card type."
+        },
+        "baseName": {
+          "$ref": "#/$defs/baseFileName",
+          "description": "The base file name for the card. For each color of each card base name, there should be an SVG file in the assets folder with the file name baseName + '-' + color + '.svg'."
         }
+      },
+      "required": [ "value", "symbol", "type", "baseName" ]
+    },
+    "printableSheetEntity": {
+      "type": "object",
+      "description": "Defines a printable sheet of Scrum Poker cards for the current deck type.",
+      "fileName": {
+        "$ref": "#/$defs/svgFileName",
+        "description": "The name of the SVG file, relative to the assets subdirectory."
+      },
+      "maxValue": {
+        "type": "integer",
+        "description": "The maximum points value for the cards represented in the printable sheet."
       }
+    },
+    "deckPreviewImage": {
+      "type": "object",
+      "description": "Defines the preview image for a deck type.",
+      "properties": {
+        "fileName": {
+          "$ref": "#/$defs/svgFileName",
+          "description": "The file name of the SVG file, relative to the assets subdirectory."
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "The width of the graphic, in pixels."
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "The height of the graphic, in pixels."
+        }
+      },
+      "required": [ "file", "width", "height" ]
+    },
+    "deckTypeEntity": {
+      "type": "object",
+      "description": "Represents a deck of Scrum Poker cards.",
+      "uniqueItems": true,
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the deck type."
+        },
+        "description": {
+          "type": "string",
+          "description": "A brief description of the deck type."
+        },
+        "previewImage": {
+          "$ref": "#/$defs/deckPreviewImage",
+          "description": "Defines the preview image for the current deck type."
+        },
+        "cards": {
+          "type": "array",
+          "description": "Defines the individual cards that make up the deck.",
+          "items": { "$ref": "#/$defs/cardEntity" },
+          "minContains": 2
+        },
+        "printableSheets": {
+          "type": "array",
+          "description": "Defines the printable sheets of cards for the current deck type.",
+          "items": { "$ref": "#/$defs/printableSheetEntity" },
+          "minContains": 1
+        }
+      },
+      "required": [ "name", "description", "previewImage", "cards", "printableSheets" ]
     }
   }
 }
