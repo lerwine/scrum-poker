@@ -26,12 +26,12 @@
     },
     "baseFileName": {
       "type": "string",
-      "pattern": "^\\w+( +\\w+)*\\$",
+      "pattern": "^\\w[-\\w]*( +[-\\w]+)*$",
       "minLength": 1
     },
     "svgFileName": {
       "type": "string",
-      "pattern": "^\\w+( +\\w+)*\\.svg$",
+      "pattern": "^\\w[-\\w]*( +[-\\w]+)*\\.svg$",
       "minLength": 5
     },
     "cardType": {
@@ -44,7 +44,7 @@
       "uniqueItems": true,
       "properties": {
         "value": {
-          "type": "integer",
+          "type": "number",
           "description": "The value of the card in points.",
           "minimum": 0
         },
@@ -52,7 +52,7 @@
           "type": "string",
           "description": "The character symbol of the card or the string representation of its numeric value.",
           "minLength": 1,
-          "maxLength": 2
+          "maxLength": 3
         },
         "type": {
           "$ref": "#/$defs/cardType",
@@ -96,7 +96,7 @@
           "description": "The height of the graphic, in pixels."
         }
       },
-      "required": [ "file", "width", "height" ]
+      "required": [ "fileName", "width", "height" ]
     },
     "deckTypeEntity": {
       "type": "object",
