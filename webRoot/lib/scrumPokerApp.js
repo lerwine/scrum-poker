@@ -3,7 +3,7 @@
     var app = angular.module("scrumPokerApp", ["ngRoute"]);
     app.service("DeckTypesService", function ($http) {
         var deckTypes = [];
-        var promise = $http.get('assets/CardSequences.json').then(function (result) {
+        var promise = $http.get('assets/deck-definitions.json').then(function (result) {
             deckTypes = result.data;
         });
         return {
@@ -111,21 +111,21 @@
         function ($routeProvider, $locationProvider) {
             $routeProvider
                 .when('/newSession/:deckId', {
-                    templateUrl: "newSession.htm",
-                    controller: NewSessionController,
-                    controllerAs: "controller"
-                })
+                templateUrl: "newSession.htm",
+                controller: NewSessionController,
+                controllerAs: "controller"
+            })
                 .when('/home', {
-                    templateUrl: "home.htm" /*, controller: "MainController"*/,
-                    resolve: {
-                        'DeckTypesService': function (DeckTypesService) {
-                            return DeckTypesService.promise;
-                        }
+                templateUrl: "home.htm" /*, controller: "MainController"*/,
+                resolve: {
+                    'DeckTypesService': function (DeckTypesService) {
+                        return DeckTypesService.promise;
                     }
-                })
+                }
+            })
                 .when('/', {
-                    redirectTo: "/home"
-                });
+                redirectTo: "/home"
+            });
             // configure html5 to get links working on jsfiddle
             $locationProvider.html5Mode(true);
         },
