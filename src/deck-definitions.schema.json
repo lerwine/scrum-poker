@@ -8,20 +8,23 @@
     "deckColors": {
       "type": "array",
       "description": "Defines card colors. For each color of each card base name, there should be an SVG file in the assets folder with the file name baseName + '-' + color + '.svg'",
-      "items": { "$ref": "#/$defs/colorName" },
-      "minContains": 2
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/deckColorEntity" },
+      "minContains": 4
     },
     "deckTypes": {
       "type": "array",
       "description": "Defines card deck types.",
+      "uniqueItems": true,
       "items": { "$ref": "#/$defs/deckTypeEntity" },
       "minContains": 2
     }
   },
+  "required": [ "deckColors", "deckTypes" ],
   "$defs": {
-    "colorName": {
+    "rgbColor": {
       "type": "string",
-      "pattern": "^[A-Z][A-Za-z\\d]+$",
+      "pattern": "#[a-f\\d]{6}$",
       "minLength": 1
     },
     "baseFileName": {
@@ -38,10 +41,30 @@
       "enum": ["Ambiguous", "Points", "Unattainable", "Abstain" ],
       "description": "Defines card types."
     },
+    "deckColorEntity": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The display name for the color scheme",
+          "pattern": "^[A-Z][A-Za-z\\d]+$",
+          "minLength": 1
+        },
+        "fill": {
+          "$ref": "#/$defs/rgbColor",
+          "description": "The fill color."
+        },
+        "stroke": {
+          "$ref": "#/$defs/rgbColor",
+          "description": "The stroke color."
+        }
+      },
+      "required": [ "name", "fill", "stroke" ]
+    },
     "cardEntity": {
       "type": "object",
       "description": "Defines a card within a Scrum Poker deck.",
-      "uniqueItems": true,
       "properties": {
         "value": {
           "type": "number",

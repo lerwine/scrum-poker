@@ -8,6 +8,9 @@
         var promise = $http.get<dataEntities.IDeckDefinitions>('assets/deck-definitions.json').then(function (result: ng.IHttpResponse<dataEntities.IDeckDefinitions>): void {
             deckDefinitions = result.data;
         });
+        function isPathCardEntity(card: dataEntities.ISimpleCardEntity | dataEntities.IPathCardEntity): card is dataEntities.IPathCardEntity {
+            return typeof (<dataEntities.IPathCardEntity>card).middleSymbolPath === 'string';
+        }
         return {
             promise: promise,
             getAllDeckTypes: function (): deckTypesService.IDeckTypeListItem[] {
@@ -26,8 +29,40 @@
                     name: deck.name,
                     previewImage: { url: 'assets/' + deck.previewImage, height: deck.previewImage.height, width: deck.previewImage.width },
                     description: deck.description,
-                    cards: deck.cards.map(function (c: dataEntities.ICardEntity, i: number) {
-                        return { id: i, value: c.value, symbol: c.symbol, type: c.type, baseName: c.baseName };
+                    cards: deck.cards.map(function (card: dataEntities.ISimpleCardEntity | dataEntities.IPathCardEntity, id: number): deckTypesService.ICardItem {
+                        var result: deckTypesService.ICardItem;
+                        if (isPathCardEntity(card))
+                            result = {
+                                id: id,
+                                value: 0,
+                                symbol: card.symbol,
+                                type: card.type,
+                                title: card.title,
+                                shortTitle: card.shortTitle,
+                                upperSymbolPath: card.upperSymbolPath,
+                                middleSymbolPath: card.middleSymbolPath,
+                                lowerSymbolPath: card.lowerSymbolPath
+                            };
+                        else
+                        result = {
+                            id: id,
+                            value: (typeof card.value === 'number') ? card.value : 0,
+                            symbol: card.symbol,
+                            type: card.type,
+                            title: card.title,
+                            shortTitle: card.shortTitle,
+                            largeSymbolFontSize: (typeof card.largeSymbolFontSize === 'number') ? card.largeSymbolFontSize : 92,
+                            smallSymbolFontSize: (typeof card.smallSymbolFontSize === 'number') ? card.smallSymbolFontSize : 20,
+                            middleSymbolTop: (typeof card.middleSymbolTop === 'number') ? card.middleSymbolTop : 115
+                        };
+                        var description = card.description;
+                        if (typeof description !== 'undefined' && description != null) {
+                            result.description = description.text;
+                            result.truncatedDescription = description.truncatedText;
+                            result.briefDetails = description.briefDetails;
+                            result.fullDetails = description.fullDetails;
+                        }
+                        return result;
                     })
                 };
             },
