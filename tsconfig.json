@@ -22,6 +22,5 @@
         "emitDecoratorMetadata": true,
         // "noUnusedLocals":true,
         "noImplicitAny": true
-    },
-    "include": ["src/**/*.ts"],
+    }
 }
