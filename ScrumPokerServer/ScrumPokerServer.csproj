@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net462</TargetFramework>
+    <LangVersion>4.0</LangVersion>
+    <!-- <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable> -->
+    <NoWarn>IDE1005,IDE0016,IDE0018,IDE0030,IDE0031,IDE0038,IDE0250</NoWarn>
+  </PropertyGroup>
+
+</Project>

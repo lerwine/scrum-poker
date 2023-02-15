@@ -1,128 +1,42 @@
-type CardType = "Ambiguous" | "Points" | "Unattainable" | "Abstain";
-interface ICardDefinition {
-    value: number;
-    symbol: string;
-    type: CardType;
-    baseName: string;
-}
-interface ISheetDefinition {
-    fileName: string;
-    maxValue: number;
-}
-interface INameAndDescription {
-    name: string;
-    description: string;
-}
-interface IDeckTypeListItem extends INameAndDescription {
-    id: number;
-    previewUrl: string;
-    width: string;
-    height: string;
-}
-interface IPreviewImage {
-    file: string;
-    width: string;
-    height: string;
-}
-interface IDeckTypeDefinition extends INameAndDescription {
-    previewImage: IPreviewImage;
-    cards: ICardDefinition[];
-    sheets: ISheetDefinition[];
-}
-interface ICardItem extends ICardDefinition {
-    id: number;
-}
-interface IDeckDetails {
-    name: string;
-    description: string;
-    previewImage: Omit<IPreviewImage, "file"> & {
-        url: string;
-    };
-    cards: ICardItem[];
-}
-type DeckColor = "Blue" | "Green" | "Red" | "Yellow";
-interface IParticpantCard extends Omit<ICardItem, "baseName"> {
-    url: string;
-}
-interface IDeckTypesServiceResult {
-    promise: angular.IPromise<void>;
-    getAllDeckTypes(): IDeckTypeListItem[];
-    getDeck(id: number): IDeckDetails | undefined;
-    getCards(deckId: number, color: DeckColor): IGetCardsResult | undefined;
-}
-interface IDeckTypeControllerScope extends ng.IScope {
-    deckTypes: IDeckTypeListItem[];
-}
-interface IGetCardsResult {
-    votingCardUrl: string;
-    cards: IParticpantCard[];
-}
-interface INewSessionRouteParams extends ng.route.IRouteParamsService {
-    deckId: string;
-}
-interface IUserStory {
-    name: string;
-}
-interface IDeveloper {
-    name: string;
-}
-interface INewSessionControllerScope extends ng.IScope {
-    name: string;
-    description: string;
-    previewImageUrl: string;
-    width: string;
-    height: string;
-    cards: ICardItem[];
-    userStories: IUserStory[];
-    developers: IDeveloper[];
-    projectName: string;
-    themeName: string;
-    initiativeName: string;
-    epicName: string;
-    milestoneName: string;
-    sprintName: string;
-    details: string;
-    zeroPointsCard: boolean;
-    halfPointCard: boolean;
-    infinityCard: boolean;
-    needInfoCard: boolean;
-}
 (function (angular: ng.IAngularStatic) {
     var app: ng.IModule = angular.module("scrumPokerApp", ["ngRoute"]);
-    app.service("DeckTypesService", function ($http: ng.IHttpService): IDeckTypesServiceResult {
-        var deckTypes: IDeckTypeDefinition[] = [];
-        var promise = $http.get<IDeckTypeDefinition[]>('assets/CardSequences.json').then(function (result: ng.IHttpResponse<IDeckTypeDefinition[]>): void {
-            deckTypes = result.data;
+    app.service("DeckTypesService", function ($http: ng.IHttpService): deckTypesService.IDeckTypesServiceResult {
+        var deckDefinitions: dataEntities.IDeckDefinitions = {
+            deckColors: [],
+            deckTypes: []
+        };
+        var promise = $http.get<dataEntities.IDeckDefinitions>('assets/deck-definitions.json').then(function (result: ng.IHttpResponse<dataEntities.IDeckDefinitions>): void {
+            deckDefinitions = result.data;
         });
         return {
             promise: promise,
-            getAllDeckTypes: function (): IDeckTypeListItem[] {
-                return deckTypes.map<IDeckTypeListItem>(function (item: IDeckTypeDefinition, index: number): IDeckTypeListItem {
+            getAllDeckTypes: function (): deckTypesService.IDeckTypeListItem[] {
+                return deckDefinitions.deckTypes.map<deckTypesService.IDeckTypeListItem>(function (item: dataEntities.IDeckTypeEntity, index: number): deckTypesService.IDeckTypeListItem {
                     return {
-                        id: index, name: item.name, description: item.description, previewUrl: 'assets/' + item.previewImage.file,
+                        id: index, name: item.name, description: item.description, previewUrl: 'assets/' + item.previewImage.fileName,
                         height: item.previewImage.height, width: item.previewImage.width
                     };
                 });
             },
-            getDeck: function (id: number): IDeckDetails | undefined {
-                if (isNaN(id) || id < 0 || id >= deckTypes.length)
+            getDeck: function (id: number): deckTypesService.IDeckDetails | undefined {
+                if (isNaN(id) || id < 0 || id >= deckDefinitions.deckTypes.length)
                     return;
-                var deck: IDeckTypeDefinition = deckTypes[id];
+                var deck: dataEntities.IDeckTypeEntity = deckDefinitions.deckTypes[id];
                 return {
                     name: deck.name,
                     previewImage: { url: 'assets/' + deck.previewImage, height: deck.previewImage.height, width: deck.previewImage.width },
                     description: deck.description,
-                    cards: deck.cards.map(function (c: ICardDefinition, i: number) {
+                    cards: deck.cards.map(function (c: dataEntities.ICardEntity, i: number) {
                         return { id: i, value: c.value, symbol: c.symbol, type: c.type, baseName: c.baseName };
                     })
                 };
             },
-            getCards: function (deckId: number, color: DeckColor): IGetCardsResult | undefined {
-                if (isNaN(deckId) || deckId < 0 || deckId >= deckTypes.length)
+            getCards: function (deckId: number, color: string): deckTypesService.IGetCardsResult | undefined {
+                if (isNaN(deckId) || deckId < 0 || deckId >= deckDefinitions.deckTypes.length)
                     return;
                 return {
                     votingCardUrl: 'assets/Voting-' + color + ".svg",
-                    cards: deckTypes[deckId].cards.map<IParticpantCard>(function (item: ICardDefinition, index: number): IParticpantCard {
+                    cards: deckDefinitions.deckTypes[deckId].cards.map<deckTypesService.IParticpantCard>(function (item: dataEntities.ICardEntity, index: number): deckTypesService.IParticpantCard {
                         return {
                             id: index,
                             value: item.value,
@@ -132,22 +46,25 @@ interface INewSessionControllerScope extends ng.IScope {
                         }
                     })
                 };
-            }
+            },
+            getDeckColors: function(): string[] { return deckDefinitions.deckColors; }
         };
     });
+
     class DeckTypeController {
-        constructor($scope: IDeckTypeControllerScope, DeckTypesService: IDeckTypesServiceResult) {
+        constructor($scope: IDeckTypeControllerScope, DeckTypesService: deckTypesService.IDeckTypesServiceResult) {
             $scope.deckTypes = DeckTypesService.getAllDeckTypes();
         }
     }
+
     class NewSessionController {
         deckId: number;
-        allCards: ICardItem[] = [];
+        allCards: deckTypesService.ICardItem[] = [];
         hasErrors: boolean = true;
 
-        constructor($scope: INewSessionControllerScope, $routeParams: INewSessionRouteParams, DeckTypesService: IDeckTypesServiceResult) {
+        constructor($scope: INewSessionControllerScope, $routeParams: INewSessionRouteParams, DeckTypesService: deckTypesService.IDeckTypesServiceResult) {
             this.deckId = parseInt($routeParams.deckId);
-            var deckDetails: IDeckDetails | undefined = DeckTypesService.getDeck(this.deckId);
+            var deckDetails: deckTypesService.IDeckDetails | undefined = DeckTypesService.getDeck(this.deckId);
             if (typeof deckDetails === 'undefined')
                 return;
             this.allCards = deckDetails.cards;
@@ -191,10 +108,12 @@ interface INewSessionControllerScope extends ng.IScope {
             });
         }
     }
+
     app.component("deckTypeList", {
         templateUrl: "deckTypeList.htm",
         controller: DeckTypeController
     });
+
     app.config([
         "$routeProvider",
         "$locationProvider",
@@ -208,7 +127,7 @@ interface INewSessionControllerScope extends ng.IScope {
                 .when('/home', {
                     templateUrl: "home.htm"/*, controller: "MainController"*/,
                     resolve: {
-                        'DeckTypesService': function (DeckTypesService: IDeckTypesServiceResult) {
+                        'DeckTypesService': function (DeckTypesService: deckTypesService.IDeckTypesServiceResult) {
                             return DeckTypesService.promise;
                         }
                     }

@@ -290,16 +290,16 @@ namespace WebServer
             string titleText = "Scrum Poker";
             if (title != null && (title = title.Trim()).Length > 0)
                 titleText += " - " + title;
-            return new XDocument(new XhtmlXhtmlElementBuilder("html",
-                new XhtmlXhtmlElementBuilder("head",
-                    new XhtmlXhtmlElementBuilder("meta").SetAttribute("charset", ApplicationSession.DefaultEncoding.WebName),
-                    new XhtmlXhtmlElementBuilder("meta").SetAttribute("http-equiv", "X-UA-Compatible").SetAttribute("content", "IE=edge"),
-                    new XhtmlXhtmlElementBuilder("title", titleText),
-                    new XhtmlXhtmlElementBuilder("base").SetAttribute("href", "/"),
-                    new XhtmlXhtmlElementBuilder("meta").SetAttribute("name", "viewport").SetAttribute("content", "width=device-width, initial-scale=1.0"),
-                    new XhtmlXhtmlElementBuilder("link").SetAttribute("rel", "icon").SetAttribute("type", "image/x-icon").SetAttribute("href", "favicon.ico")
+            return new XDocument(new XhtmlElementBuilder("html",
+                new XhtmlElementBuilder("head",
+                    new XhtmlElementBuilder("meta").SetAttribute("charset", ApplicationSession.DefaultEncoding.WebName),
+                    new XhtmlElementBuilder("meta").SetAttribute("http-equiv", "X-UA-Compatible").SetAttribute("content", "IE=edge"),
+                    new XhtmlElementBuilder("title", titleText),
+                    new XhtmlElementBuilder("base").SetAttribute("href", "/"),
+                    new XhtmlElementBuilder("meta").SetAttribute("name", "viewport").SetAttribute("content", "width=device-width, initial-scale=1.0"),
+                    new XhtmlElementBuilder("link").SetAttribute("rel", "icon").SetAttribute("type", "image/x-icon").SetAttribute("href", "favicon.ico")
                 ),
-                new XhtmlXhtmlElementBuilder("body", bodyContent)
+                new XhtmlElementBuilder("body", bodyContent)
             ).SetAttribute("lang", "en").Element);
         }
 
@@ -320,15 +320,15 @@ namespace WebServer
 
         public void SendNotFoundResponse(string url)
         {
-            SendHtml(ToXHtmlDocumentWithTitle("Resource not found", new XhtmlXhtmlElementBuilder("h1", "Resource not found"), url + " was not found."), HttpStatusCode.NotFound);
+            SendHtml(ToXHtmlDocumentWithTitle("Resource not found", new XhtmlElementBuilder("h1", "Resource not found"), url + " was not found."), HttpStatusCode.NotFound);
         }
 
         public void SendRedirect(string url)
         {
             string absUrl = new Uri(_appSession.BaseUrl, url).AbsoluteUri;
             byte[] bytes = ApplicationSession.DefaultEncoding.GetBytes(ToXHtmlDocumentWithTitle("Redirect",
-                new XhtmlXhtmlElementBuilder("h1", "Redirect"),
-                new XhtmlXhtmlElementBuilder("a", url).SetAttribute("href", absUrl)
+                new XhtmlElementBuilder("h1", "Redirect"),
+                new XhtmlElementBuilder("a", url).SetAttribute("href", absUrl)
             ).ToString(SaveOptions.None));
             _response.ContentType = MediaTypeNames.Text.Html;
             _response.ContentLength64 = bytes.Length;
@@ -340,7 +340,7 @@ namespace WebServer
         }
     }
 
-    public class XhtmlXhtmlElementBuilder
+    public class XhtmlElementBuilder
     {
         private readonly XElement _element;
         public XElement Element { get { return _element; } }
@@ -353,13 +353,13 @@ namespace WebServer
         }
         
 
-        public XhtmlXhtmlElementBuilder(string localName, params object[] content)
+        public XhtmlElementBuilder(string localName, params object[] content)
         {
             _element = new XElement(XNamespace.None.GetName(localName));
             Add(content);
         }
 
-        public XhtmlXhtmlElementBuilder WithDateTimeOption(XmlDateTimeSerializationMode dateTimeOption)
+        public XhtmlElementBuilder WithDateTimeOption(XmlDateTimeSerializationMode dateTimeOption)
         {
             _dateTimeOption = dateTimeOption;
             return this;
@@ -418,7 +418,7 @@ namespace WebServer
             return Convert.ToString(obj) ?? "";
         }
 
-        public XhtmlXhtmlElementBuilder AddComment(string text)
+        public XhtmlElementBuilder AddComment(string text)
         {
             if (!string.IsNullOrWhiteSpace(text))
             {
@@ -431,7 +431,7 @@ namespace WebServer
             return this;
         }
 
-        public XhtmlXhtmlElementBuilder SetAttribute(string localName, object value)
+        public XhtmlElementBuilder SetAttribute(string localName, object value)
         {
             XName name = XNamespace.None.GetName(localName);
             XAttribute attribute = _element.Attribute(name);
@@ -447,7 +447,7 @@ namespace WebServer
             return this;
         }
 
-        public XhtmlXhtmlElementBuilder Add(params object[] content)
+        public XhtmlElementBuilder Add(params object[] content)
         {
             if (content != null)
                 foreach (object obj in content)
@@ -456,8 +456,8 @@ namespace WebServer
                         continue;
                     if (obj is XAttribute || obj is XNode)
                         _element.Add(obj);
-                    else if (obj is XhtmlXhtmlElementBuilder)
-                        _element.Add(((XhtmlXhtmlElementBuilder)obj)._element);
+                    else if (obj is XhtmlElementBuilder)
+                        _element.Add(((XhtmlElementBuilder)obj)._element);
                     else
                     {
                         string value = ToStringValue(obj);

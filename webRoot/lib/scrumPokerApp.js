@@ -2,24 +2,27 @@
 (function (angular) {
     var app = angular.module("scrumPokerApp", ["ngRoute"]);
     app.service("DeckTypesService", function ($http) {
-        var deckTypes = [];
-        var promise = $http.get('assets/CardSequences.json').then(function (result) {
-            deckTypes = result.data;
+        var deckDefinitions = {
+            deckColors: [],
+            deckTypes: []
+        };
+        var promise = $http.get('assets/deck-definitions.json').then(function (result) {
+            deckDefinitions = result.data;
         });
         return {
             promise: promise,
             getAllDeckTypes: function () {
-                return deckTypes.map(function (item, index) {
+                return deckDefinitions.deckTypes.map(function (item, index) {
                     return {
-                        id: index, name: item.name, description: item.description, previewUrl: 'assets/' + item.previewImage.file,
+                        id: index, name: item.name, description: item.description, previewUrl: 'assets/' + item.previewImage.fileName,
                         height: item.previewImage.height, width: item.previewImage.width
                     };
                 });
             },
             getDeck: function (id) {
-                if (isNaN(id) || id < 0 || id >= deckTypes.length)
+                if (isNaN(id) || id < 0 || id >= deckDefinitions.deckTypes.length)
                     return;
-                var deck = deckTypes[id];
+                var deck = deckDefinitions.deckTypes[id];
                 return {
                     name: deck.name,
                     previewImage: { url: 'assets/' + deck.previewImage, height: deck.previewImage.height, width: deck.previewImage.width },
@@ -30,11 +33,11 @@
                 };
             },
             getCards: function (deckId, color) {
-                if (isNaN(deckId) || deckId < 0 || deckId >= deckTypes.length)
+                if (isNaN(deckId) || deckId < 0 || deckId >= deckDefinitions.deckTypes.length)
                     return;
                 return {
                     votingCardUrl: 'assets/Voting-' + color + ".svg",
-                    cards: deckTypes[deckId].cards.map(function (item, index) {
+                    cards: deckDefinitions.deckTypes[deckId].cards.map(function (item, index) {
                         return {
                             id: index,
                             value: item.value,
@@ -44,7 +47,8 @@
                         };
                     })
                 };
-            }
+            },
+            getDeckColors: function () { return deckDefinitions.deckColors; }
         };
     });
     class DeckTypeController {
@@ -111,21 +115,21 @@
         function ($routeProvider, $locationProvider) {
             $routeProvider
                 .when('/newSession/:deckId', {
-                    templateUrl: "newSession.htm",
-                    controller: NewSessionController,
-                    controllerAs: "controller"
-                })
+                templateUrl: "newSession.htm",
+                controller: NewSessionController,
+                controllerAs: "controller"
+            })
                 .when('/home', {
-                    templateUrl: "home.htm" /*, controller: "MainController"*/,
-                    resolve: {
-                        'DeckTypesService': function (DeckTypesService) {
-                            return DeckTypesService.promise;
-                        }
+                templateUrl: "home.htm" /*, controller: "MainController"*/,
+                resolve: {
+                    'DeckTypesService': function (DeckTypesService) {
+                        return DeckTypesService.promise;
                     }
-                })
+                }
+            })
                 .when('/', {
-                    redirectTo: "/home"
-                });
+                redirectTo: "/home"
+            });
             // configure html5 to get links working on jsfiddle
             $locationProvider.html5Mode(true);
         },
