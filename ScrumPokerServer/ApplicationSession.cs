@@ -1,5 +1,5 @@
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Diagnostics;
@@ -18,13 +18,14 @@ using System.Xml.Linq;
 
 namespace ScrumPokerServer
 {
-    public partial class ApplicationSession : IDisposable
+    public partial class ApplicationSession : IDisposable, DataContracts.TitleAndIdentifier
     {
         private readonly SessionMessage.Queue _messages = new SessionMessage.Queue();
         private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
         private bool _isDisposed = false;
         private IAsyncResult _currentListenerResult = null;
         private ManualResetEvent _applicationTerminatedEvent = new ManualResetEvent();
+        private readonly DataContracts.SessionEntity _session = new DataContracts.SessionEntity();
 
         public static readonly StringComparer DefaultComparer = StringComparer.InvariantCultureIgnoreCase;
         public static readonly Encoding DefaultEncoding = new UTF8Encoding(false, false);
@@ -34,12 +35,21 @@ namespace ScrumPokerServer
         private readonly Uri _baseUrl;
         public Uri BaseUrl { get { return _baseUrl; } }
 
-        private readonly User _adminUser;
-        public User AdminUser { get { return _adminUser; } }
+        private readonly DataContracts.SessionEntity _sessionData = new readonly DataContracts.SessionEntity();
+        
+        // TODO: Make this obsolete
+        [Obsolete("Use _sessionData, instead")]
+        private readonly AdminUsery _adminUser;
+        [Obsolete("Use _sessionData, instead")]
+        public AdminUser AdminUser { get { return _adminUser; } }
 
-        private readonly Collection<User> _backingUsers = new Collection<User>();
-        private readonly ReadOnlyCollection<User> _users;
-        public ReadOnlyCollection<User> Users { get { return _users; } }
+        // TODO: Make this obsolete
+        [Obsolete("Use _sessionData, instead")]
+        private readonly Collection<WebAppUser> _backingUsers = new Collection<WebAppUser>();
+        [Obsolete("Use _sessionData, instead")]
+        private readonly ReadOnlyCollection<WebAppUser> _users;
+        [Obsolete("Use _sessionData, instead")]
+        public ReadOnlyCollection<WebAppUser> Users { get { return _users; } }
 
         private readonly HttpListener _listener;
 

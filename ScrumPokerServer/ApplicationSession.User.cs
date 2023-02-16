@@ -5,6 +5,8 @@ namespace ScrumPokerServer
 {
     public partial class ApplicationSession
     {
+        // TODO: Make this obsolete
+        [Obsolete("Use DataContracts.DeveloperEntity, instead")]
         public class User
         {
             private readonly string _userName;
