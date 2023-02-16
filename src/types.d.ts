@@ -34,23 +34,15 @@ declare interface INewSessionRouteParams extends ng.route.IRouteParamsService {
     colorId: string;
 }
 
-declare interface IUserStory {
-    name: string;
-}
-
-declare interface IDeveloper {
-    name: string;
-}
-
 declare interface INewSessionControllerScope extends ng.IScope {
     name: string;
     description: string;
     previewImageUrl: string;
     width: number;
     height: number;
-    cards: deckDefinitions.ICardItem[];
-    userStories: IUserStory[];
-    developers: IDeveloper[];
+    cards: (deckDefinitions.ISimpleParticpantCard | deckDefinitions.IPathParticpantCard)[];
+    userStories: scrumSession.IUserStoryEntity[];
+    developers: scrumSession.IDeveloperEntity[];
     projectName: string;
     themeName: string;
     initiativeName: string;
