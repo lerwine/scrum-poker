@@ -2,6 +2,8 @@ using System.Runtime.Serialization;
 
 namespace ScrumPokerServer.DataContracts
 {
+    // TODO: Make this obsolete
+    [Obsolete("Use DataContracts.DeveloperEntity, instead")]
     [DataContract]
     public class WebAppUser : IWebAppUser
     {
