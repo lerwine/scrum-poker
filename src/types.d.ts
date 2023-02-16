@@ -19,11 +19,19 @@ declare interface ISize {
 }
 
 declare interface IDeckTypeControllerScope extends ng.IScope {
-    deckTypes: deckTypesService.IDeckTypeListItem[];
+    deckTypes: deckDefinitions.IDeckTypeListItem[];
+}
+
+declare interface IDeckCardControllerScope extends ng.IScope {
+    fillColor: string;
+    strokeColor: string;
+    textColor: string;
+    cards: (deckDefinitions.ISimpleParticpantCard | deckDefinitions.IPathParticpantCard)[];
 }
 
 declare interface INewSessionRouteParams extends ng.route.IRouteParamsService {
     deckId: string;
+    colorId: string;
 }
 
 declare interface IUserStory {
@@ -40,7 +48,7 @@ declare interface INewSessionControllerScope extends ng.IScope {
     previewImageUrl: string;
     width: number;
     height: number;
-    cards: deckTypesService.ICardItem[];
+    cards: deckDefinitions.ICardItem[];
     userStories: IUserStory[];
     developers: IDeveloper[];
     projectName: string;

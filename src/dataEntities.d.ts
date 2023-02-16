@@ -1,11 +1,13 @@
 declare namespace dataEntities {
     /**
      * Defines card types.
+     * JSON Schema: deck-definitions.schema.json#/$defs/cardType
      */
     export type CardType = "Ambiguous" | "Points" | "Unattainable" | "Abstain";
 
     /**
      * Defines the preview image for the current deck type.
+     * JSON Schema: deck-definitions.schema.json#/$defs/deckPreviewImage
      */
     export interface IDeckPreviewImage extends ISize {
         /**
@@ -14,6 +16,10 @@ declare namespace dataEntities {
         fileName: string;
     }
     
+    /**
+     * Card description information.
+     * JSON Schema: deck-definitions.schema.json#/$defs/cardDescription
+     */
     export interface ICardDescription {
         /**
          * The description for the card.
@@ -36,11 +42,30 @@ declare namespace dataEntities {
         fullDetails?: string;
     }
 
-    export interface ICardBase {
+    /**
+     * JSON Schema: deck-definitions.schema.json#/$defs/textAndFont
+     */
+    export interface ITextAndFont {
+        text: string;
+        font: string;
+    }
+
+    /**
+     * JSON Schema: deck-definitions.schema.json#/$defs/textAndTruncated
+     */
+    export interface ITextAndTruncated {
+        text: string;
+        truncated: string;
+    }
+
+    /**
+     * Defines a card within a Scrum Poker deck.
+     */
+    export interface ICardEntity {
         /**
          * The character symbol of the card or the string representation of its numeric value.
          */
-        symbol: string;
+        symbol: string | ITextAndFont;
 
         /**
          * The generalized card type.
@@ -51,19 +76,7 @@ declare namespace dataEntities {
          * Title text for the card.
          * @TODO: Add to definition
          */
-        title: string;
-
-        /**
-         * Shortened title text for the card.
-         * @TODO: Add to definition
-         */
-        shortTitle?: string;
-    }
-
-    /**
-     * Defines a card within a Scrum Poker deck.
-     */
-    export interface ICardEntity extends ICardBase {
+        title: string | ITextAndTruncated;
 
         /**
          * Descriptive information for the card.
@@ -78,7 +91,7 @@ declare namespace dataEntities {
 
     /**
      * Cards whose symbol can be represented with text.
-     * Infinity, Q
+     * JSON Schema: deck-definitions.schema.json#/$defs/simpleCardEntity
      */
     export interface ISimpleCardEntity extends ICardEntity {
         /**
@@ -97,14 +110,14 @@ declare namespace dataEntities {
         smallSymbolFontSize?: number;
 
         /**
-         * The font size in pixels for the large center symbol text or undefined for 92.
+         * The font size in pixels for the large center symbol text or undefined for 96.
          */
         largeSymbolFontSize?: number;
     }
 
     /**
      * Cards whose symbol is rendered with a path.
-     * Abstain
+     * JSON Schema: deck-definitions.schema.json#/$defs/pathCardEntity
      */
     export interface IPathCardEntity extends ICardEntity {
         /**
@@ -125,6 +138,7 @@ declare namespace dataEntities {
 
     /**
      * Defines a printable sheet of Scrum Poker cards for the current deck type.
+     * JSON Schema: deck-definitions.schema.json#/$defs/printableSheetEntity
      */
     export interface IPrintableSheetEntity {
         /**
@@ -140,6 +154,7 @@ declare namespace dataEntities {
     
     /**
      * Represents a deck of Scrum Poker cards.
+     * JSON Schema: deck-definitions.schema.json#/$defs/deckTypeEntity
      */
     export interface IDeckTypeEntity extends INameAndDescription {
         /**
@@ -158,17 +173,49 @@ declare namespace dataEntities {
         printableSheets: IPrintableSheetEntity[];
     }
 
+    /**
+     * Defines a deck color scheme.
+     * JSON Schema: deck-definitions.schema.json#/$defs/deckColorEntity
+     */
     export interface IDeckColor {
+        /**
+         * The display name for the color scheme.
+         */
         name: string;
+        
+        /**
+         * The fill color.
+         */
         fill: string;
+        
+        /**
+         * The stroke color.
+         */
         stroke: string;
+        
+        /**
+         * The text color.
+         */
+        text: string;
     }
+    
     /**
      * Defines the Scum Poker deck and card types that are available.
+     * JSON Schema: deck-definitions.schema.json
      */
     export interface IDeckDefinitions {
         /**
-         * Defines card colors. For each color of each card base name, there should be an SVG file in the assets folder with the file name baseName + '-' + color + '.svg'
+         * Color scheme for "voting" pseudo-card.
+         * JSON Schema: deck-definitions.schema.json#/$defs/votingCardEntity
+         */
+        votingCard: {
+            fill: string;
+            stroke: string;
+            text: string;
+        };
+
+        /**
+         * Defines card colors schemes.
          */
         deckColors: IDeckColor[];
 

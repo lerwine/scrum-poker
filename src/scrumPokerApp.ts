@@ -1,113 +1,68 @@
+
 (function (angular: ng.IAngularStatic) {
     var app: ng.IModule = angular.module("scrumPokerApp", ["ngRoute"]);
-    app.service("DeckTypesService", function ($http: ng.IHttpService): deckTypesService.IDeckTypesServiceResult {
-        var deckDefinitions: dataEntities.IDeckDefinitions = {
-            deckColors: [],
-            deckTypes: []
-        };
-        var promise = $http.get<dataEntities.IDeckDefinitions>('assets/deck-definitions.json').then(function (result: ng.IHttpResponse<dataEntities.IDeckDefinitions>): void {
-            deckDefinitions = result.data;
-        });
-        function isPathCardEntity(card: dataEntities.ISimpleCardEntity | dataEntities.IPathCardEntity): card is dataEntities.IPathCardEntity {
-            return typeof (<dataEntities.IPathCardEntity>card).middleSymbolPath === 'string';
-        }
-        return {
-            promise: promise,
-            getAllDeckTypes: function (): deckTypesService.IDeckTypeListItem[] {
-                return deckDefinitions.deckTypes.map<deckTypesService.IDeckTypeListItem>(function (item: dataEntities.IDeckTypeEntity, index: number): deckTypesService.IDeckTypeListItem {
-                    return {
-                        id: index, name: item.name, description: item.description, previewUrl: 'assets/' + item.previewImage.fileName,
-                        height: item.previewImage.height, width: item.previewImage.width
-                    };
-                });
-            },
-            getDeck: function (id: number): deckTypesService.IDeckDetails | undefined {
-                if (isNaN(id) || id < 0 || id >= deckDefinitions.deckTypes.length)
-                    return;
-                var deck: dataEntities.IDeckTypeEntity = deckDefinitions.deckTypes[id];
-                return {
-                    name: deck.name,
-                    previewImage: { url: 'assets/' + deck.previewImage, height: deck.previewImage.height, width: deck.previewImage.width },
-                    description: deck.description,
-                    cards: deck.cards.map(function (card: dataEntities.ISimpleCardEntity | dataEntities.IPathCardEntity, id: number): deckTypesService.ICardItem {
-                        var result: deckTypesService.ICardItem;
-                        if (isPathCardEntity(card))
-                            result = {
-                                id: id,
-                                value: 0,
-                                symbol: card.symbol,
-                                type: card.type,
-                                title: card.title,
-                                shortTitle: card.shortTitle,
-                                upperSymbolPath: card.upperSymbolPath,
-                                middleSymbolPath: card.middleSymbolPath,
-                                lowerSymbolPath: card.lowerSymbolPath
-                            };
-                        else
-                        result = {
-                            id: id,
-                            value: (typeof card.value === 'number') ? card.value : 0,
-                            symbol: card.symbol,
-                            type: card.type,
-                            title: card.title,
-                            shortTitle: card.shortTitle,
-                            largeSymbolFontSize: (typeof card.largeSymbolFontSize === 'number') ? card.largeSymbolFontSize : 92,
-                            smallSymbolFontSize: (typeof card.smallSymbolFontSize === 'number') ? card.smallSymbolFontSize : 20,
-                            middleSymbolTop: (typeof card.middleSymbolTop === 'number') ? card.middleSymbolTop : 115
-                        };
-                        var description = card.description;
-                        if (typeof description !== 'undefined' && description != null) {
-                            result.description = description.text;
-                            result.truncatedDescription = description.truncatedText;
-                            result.briefDetails = description.briefDetails;
-                            result.fullDetails = description.fullDetails;
-                        }
-                        return result;
-                    })
-                };
-            },
-            getCards: function (deckId: number, color: string): deckTypesService.IGetCardsResult | undefined {
-                if (isNaN(deckId) || deckId < 0 || deckId >= deckDefinitions.deckTypes.length)
-                    return;
-                return {
-                    votingCardUrl: 'assets/Voting-' + color + ".svg",
-                    cards: deckDefinitions.deckTypes[deckId].cards.map<deckTypesService.IParticpantCard>(function (item: dataEntities.ICardEntity, index: number): deckTypesService.IParticpantCard {
-                        return {
-                            id: index,
-                            value: item.value,
-                            symbol: item.symbol,
-                            type: item.type,
-                            url: 'assets/' + item.baseName + "-" + color + ".svg"
-                        }
-                    })
-                };
-            },
-            getDeckColors: function(): string[] { return deckDefinitions.deckColors; }
-        };
-    });
+    
+    app.service("DeckTypesService", deckDefinitions.DeckTypesService);
+
+    // app.service("DeckTypesService", function ($http: ng.IHttpService): deckTypesService.IDeckTypesServiceResult {
+    //     var deckDefinitions: dataEntities.IDeckDefinitions = {
+    //         votingCard: {
+    //             fill: "",
+    //             stroke: "",
+    //             text: ""
+    //         },
+    //         deckColors: [],
+    //         deckTypes: []
+    //     };
+    //     var promise = $http.get<dataEntities.IDeckDefinitions>('assets/deck-definitions.json').then(function (result: ng.IHttpResponse<dataEntities.IDeckDefinitions>): void {
+    //         deckDefinitions.votingCard = result.data.votingCard;
+    //         deckDefinitions.deckColors = result.data.deckColors;
+    //         deckDefinitions.deckTypes = result.data.deckTypes;
+    //     });
+    //     return new DeckTypesService(deckDefinitions, promise);
+    // });
 
     class DeckTypeController {
-        constructor($scope: IDeckTypeControllerScope, DeckTypesService: deckTypesService.IDeckTypesServiceResult) {
-            $scope.deckTypes = DeckTypesService.getAllDeckTypes();
+        constructor($scope: IDeckTypeControllerScope, deckTypesService: deckDefinitions.DeckTypesService) {
+            $scope.deckTypes = deckTypesService.getAllDeckTypes();
+        }
+    }
+
+    class DeckCardController {
+        constructor($scope: IDeckCardControllerScope, deckTypesService: deckDefinitions.DeckTypesService) {
+            $scope.fillColor = deckTypesService.fillColor;
+            $scope.strokeColor = deckTypesService.strokeColor;
+            $scope.textColor = deckTypesService.textColor;
+            $scope.cards = deckTypesService.getCards();
+        }
+    }
+
+    class VotingTypeController {
+        constructor($scope: IDeckTypeControllerScope, deckTypesService: deckDefinitions.DeckTypesService) {
+            $scope.deckTypes = deckTypesService.getAllDeckTypes();
         }
     }
 
     class NewSessionController {
         deckId: number;
-        allCards: deckTypesService.ICardItem[] = [];
+        colorId: number;
+        allCards: deckDefinitions.ICardItem[] = [];
         hasErrors: boolean = true;
 
-        constructor($scope: INewSessionControllerScope, $routeParams: INewSessionRouteParams, DeckTypesService: deckTypesService.IDeckTypesServiceResult) {
+        constructor($scope: INewSessionControllerScope, $routeParams: INewSessionRouteParams, deckTypesService: deckDefinitions.DeckTypesService) {
             this.deckId = parseInt($routeParams.deckId);
-            var deckDetails: deckTypesService.IDeckDetails | undefined = DeckTypesService.getDeck(this.deckId);
-            if (typeof deckDetails === 'undefined')
+            this.colorId = parseInt($routeParams.colorId);
+            deckTypesService.selectDeck(this.deckId);
+            var currentDeck: dataEntities.IDeckTypeEntity | undefined = deckTypesService.currentDeck;
+            if (typeof currentDeck === 'undefined')
                 return;
-            this.allCards = deckDetails.cards;
-            $scope.name = deckDetails.name;
-            $scope.description = deckDetails.description;
-            $scope.previewImageUrl = deckDetails.previewImage.url;
-            $scope.width = deckDetails.previewImage.width;
-            $scope.height = deckDetails.previewImage.height;
+            deckTypesService.selectColor(0);
+            this.allCards = deckTypesService.getCards();
+            $scope.name = currentDeck.name;
+            $scope.description = currentDeck.description;
+            $scope.previewImageUrl = "assets/" + currentDeck.previewImage.fileName;
+            $scope.width = currentDeck.previewImage.width;
+            $scope.height = currentDeck.previewImage.height;
             $scope.projectName = '';
             $scope.themeName = '';
             $scope.initiativeName = '';
@@ -149,6 +104,16 @@
         controller: DeckTypeController
     });
 
+    app.component("deckCard", {
+        templateUrl: "deckCard.htm",
+        controller: DeckCardController
+    });
+
+    app.component("votingCard", {
+        templateUrl: "votingCard.htm",
+        controller: VotingTypeController
+    });
+
     app.config([
         "$routeProvider",
         "$locationProvider",
@@ -162,8 +127,8 @@
                 .when('/home', {
                     templateUrl: "home.htm"/*, controller: "MainController"*/,
                     resolve: {
-                        'DeckTypesService': function (DeckTypesService: deckTypesService.IDeckTypesServiceResult) {
-                            return DeckTypesService.promise;
+                        'deckTypesService': function (deckTypesService: deckDefinitions.DeckTypesService) {
+                            return deckTypesService.promise;
                         }
                     }
                 })

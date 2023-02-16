@@ -1,75 +1,59 @@
 "use strict";
 (function (angular) {
     var app = angular.module("scrumPokerApp", ["ngRoute"]);
-    app.service("DeckTypesService", function ($http) {
-        var deckDefinitions = {
-            deckColors: [],
-            deckTypes: []
-        };
-        var promise = $http.get('assets/deck-definitions.json').then(function (result) {
-            deckDefinitions = result.data;
-        });
-        return {
-            promise: promise,
-            getAllDeckTypes: function () {
-                return deckDefinitions.deckTypes.map(function (item, index) {
-                    return {
-                        id: index, name: item.name, description: item.description, previewUrl: 'assets/' + item.previewImage.fileName,
-                        height: item.previewImage.height, width: item.previewImage.width
-                    };
-                });
-            },
-            getDeck: function (id) {
-                if (isNaN(id) || id < 0 || id >= deckDefinitions.deckTypes.length)
-                    return;
-                var deck = deckDefinitions.deckTypes[id];
-                return {
-                    name: deck.name,
-                    previewImage: { url: 'assets/' + deck.previewImage, height: deck.previewImage.height, width: deck.previewImage.width },
-                    description: deck.description,
-                    cards: deck.cards.map(function (c, i) {
-                        return { id: i, value: c.value, symbol: c.symbol, type: c.type, baseName: c.baseName };
-                    })
-                };
-            },
-            getCards: function (deckId, color) {
-                if (isNaN(deckId) || deckId < 0 || deckId >= deckDefinitions.deckTypes.length)
-                    return;
-                return {
-                    votingCardUrl: 'assets/Voting-' + color + ".svg",
-                    cards: deckDefinitions.deckTypes[deckId].cards.map(function (item, index) {
-                        return {
-                            id: index,
-                            value: item.value,
-                            symbol: item.symbol,
-                            type: item.type,
-                            url: 'assets/' + item.baseName + "-" + color + ".svg"
-                        };
-                    })
-                };
-            },
-            getDeckColors: function () { return deckDefinitions.deckColors; }
-        };
-    });
+    app.service("DeckTypesService", deckDefinitions.DeckTypesService);
+    // app.service("DeckTypesService", function ($http: ng.IHttpService): deckTypesService.IDeckTypesServiceResult {
+    //     var deckDefinitions: dataEntities.IDeckDefinitions = {
+    //         votingCard: {
+    //             fill: "",
+    //             stroke: "",
+    //             text: ""
+    //         },
+    //         deckColors: [],
+    //         deckTypes: []
+    //     };
+    //     var promise = $http.get<dataEntities.IDeckDefinitions>('assets/deck-definitions.json').then(function (result: ng.IHttpResponse<dataEntities.IDeckDefinitions>): void {
+    //         deckDefinitions.votingCard = result.data.votingCard;
+    //         deckDefinitions.deckColors = result.data.deckColors;
+    //         deckDefinitions.deckTypes = result.data.deckTypes;
+    //     });
+    //     return new DeckTypesService(deckDefinitions, promise);
+    // });
     class DeckTypeController {
-        constructor($scope, DeckTypesService) {
-            $scope.deckTypes = DeckTypesService.getAllDeckTypes();
+        constructor($scope, deckTypesService) {
+            $scope.deckTypes = deckTypesService.getAllDeckTypes();
+        }
+    }
+    class DeckCardController {
+        constructor($scope, deckTypesService) {
+            $scope.fillColor = deckTypesService.fillColor;
+            $scope.strokeColor = deckTypesService.strokeColor;
+            $scope.textColor = deckTypesService.textColor;
+            $scope.cards = deckTypesService.getCards();
+        }
+    }
+    class VotingTypeController {
+        constructor($scope, deckTypesService) {
+            $scope.deckTypes = deckTypesService.getAllDeckTypes();
         }
     }
     class NewSessionController {
-        constructor($scope, $routeParams, DeckTypesService) {
+        constructor($scope, $routeParams, deckTypesService) {
             this.allCards = [];
             this.hasErrors = true;
             this.deckId = parseInt($routeParams.deckId);
-            var deckDetails = DeckTypesService.getDeck(this.deckId);
-            if (typeof deckDetails === 'undefined')
+            this.colorId = parseInt($routeParams.colorId);
+            deckTypesService.selectDeck(this.deckId);
+            var currentDeck = deckTypesService.currentDeck;
+            if (typeof currentDeck === 'undefined')
                 return;
-            this.allCards = deckDetails.cards;
-            $scope.name = deckDetails.name;
-            $scope.description = deckDetails.description;
-            $scope.previewImageUrl = deckDetails.previewImage.url;
-            $scope.width = deckDetails.previewImage.width;
-            $scope.height = deckDetails.previewImage.height;
+            deckTypesService.selectColor(0);
+            this.allCards = deckTypesService.getCards();
+            $scope.name = currentDeck.name;
+            $scope.description = currentDeck.description;
+            $scope.previewImageUrl = "assets/" + currentDeck.previewImage.fileName;
+            $scope.width = currentDeck.previewImage.width;
+            $scope.height = currentDeck.previewImage.height;
             $scope.projectName = '';
             $scope.themeName = '';
             $scope.initiativeName = '';
@@ -109,6 +93,14 @@
         templateUrl: "deckTypeList.htm",
         controller: DeckTypeController
     });
+    app.component("deckCard", {
+        templateUrl: "deckCard.htm",
+        controller: DeckCardController
+    });
+    app.component("votingCard", {
+        templateUrl: "votingCard.htm",
+        controller: VotingTypeController
+    });
     app.config([
         "$routeProvider",
         "$locationProvider",
@@ -122,8 +114,8 @@
                 .when('/home', {
                 templateUrl: "home.htm" /*, controller: "MainController"*/,
                 resolve: {
-                    'DeckTypesService': function (DeckTypesService) {
-                        return DeckTypesService.promise;
+                    'deckTypesService': function (deckTypesService) {
+                        return deckTypesService.promise;
                     }
                 }
             })
