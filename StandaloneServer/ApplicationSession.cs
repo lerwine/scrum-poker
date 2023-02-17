@@ -34,13 +34,13 @@ namespace ScrumPoker.StandaloneServer
         private readonly Uri _baseUrl;
         public Uri BaseUrl { get { return _baseUrl; } }
 
-        private readonly DataContracts.SessionEntity _sessionData = new DataContracts.SessionEntity();
+        private readonly ScrumPoker.DataContracts.ScrumSession _sessionData = new ScrumPoker.DataContracts.ScrumSession();
         
-        internal DataContracts.SessionEntity SessionData { get { return _sessionData; } }
+        internal ScrumPoker.DataContracts.ScrumSession SessionData { get { return _sessionData; } }
 
         private readonly HttpListener _listener;
 
-        private static bool TryGetCurrentAdminUser(out DataContracts.SettingsDeveloper result)
+        private static bool TryGetCurrentAdminUser(out MemberCredentials result)
         {
             WindowsIdentity wi = WindowsIdentity.GetCurrent();
             if (wi == null || !wi.IsAuthenticated || wi.IsAnonymous || wi.IsGuest || wi.IsSystem)
@@ -49,7 +49,7 @@ namespace ScrumPoker.StandaloneServer
                 return false;
             }
             int index = wi.Name.IndexOf('/');
-            result = new DataContracts.SettingsDeveloper()
+            result = new MemberCredentials()
             {
                 DisplayName = ((index < 0) ? wi.Name : wi.Name.Substring(index + 1)).Trim(),
                 UserName = wi.Name
@@ -58,7 +58,7 @@ namespace ScrumPoker.StandaloneServer
                 result.DisplayName = wi.Name;
             return true;
         }
-        public ApplicationSession(DataContracts.HostSettings settings)
+        public ApplicationSession(HostSettings settings)
         {
             if (settings == null)
                 throw new ArgumentNullException("settings");
@@ -67,7 +67,7 @@ namespace ScrumPoker.StandaloneServer
             _webRootDirectory = new DirectoryInfo(settings.WebRootPath);
             if (!_webRootDirectory.Exists)
                 throw new ArgumentException("Path specified by 'webRootPath' not found.", "settings");
-            DataContracts.SettingsDeveloper adminUser;
+            MemberCredentials adminUser;
             if (settings.AdminUser == null)
             {
                 if (!settings.UseIntegratedWindowsAuthentication)
@@ -92,10 +92,10 @@ namespace ScrumPoker.StandaloneServer
                 if (!settings.UseIntegratedWindowsAuthentication && settings.AdminUser.Password == null)
                     throw new ArgumentException("Password for admin user must be specified when not using integrated windows authentication.", "settings");
             }
-            if (settings.Developers.Any(d => d.IsParticipant && d.UserName.Length == 0))
+            if (settings.ScrumPokerUsers.Any(d => d.IsParticipant && d.UserName.Length == 0))
                 throw new ArgumentException("All participants must have a user name specified.", "settings");
-            if (!settings.UseIntegratedWindowsAuthentication && settings.Developers.Any(p => p.Password == null))
-                throw new ArgumentException("Passwords for developers must be specified when not using integrated windows authentication.", "settings");
+            if (!settings.UseIntegratedWindowsAuthentication && settings.ScrumPokerUsers.Any(p => p.Password == null))
+                throw new ArgumentException("Passwords for members must be specified when not using integrated windows authentication.", "settings");
             _baseUrl = new UriBuilder("http://localhost")
             {
                 Port = settings.PortNumber

@@ -21,8 +21,8 @@ namespace ScrumPoker.StandaloneServer
         private readonly ApplicationSession _appSession;
         public ApplicationSession AppSession { get { return _appSession; } }
         
-        private readonly DataContracts.DeveloperEntity _user;
-        public DataContracts.DeveloperEntity User { get { return _user; } }
+        private readonly ScrumPoker.DataContracts.TeamMember _user;
+        public ScrumPoker.DataContracts.TeamMember User { get { return _user; } }
         
         private readonly string _localPath;
         public string LocalPath { get { return _localPath; } }
@@ -91,7 +91,7 @@ namespace ScrumPoker.StandaloneServer
             {
                 IIdentity identity = user.Identity;
                 if (identity != null && identity.IsAuthenticated)
-                    _user = appSession.SessionData.Developers.FirstOrDefault(d => string.Equals(d.UserName, identity.Name, StringComparison.InvariantCultureIgnoreCase));
+                    _user = appSession.SessionData.ScrumPokerUsers.FirstOrDefault(d => string.Equals(d.UserName, identity.Name, StringComparison.InvariantCultureIgnoreCase));
             }
             Uri url = request.Url;
             string s = url.LocalPath;
