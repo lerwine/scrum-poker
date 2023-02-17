@@ -2,6 +2,13 @@ using System.Runtime.Serialization;
 
 namespace ScrumPoker.DataContracts
 {
+    public interface ITitleAndIdentifier
+    {
+        string Title { get; set; }
+        
+        string Identifier { get; set; }
+    }
+    // TODO: Move to ScrumPoker.StandaloneServer
     [DataContract]
     public abstract class TitleAndIdentifier
     {

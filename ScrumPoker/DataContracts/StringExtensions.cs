@@ -17,6 +17,26 @@ namespace ScrumPoker.DataContracts
         
         public static string ToJsonString(this DateTime? value) { return value.HasValue ? ToJsonString(value.Value) : null; }
         
+        public static string ToJsonString(this Guid value) { return value.ToString("n"); }
+        
+        public static string ToJsonString(this Guid? value) { return value.HasValue ? ToJsonString(value.Value) : null; }
+        
+        public static Guid? JsonStringToGuid(this string value)
+        {
+            Guid result;
+            if ((value = value.TrimmedOrNullIfEmpty()) != null && Guid.TryParse(value, out result))
+                return result;
+            return null;
+        }
+        
+        public static Guid? JsonStringToGuidNotEmpty(this string value)
+        {
+            Guid result;
+            if ((value = value.TrimmedOrNullIfEmpty()) != null && Guid.TryParse(value, out result) && !result.Equals(Guid.Empty))
+                return result;
+            return null;
+        }
+        
         public static DateTime? JsonStringToDate(this string value)
         {
             DateTime result;

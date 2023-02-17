@@ -3,8 +3,17 @@ using System.Runtime.Serialization;
 
 namespace ScrumPoker.DataContracts
 {
+    public interface ISprintGrouping : ITitleAndIdentifier
+    {
+        string Description { get; set; }
+        
+        DateTime? StartDate { get; set; }
+        
+        DateTime? PlannedEndDate { get; set; }
+    }
+    // TODO: Move to ScrumPoker.StandaloneServer
     [DataContract]
-    public class SprintGrouping : TitleAndIdentifier
+    public class SprintGrouping : TitleAndIdentifier, ISprintGrouping
     {
         private string _description;
         [DataMember(Name = "description", EmitDefaultValue = false)]
