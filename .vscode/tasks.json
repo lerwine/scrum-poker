@@ -3,6 +3,7 @@
   "version": "2.0.0",
   "tasks": [
     {
+        "label": "Transpile",
         "type": "typescript",
         "tsconfig": "tsconfig.json",
         "problemMatcher": [
@@ -11,8 +12,20 @@
         "group": {
             "kind": "build",
             "isDefault": true
-        },
-        "label": "tsc: build - tsconfig.json"
+        }
+    },
+    {
+        "label": "Build",
+        "command": "dotnet",
+        "type": "process",
+        "args": [
+            "build",
+            "${workspaceFolder}/ScrumPokerServer/ScrumPokerServer.csproj",
+            "/property:GenerateFullPaths=true",
+            "/consoleloggerparameters:NoSummary"
+        ],
+        "problemMatcher": "$msCompile",
+        "group": "build"
     }
 ]
 }

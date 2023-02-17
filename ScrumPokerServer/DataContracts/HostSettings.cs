@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace ScrumPokerServer.DataContracts
 {
     [DataContract]
-    public class HostSettings
+    public class HostSettings : ICloneable
     {
         private string _webRootPath;
         [DataMember(Name = "webRootPath", EmitDefaultValue = false)]
@@ -21,28 +21,35 @@ namespace ScrumPokerServer.DataContracts
             set { _webRootPath = value.TrimmedOrNullIfEmpty(); }
         }
         
-        [Obsolete("use WebRootPath")]
-        internal string webRootPath;
+        public const int DEFAULT_PORT_NUMBER = 8080;
 
         private int? _portNumber;
         [DataMember(Name = "portNumber", EmitDefaultValue = false)]
         private int? __PortNumber
         {
             get { return _portNumber; }
-            set { _portNumber = (value.HasValue && value.Value == 8080) ? null : value; }
+            set
+            {
+                if (value.HasValue && value.Value != DEFAULT_PORT_NUMBER)
+                {
+                    if (value.Value < 0 || value.Value > 65535)
+                        throw new ArgumentOutOfRangeException("value");
+                    _portNumber = value.Value; 
+                }
+                else
+                 _portNumber = null;
+            }
         }
+
         public int PortNumber
         {
-            get { return _portNumber ?? 8080 ; }
+            get { return _portNumber ?? DEFAULT_PORT_NUMBER ; }
             set { __PortNumber = value; }
         }
         
-        [Obsolete("use PortNumber")]
-        internal int portNumber = 8080;
-
-        private Developer _adminUser;
+        private SettingsDeveloper _adminUser;
         [DataMember(Name = "adminUser", IsRequired = true)]
-        public Developer AdminUser
+        public SettingsDeveloper AdminUser
         {
             get { return _adminUser; }
             set
@@ -53,61 +60,21 @@ namespace ScrumPokerServer.DataContracts
             }
         }
         
-        [Obsolete("use AdminUser")]
-        internal AdminUser adminUser;
-
-        private Collection<Developer> _developers = new Collection<Developer>();
+        private Collection<SettingsDeveloper> _developers = new Collection<SettingsDeveloper>();
         [DataMember(Name = "developers", IsRequired = true)]
-        public Collection<Developer> Developers
+        public Collection<SettingsDeveloper> Developers
         {
             get { return _developers; }
-            set { _developers = value ?? new Collection<Developer>(); }
+            set { _developers = value ?? new Collection<SettingsDeveloper>(); }
         }
 
-        [Obsolete("use Developers")]
-        internal IWebAppUser[] participants;
-
-        private AuthenticationSchemes _authentication = AuthenticationSchemes.Negotiate;
-        public AuthenticationSchemes Authentication
+        private bool _useIntegratedWindowsAuthentication = false;
+        [DataMember(Name = "useIntegratedWindowsAuthentication", IsRequired = false, EmitDefaultValue = false)]
+        public bool UseIntegratedWindowsAuthentication
         {
-            get { return _authentication; }
-            set
-            {
-                switch (value)
-                {
-                    case AuthenticationSchemes.Negotiate:
-                    case AuthenticationSchemes.Digest:
-                    case AuthenticationSchemes.IntegratedWindowsAuthentication:
-                    case AuthenticationSchemes.Ntlm:
-                        _authentication = value;
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException("value");
-                }
-            }
+            get { return _useIntegratedWindowsAuthentication; }
+            set { _useIntegratedWindowsAuthentication = value; }
         }
-
-        [DataMember(Name = "authentication", IsRequired = false, EmitDefaultValue = false)]
-        private string __Authentication
-        {
-            get { return (_authentication == AuthenticationSchemes.Negotiate) ? null : _authentication.ToString("F"); }
-            set
-            {
-                string s = value.TrimmedOrNullIfEmpty();
-                if (s == null)
-                    _authentication = AuthenticationSchemes.Negotiate;
-                else
-                {
-                    AuthenticationSchemes authentication;
-                    if (!Enum.TryParse(value, out authentication))
-                        throw new ArgumentOutOfRangeException("value");
-                    Authentication = authentication;
-                }
-            }
-        }
-
-        [Obsolete("use Authentication")]
-        internal string authentication;
 
         private readonly static Encoding _serializationEncoding = new UTF8Encoding(false, false);
 
@@ -131,5 +98,23 @@ namespace ScrumPokerServer.DataContracts
                 return serializer.ReadObject(stream) as HostSettings;
             }
         }
+
+        public HostSettings Clone()
+        {
+            HostSettings result = new HostSettings
+            {
+                _adminUser = (_adminUser == null) ? null : _adminUser.Clone(),
+                _developers = _developers,
+                _portNumber = _portNumber,
+                _useIntegratedWindowsAuthentication = _useIntegratedWindowsAuthentication,
+                _webRootPath = _webRootPath,
+            };
+            foreach (SettingsDeveloper d in _developers)
+                if (d != null)
+                    result._developers.Add(d.Clone());
+            return result;
+        }
+
+        object ICloneable.Clone() { return Clone(); }
     }
 }

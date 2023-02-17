@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mime;
+using System.Security.Principal;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -12,6 +13,7 @@ namespace ScrumPokerServer
 {
     public class UserSession
     {
+        [Obsolete("Use HttpListenerContext.User")]
         public const string CookieName_AuthToken = "AuthToken";
         private readonly HttpListenerResponse _response;
         public HttpListenerResponse Response { get { return _response; } }
@@ -19,8 +21,8 @@ namespace ScrumPokerServer
         private readonly ApplicationSession _appSession;
         public ApplicationSession AppSession { get { return _appSession; } }
         
-        private readonly ApplicationSession.User _user;
-        public ApplicationSession.User User { get { return _user; } }
+        private readonly DataContracts.DeveloperEntity _user;
+        public DataContracts.DeveloperEntity User { get { return _user; } }
         
         private readonly string _localPath;
         public string LocalPath { get { return _localPath; } }
@@ -84,12 +86,12 @@ namespace ScrumPokerServer
             _response = context.Response;
             _appSession = appSession;
             HttpListenerRequest request = context.Request;
-            Cookie cookie = request.Cookies[CookieName_AuthToken];
-            ApplicationSession.User user;
-            if (cookie != null && ApplicationSession.User.TryFindFromTokenString(appSession, cookie.Value, out user))
+            IPrincipal user = context.User;
+            if (user != null)
             {
-                _user = user;
-                _response.SetCookie(new Cookie(CookieName_AuthToken, cookie.Value));
+                IIdentity identity = user.Identity;
+                if (identity != null && identity.IsAuthenticated)
+                    _user = appSession.SessionData.Developers.FirstOrDefault(d => string.Equals(d.UserName, identity.Name, StringComparison.InvariantCultureIgnoreCase));
             }
             Uri url = request.Url;
             string s = url.LocalPath;

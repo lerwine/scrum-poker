@@ -24,8 +24,7 @@ namespace ScrumPokerServer
         private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
         private bool _isDisposed = false;
         private IAsyncResult _currentListenerResult = null;
-        private ManualResetEvent _applicationTerminatedEvent = new ManualResetEvent(false);
-        private readonly DataContracts.SessionEntity _session = new DataContracts.SessionEntity();
+        private readonly ManualResetEvent _applicationTerminatedEvent = new ManualResetEvent(false);
 
         public static readonly StringComparer DefaultComparer = StringComparer.InvariantCultureIgnoreCase;
         public static readonly Encoding DefaultEncoding = new UTF8Encoding(false, false);
@@ -37,88 +36,74 @@ namespace ScrumPokerServer
 
         private readonly DataContracts.SessionEntity _sessionData = new DataContracts.SessionEntity();
         
-        // TODO: Make this obsolete
-        [Obsolete("Use _sessionData, instead")]
-        private readonly User _adminUser;
-        [Obsolete("Use _sessionData, instead")]
-        public User AdminUser { get { return _adminUser; } }
-
-        // TODO: Make this obsolete
-        [Obsolete("Use _sessionData, instead")]
-        private readonly Collection<User> _backingUsers = new Collection<User>();
-        [Obsolete("Use _sessionData, instead")]
-        private readonly ReadOnlyCollection<User> _users;
-        [Obsolete("Use _sessionData, instead")]
-        public ReadOnlyCollection<User> Users { get { return _users; } }
+        internal DataContracts.SessionEntity SessionData { get { return _sessionData; } }
 
         private readonly HttpListener _listener;
 
+        private static bool TryGetCurrentAdminUser(out DataContracts.SettingsDeveloper result)
+        {
+            WindowsIdentity wi = WindowsIdentity.GetCurrent();
+            if (wi == null || !wi.IsAuthenticated || wi.IsAnonymous || wi.IsGuest || wi.IsSystem)
+            {
+                result = null;
+                return false;
+            }
+            int index = wi.Name.IndexOf('/');
+            result = new DataContracts.SettingsDeveloper()
+            {
+                DisplayName = ((index < 0) ? wi.Name : wi.Name.Substring(index + 1)).Trim(),
+                UserName = wi.Name
+            };
+            if (result.DisplayName.Length == 0)
+                result.DisplayName = wi.Name;
+            return true;
+        }
         public ApplicationSession(DataContracts.HostSettings settings)
         {
             if (settings == null)
                 throw new ArgumentNullException("settings");
-            if (string.IsNullOrWhiteSpace(settings.webRootPath))
+            if (string.IsNullOrWhiteSpace((settings = settings.Clone()).WebRootPath))
                 throw new ArgumentException("webRootPath is not specified.", "settings");
-            _webRootDirectory = new DirectoryInfo(settings.webRootPath);
+            _webRootDirectory = new DirectoryInfo(settings.WebRootPath);
             if (!_webRootDirectory.Exists)
                 throw new ArgumentException("Path specified by 'webRootPath' not found.", "settings");
-            if (settings.portNumber < 1 || settings.portNumber > 65535)
-                throw new ArgumentException("Invalid port number.", "settings");
-            string s;
-            if (settings.participants == null || settings.participants.Length == 0 || (settings.participants = settings.participants.Where(p => p != null).ToArray()).Length == 0)
-                throw new ArgumentException("Not participants were specified.", "settings");
-            User u;
-            foreach (DataContracts.WebAppUser w in settings.participants)
+            DataContracts.SettingsDeveloper adminUser;
+            if (settings.AdminUser == null)
             {
-                if ((u = User.Create(w, out s)) == null)
-                    throw new ArgumentException(s, "settings");
-                _backingUsers.Add(u);
-            }
-            s = settings.authentication;
-            AuthenticationSchemes authenticationScheme;
-            if (s != null && (s = s.Trim()).Length > 0)
-            {
-                if (Enum.TryParse<AuthenticationSchemes>(s, true, out authenticationScheme))
-                    switch (authenticationScheme)
-                    {
-                        case AuthenticationSchemes.None:
-                        case AuthenticationSchemes.Basic:
-                            throw new ArgumentException("Unsupported authentication value.", "settings");
-                    }
-                else
-                    throw new ArgumentException("Invalid authentication value.", "settings");
+                if (!settings.UseIntegratedWindowsAuthentication)
+                    throw new ArgumentException("Admin user must be specified when not using integrated windows authentication.", "settings");
+                if (!TryGetCurrentAdminUser(out adminUser))
+                    throw new ArgumentException("Unable to detect current user identity.", "settings");
+                settings.AdminUser = adminUser;
             }
             else
-                authenticationScheme = (settings.adminUser != null && !(string.IsNullOrWhiteSpace(settings.adminUser.password) || string.IsNullOrWhiteSpace(settings.adminUser.userName))) ?
-                    AuthenticationSchemes.Negotiate : AuthenticationSchemes.Digest;
-            if (settings.adminUser == null)
-                settings.adminUser = new DataContracts.AdminUser();
-            if (authenticationScheme == AuthenticationSchemes.Digest)
             {
-                if (string.IsNullOrWhiteSpace(settings.adminUser.userName) || string.IsNullOrWhiteSpace(settings.adminUser.password))
-                    throw new ArgumentException("'adminUser' must specify both a username and password for digest authentication.", "settings");
-                DataContracts.IWebAppUser w = settings.participants.FirstOrDefault(p => string.IsNullOrWhiteSpace(p.Password));
-                if (w != null)
-                    throw new ArgumentException("Participant '" + w.UserName + "' must also specify a password for digest authentication.", "settings");
-                // TODO: Figure out how to handle Digest
+                if (settings.AdminUser.UserName.Length == 0)
+                {
+                    if (settings.UseIntegratedWindowsAuthentication)
+                    {
+                        if (!TryGetCurrentAdminUser(out adminUser))
+                            throw new ArgumentException("Unable to detect current user identity.", "settings");
+                        settings.AdminUser.UserName = adminUser.UserName;
+                    }
+                    else
+                        throw new ArgumentException("Admin user name must be specified when not using integrated windows authentication.", "settings");
+                }
+                if (!settings.UseIntegratedWindowsAuthentication && settings.AdminUser.Password == null)
+                    throw new ArgumentException("Password for admin user must be specified when not using integrated windows authentication.", "settings");
             }
-            else if (string.IsNullOrWhiteSpace(settings.adminUser.userName))
+            if (settings.Developers.Any(d => d.IsParticipant && d.UserName.Length == 0))
+                throw new ArgumentException("All participants must have a user name specified.", "settings");
+            if (!settings.UseIntegratedWindowsAuthentication && settings.Developers.Any(p => p.Password == null))
+                throw new ArgumentException("Passwords for developers must be specified when not using integrated windows authentication.", "settings");
+            _baseUrl = new UriBuilder("http://localhost")
             {
-                WindowsIdentity windowsIdentity = WindowsIdentity.GetCurrent();
-                if (windowsIdentity == null || !windowsIdentity.IsAuthenticated || windowsIdentity.IsAnonymous || windowsIdentity.IsGuest || windowsIdentity.IsSystem || string.IsNullOrWhiteSpace(windowsIdentity.Name))
-                    throw new InvalidOperationException("Cannot determine current user identity.");
-                settings.adminUser.userName = windowsIdentity.Name;
-            }
-            if ((_adminUser = User.Create(settings.adminUser, out s)) == null)
-                throw new ArgumentException("Admin user error: " + s, "settings");
-            if (settings.adminUser.isParticipant)
-                _backingUsers.Add(_adminUser);
-            UriBuilder ub = new UriBuilder("http://localhost");
-            ub.Port = settings.portNumber;
-            _baseUrl = ub.Uri;
-            _users = new ReadOnlyCollection<User>(_backingUsers);
-            _listener = new HttpListener();
-            _listener.Prefixes.Add(_baseUrl.AbsoluteUri);
+                Port = settings.PortNumber
+            }.Uri;
+            (_listener = new HttpListener()
+            {
+                AuthenticationSchemes = settings.UseIntegratedWindowsAuthentication ? AuthenticationSchemes.IntegratedWindowsAuthentication : AuthenticationSchemes.Basic
+            }).Prefixes.Add(_baseUrl.AbsoluteUri);
         }
 
         internal bool TryRaiseAppSessionMessage(TraceLevel level, string message) { return _messages.TryAdd(level, message); }
@@ -164,10 +149,10 @@ namespace ScrumPokerServer
                         // TODO: Add user story
                         break;
                     default:
-                        if (userSession.HttpMethod == "GET")
+                        if (userSession.HttpMethod == WebRequestMethods.Http.Get)
                         {
                             FileInfo fileInfo;
-                            if (userSession.HttpMethod == "GET" && userSession.TryGetFileInfo(_webRootDirectory, out fileInfo))
+                            if (userSession.TryGetFileInfo(_webRootDirectory, out fileInfo))
                             {
                                 // TODO: Send file
                             }
@@ -176,7 +161,11 @@ namespace ScrumPokerServer
                                 // TODO: Send Not Found
                             }
                         }
-                        else if (userSession.HttpMethod == "POST")
+                        else if (userSession.HttpMethod == WebRequestMethods.Http.Post)
+                        {
+                            // TODO: Send Not Found
+                        }
+                        else if (userSession.HttpMethod == WebRequestMethods.Http.Put)
                         {
                             // TODO: Send Not Found
                         }

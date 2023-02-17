@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://raw.githubusercontent.com/lerwine/scrum-poker/main/webRoot/assets/deck-definitions.schema.json",
+  "$id": "https://raw.githubusercontent.com/lerwine/scrum-poker/main/src/deck-definitions.schema.json",
   "title": "Scrum Poker Deck Types",
   "description": "Defines the Scum Poker deck and card types that are available.",
   "type": "object",
