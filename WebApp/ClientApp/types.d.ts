@@ -41,8 +41,8 @@ declare interface INewSessionControllerScope extends ng.IScope {
     width: number;
     height: number;
     cards: (deckDefinitions.ISimpleParticpantCard | deckDefinitions.IPathParticpantCard)[];
-    userStories: scrumSession.IUserStoryEntity[];
-    developers: scrumSession.IDeveloperEntity[];
+    userStories: scrumSession.IUserStory[];
+    members: scrumSession.ITeamMember[];
     projectName: string;
     themeName: string;
     initiativeName: string;

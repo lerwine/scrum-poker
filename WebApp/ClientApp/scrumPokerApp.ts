@@ -2,7 +2,7 @@
 (function (angular: ng.IAngularStatic) {
     var app: ng.IModule = angular.module("scrumPokerApp", ["ngRoute"]);
     var s = "{\"title\":\"My Sprint Session\",\"adminUser\":{\"assignedPoints\":0,\"displayName\":\"Admin\",\"userName\":\"admin\"}," +
-        "\"currentScopePoints\":0,\"deckId\":1,\"developers\":[{\"assignedPoints\":0,\"displayName\":\"Paul\",\"userName\":\"pmc\"}," +
+        "\"currentScopePoints\":0,\"deckId\":1,\"members\":[{\"assignedPoints\":0,\"displayName\":\"Paul\",\"userName\":\"pmc\"}," +
         "{\"assignedPoints\":0,\"displayName\":\"John\",\"userName\":\"walrus\"}],\"projects\":[],\"stories\":[{\"identifier\":\"SPNT0010002\"," +
         "\"title\":\"Procurement Form\",\"_points\":null,\"created\":\"\\/Date(1676583255847-0500)\\/\",\"order\":0,\"preRequisiteIds\":[],\"state\":0}," +
         "{\"identifier\":\"SPNT0010002\",\"title\":\"Procurement Form\",\"_points\":null,\"created\":\"\\/Date(1676583255857-0500)\\/\"," +
@@ -80,21 +80,21 @@
             $scope.needInfoCard = true;
             $scope.cards = [];
             $scope.userStories = [];
-            $scope.developers = [];
+            $scope.members = [];
             var controller: NewSessionController = this;
             $scope.$watch('sprintName', function (newValue: string, oldValue: string) {
                 if (newValue.trim().length == 0)
                     controller.hasErrors = true;
                 else
-                    controller.hasErrors = $scope.userStories.length == 0 || $scope.developers.length == 0;
+                    controller.hasErrors = $scope.userStories.length == 0 || $scope.members.length == 0;
             });
-            $scope.$watchCollection('userStories', function (newValue: scrumSession.IUserStoryEntity[], oldValue: scrumSession.IUserStoryEntity[]) {
+            $scope.$watchCollection('userStories', function (newValue: scrumSession.IUserStory[], oldValue: scrumSession.IUserStory[]) {
                 if (newValue.length == 0)
                     controller.hasErrors = true;
                 else
-                    controller.hasErrors = $scope.sprintName.trim().length == 0 || $scope.developers.length == 0;
+                    controller.hasErrors = $scope.sprintName.trim().length == 0 || $scope.members.length == 0;
             });
-            $scope.$watchCollection('developers', function (newValue: scrumSession.IDeveloperEntity[], oldValue: scrumSession.IDeveloperEntity[]) {
+            $scope.$watchCollection('members', function (newValue: scrumSession.ITeamMember[], oldValue: scrumSession.ITeamMember[]) {
                 if (newValue.length == 0)
                     controller.hasErrors = true;
                 else

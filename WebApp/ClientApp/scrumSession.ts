@@ -32,7 +32,7 @@ namespace scrumSession {
     /**
      * Represents the sprint planning session.
      */
-    export interface ISessionEntity extends ITitleAndIdentifier {
+    export interface IScrumSession extends ITitleAndIdentifier {
         description: string;
         initiative?: ISprintGrouping;
         epic?: ISprintGrouping;
@@ -44,13 +44,13 @@ namespace scrumSession {
         deckId: number;
         projects: ISprintGrouping[];
         themes: ISprintGrouping[];
-        stories: IUserStoryEntity[];
+        stories: IUserStory[];
     }
 
     /**
      * Represents a user story entity record.
      */
-    export interface IUserStoryEntity extends ITitleAndIdentifier {
+    export interface IUserStory extends ITitleAndIdentifier {
         /**
          * Detailed description.
          */
@@ -78,7 +78,7 @@ namespace scrumSession {
         preRequisiteIds: number[];
     }
 
-    export interface IDeveloperEntity {
+    export interface ITeamMember {
         id: number;
         displayName: string;
         sprintCapacity?: number;
@@ -87,11 +87,11 @@ namespace scrumSession {
         sprintId: number;
     }
 
-    export interface INonParticipantEntity extends IDeveloperEntity {
+    export interface INonParticipantEntity extends ITeamMember {
         isParticipant: false;
     }
 
-    export interface IParticipantEntity extends IDeveloperEntity {
+    export interface IParticipantEntity extends ITeamMember {
         userName: string;
         colorId: number;
         isParticipant: true;
