@@ -1,3 +1,5 @@
+using System;
+
 namespace ScrumPokerServer.DataContracts
 {
     // TODO: Make this obsolete

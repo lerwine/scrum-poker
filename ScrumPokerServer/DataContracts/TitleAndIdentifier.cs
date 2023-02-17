@@ -374,7 +374,7 @@ namespace ScrumPokerServer.DataContracts
         [DataMember(Name = "colorId", EmitDefaultValue = false)]
         public int? ColorId
         {
-            get { return _isParticipant ? _colorId ?? -1 : null; }
+            get { return _isParticipant ? (int?)(_colorId ?? -1) : null; }
             set { _colorId = (value.HasValue && value.Value >= 0) ? value : null; }
         }
 
@@ -406,7 +406,7 @@ namespace ScrumPokerServer.DataContracts
         [DataMember(Name = "selectedCardId", EmitDefaultValue = false)]
         public int? SelectedCardId
         {
-            get { return _isParticipant ? _selectedCardId : null; }
+            get { return IsParticipant ? _selectedCardId : null; }
             set { _selectedCardId = value; }
         }
 

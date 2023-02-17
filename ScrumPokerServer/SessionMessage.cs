@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 
 namespace ScrumPokerServer
 {
@@ -23,6 +24,6 @@ namespace ScrumPokerServer
                 previous._next = this;
         } 
         
-        private SessionMessage(TraceLevel level, string message, SessionMessage previous, Guid concurrencyId) : this(level, message)  { _concurrencyId = concurrencyId; }
+        private SessionMessage(TraceLevel level, string message, SessionMessage previous, Guid concurrencyId) : this(level, message, previous)  { _concurrencyId = concurrencyId; }
     }
 }

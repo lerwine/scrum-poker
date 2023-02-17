@@ -88,13 +88,13 @@
                 else
                     controller.hasErrors = $scope.userStories.length == 0 || $scope.developers.length == 0;
             });
-            $scope.$watchCollection('userStories', function (newValue: IUserStory[], oldValue: IUserStory[]) {
+            $scope.$watchCollection('userStories', function (newValue: scrumSession.IUserStoryEntity[], oldValue: scrumSession.IUserStoryEntity[]) {
                 if (newValue.length == 0)
                     controller.hasErrors = true;
                 else
                     controller.hasErrors = $scope.sprintName.trim().length == 0 || $scope.developers.length == 0;
             });
-            $scope.$watchCollection('developers', function (newValue: IDeveloper[], oldValue: IDeveloper[]) {
+            $scope.$watchCollection('developers', function (newValue: scrumSession.IDeveloperEntity[], oldValue: scrumSession.IDeveloperEntity[]) {
                 if (newValue.length == 0)
                     controller.hasErrors = true;
                 else

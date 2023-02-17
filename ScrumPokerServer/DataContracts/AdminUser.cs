@@ -1,3 +1,6 @@
+using System;
+using System.Runtime.Serialization;
+
 namespace ScrumPokerServer.DataContracts
 {
     // TODO: Make this obsolete

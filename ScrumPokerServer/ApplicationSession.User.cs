@@ -29,14 +29,14 @@ namespace ScrumPokerServer
                 _userName = userName;
                 if (displayName == null || (displayName = displayName.Trim()).Length == 0)
                 {
-                    string[] parts = userName.Split('/', 2);
-                    _displayName = (parts.Length > 1 && (displayName = parts[1]).Trim().Length > 0) ? displayName : userName;
+                    int index = userName.IndexOf('/');
+                    _displayName = (index > -1 && (displayName = userName.Substring(index + 1)).Trim().Length > 0) ? displayName : userName;
                 }
                 else
                     _displayName = displayName;
             }
 
-            internal static User Create(DataContracts.IWebAppUser source, string message)
+            internal static User Create(DataContracts.IWebAppUser source, out string message)
             {
                 if (source == null)
                     message = "Source is null";
@@ -52,6 +52,11 @@ namespace ScrumPokerServer
                     }
                 }
                 return null;
+            }
+
+            internal static bool TryFindFromTokenString(ApplicationSession appSession, string value, out User user)
+            {
+                throw new NotImplementedException();
             }
         }
     }

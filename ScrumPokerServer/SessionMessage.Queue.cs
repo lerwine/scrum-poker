@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 
@@ -18,12 +19,13 @@ namespace ScrumPokerServer
             private SessionMessage _last = null;
             
             private int _count = 0;
-            int Count { get { return _count; } }
+            public int Count { get { return _count; } }
 
             private readonly object _syncRoot = new object();
-            object SyncRoot { get { return _syncRoot; } }
 
-            bool ICollection.IsSynchronized { get { return true; } }
+            public object SyncRoot { get { return _syncRoot; } }
+
+            bool System.Collections.ICollection.IsSynchronized { get { return true; } }
 
             public Queue(int? maxCapacity = null)
             {
@@ -50,6 +52,7 @@ namespace ScrumPokerServer
                 }
                 finally { Monitor.Exit(_syncRoot); }
                 _messageEnqueued.Set();
+                return true;
             }
 
             public bool TryAdd(TraceLevel level, string message, Guid concurrencyId)
@@ -69,6 +72,7 @@ namespace ScrumPokerServer
                 }
                 finally { Monitor.Exit(_syncRoot); }
                 _messageEnqueued.Set();
+                return true;
             }
 
             bool IProducerConsumerCollection<SessionMessage>.TryAdd(SessionMessage item) { return false; }
@@ -133,9 +137,9 @@ namespace ScrumPokerServer
                 return true;
             }
 
-            void  IProducerConsumerCollection<SessionMessage>.CopyTo(SessionMessage[] array, int index) { return GetItems().ToList().CopyTo(array, arrayIndex); }
+            void  IProducerConsumerCollection<SessionMessage>.CopyTo(SessionMessage[] array, int index) { GetItems().ToList().CopyTo(array, index); }
 
-            void ICollection.CopyTo(Array array, int index) { ToArray().CopyTo(array, index); }
+            void System.Collections.ICollection.CopyTo(Array array, int index) { GetItems().ToArray().CopyTo(array, index); }
 
             SessionMessage[] IProducerConsumerCollection<SessionMessage>.ToArray() { return GetItems().ToArray(); }
 
@@ -156,7 +160,7 @@ namespace ScrumPokerServer
 
             System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() { return GetItems().ToArray().GetEnumerator(); }
 
-            private override void Dispose(bool disposing)
+            private void Dispose(bool disposing)
             {
                 Monitor.Enter(_syncRoot);
                 try

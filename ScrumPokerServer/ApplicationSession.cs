@@ -18,13 +18,13 @@ using System.Xml.Linq;
 
 namespace ScrumPokerServer
 {
-    public partial class ApplicationSession : IDisposable, DataContracts.TitleAndIdentifier
+    public partial class ApplicationSession : IDisposable
     {
         private readonly SessionMessage.Queue _messages = new SessionMessage.Queue();
         private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
         private bool _isDisposed = false;
         private IAsyncResult _currentListenerResult = null;
-        private ManualResetEvent _applicationTerminatedEvent = new ManualResetEvent();
+        private ManualResetEvent _applicationTerminatedEvent = new ManualResetEvent(false);
         private readonly DataContracts.SessionEntity _session = new DataContracts.SessionEntity();
 
         public static readonly StringComparer DefaultComparer = StringComparer.InvariantCultureIgnoreCase;
@@ -35,81 +35,23 @@ namespace ScrumPokerServer
         private readonly Uri _baseUrl;
         public Uri BaseUrl { get { return _baseUrl; } }
 
-        private readonly DataContracts.SessionEntity _sessionData = new readonly DataContracts.SessionEntity();
+        private readonly DataContracts.SessionEntity _sessionData = new DataContracts.SessionEntity();
         
         // TODO: Make this obsolete
         [Obsolete("Use _sessionData, instead")]
-        private readonly AdminUsery _adminUser;
+        private readonly User _adminUser;
         [Obsolete("Use _sessionData, instead")]
-        public AdminUser AdminUser { get { return _adminUser; } }
+        public User AdminUser { get { return _adminUser; } }
 
         // TODO: Make this obsolete
         [Obsolete("Use _sessionData, instead")]
-        private readonly Collection<WebAppUser> _backingUsers = new Collection<WebAppUser>();
+        private readonly Collection<User> _backingUsers = new Collection<User>();
         [Obsolete("Use _sessionData, instead")]
-        private readonly ReadOnlyCollection<WebAppUser> _users;
+        private readonly ReadOnlyCollection<User> _users;
         [Obsolete("Use _sessionData, instead")]
-        public ReadOnlyCollection<WebAppUser> Users { get { return _users; } }
+        public ReadOnlyCollection<User> Users { get { return _users; } }
 
         private readonly HttpListener _listener;
-
-        public static ApplicationSession CreateDigestAuthSession(string webRootPath, int portNumber, string adminUserName, SecureString adminPassword, string displayName = null)
-        {
-            if (string.IsNullOrWhiteSpace(webRootPath))
-                throw new ArgumentException("'webRootPath' cannot be null or whitespace.", "webRootPath");
-            if (string.IsNullOrWhiteSpace(adminUserName))
-                throw new ArgumentException("'adminUserName' cannot be null or whitespace.", "adminUserName");
-            if (adminPassword == null || adminPassword.Length == 0)
-                throw new ArgumentException("'adminPassword' cannot be null or empty.", "adminPassword");
-            return new ApplicationSession(webRootPath, portNumber, AuthenticationSchemes.Digest, adminUserName, adminPassword, displayName);
-        }
-
-        public static ApplicationSession CreateIntegratedWindowsAuthSession(string webRootPath, int portNumber, string adminUserName, string displayName = null)
-        {
-            if (string.IsNullOrWhiteSpace(webRootPath))
-                throw new ArgumentException("'webRootPath' cannot be null or whitespace.", "webRootPath");
-            if (string.IsNullOrWhiteSpace(adminUserName))
-                throw new ArgumentException("'adminUserName' cannot be null or whitespace.", "adminUserName");
-            return new ApplicationSession(webRootPath, portNumber, AuthenticationSchemes.IntegratedWindowsAuthentication, adminUserName, null, displayName);
-        }
-
-        public static ApplicationSession CreateIntegratedWindowsCurrentUserSession(string webRootPath, int portNumber)
-        {
-            if (string.IsNullOrWhiteSpace(webRootPath))
-                throw new ArgumentException("'webRootPath' cannot be null or whitespace.", "webRootPath");
-            WindowsIdentity windowsIdentity = WindowsIdentity.GetCurrent();
-            if (windowsIdentity == null || !windowsIdentity.IsAuthenticated || windowsIdentity.IsAnonymous || windowsIdentity.IsGuest || windowsIdentity.IsSystem || string.IsNullOrWhiteSpace(windowsIdentity.Name))
-                throw new InvalidOperationException("Cannot determine current user identity.");
-            return new ApplicationSession(webRootPath, portNumber, AuthenticationSchemes.IntegratedWindowsAuthentication, windowsIdentity.Name);
-        }
-
-        public static ApplicationSession CreateNegotiateAuthSession(string webRootPath, int portNumber, string adminUserName, string displayName = null)
-        {
-            if (string.IsNullOrWhiteSpace(webRootPath))
-                throw new ArgumentException("'webRootPath' cannot be null or whitespace.", "webRootPath");
-            if (string.IsNullOrWhiteSpace(adminUserName))
-                throw new ArgumentException("'adminUserName' cannot be null or whitespace.", "adminUserName");
-            return new ApplicationSession(webRootPath, portNumber, AuthenticationSchemes.Negotiate, adminUserName, null, displayName);
-        }
-
-        public static ApplicationSession CreateNtlmCurrentUserSession(string webRootPath, int portNumber)
-        {
-            if (string.IsNullOrWhiteSpace(webRootPath))
-                throw new ArgumentException("'webRootPath' cannot be null or whitespace.", "webRootPath");
-            WindowsIdentity windowsIdentity = WindowsIdentity.GetCurrent();
-            if (windowsIdentity == null || !windowsIdentity.IsAuthenticated || windowsIdentity.IsAnonymous || windowsIdentity.IsGuest || windowsIdentity.IsSystem || string.IsNullOrWhiteSpace(windowsIdentity.Name))
-                throw new InvalidOperationException("Cannot determine current user identity.");
-            return new ApplicationSession(webRootPath, portNumber, AuthenticationSchemes.Ntlm, windowsIdentity.Name);
-        }
-
-        public static ApplicationSession CreateNtlmAuthSession(string webRootPath, int portNumber, string adminUserName, string displayName = null)
-        {
-            if (string.IsNullOrWhiteSpace(webRootPath))
-                throw new ArgumentException("'webRootPath' cannot be null or whitespace.", "webRootPath");
-            if (string.IsNullOrWhiteSpace(adminUserName))
-                throw new ArgumentException("'adminUserName' cannot be null or whitespace.", "adminUserName");
-            return new ApplicationSession(webRootPath, portNumber, AuthenticationSchemes.Ntlm, adminUserName, null, displayName);
-        }
 
         public ApplicationSession(DataContracts.HostSettings settings)
         {
@@ -123,12 +65,12 @@ namespace ScrumPokerServer
             if (settings.portNumber < 1 || settings.portNumber > 65535)
                 throw new ArgumentException("Invalid port number.", "settings");
             string s;
-            if (settings.participants == null || settings.participants.Length == 0 || (settings.participants = settings.participants.Where(s => s != null).ToArray()).Length == 0)
+            if (settings.participants == null || settings.participants.Length == 0 || (settings.participants = settings.participants.Where(p => p != null).ToArray()).Length == 0)
                 throw new ArgumentException("Not participants were specified.", "settings");
             User u;
             foreach (DataContracts.WebAppUser w in settings.participants)
             {
-                if (u = User.Create(w, out s) == null)
+                if ((u = User.Create(w, out s)) == null)
                     throw new ArgumentException(s, "settings");
                 _backingUsers.Add(u);
             }
@@ -155,9 +97,9 @@ namespace ScrumPokerServer
             {
                 if (string.IsNullOrWhiteSpace(settings.adminUser.userName) || string.IsNullOrWhiteSpace(settings.adminUser.password))
                     throw new ArgumentException("'adminUser' must specify both a username and password for digest authentication.", "settings");
-                DataContracts.WebAppUser w = settings.participants.FirstOrDefault(p => string.IsNullOrWhiteSpace(p.password));
+                DataContracts.IWebAppUser w = settings.participants.FirstOrDefault(p => string.IsNullOrWhiteSpace(p.Password));
                 if (w != null)
-                    throw new ArgumentException("Participant '" + w.userName + "' must also specify a password for digest authentication.", "settings");
+                    throw new ArgumentException("Participant '" + w.UserName + "' must also specify a password for digest authentication.", "settings");
                 // TODO: Figure out how to handle Digest
             }
             else if (string.IsNullOrWhiteSpace(settings.adminUser.userName))
@@ -167,7 +109,7 @@ namespace ScrumPokerServer
                     throw new InvalidOperationException("Cannot determine current user identity.");
                 settings.adminUser.userName = windowsIdentity.Name;
             }
-            if (_adminUser = User.Create(settings.adminUser, out s) == null)
+            if ((_adminUser = User.Create(settings.adminUser, out s)) == null)
                 throw new ArgumentException("Admin user error: " + s, "settings");
             if (settings.adminUser.isParticipant)
                 _backingUsers.Add(_adminUser);
@@ -201,9 +143,9 @@ namespace ScrumPokerServer
                 _listener.Stop();
         }
 
-        public static bool TryGetSessionTerminated(int millisecondsTimeout) { return _applicationTerminatedEvent.WaitOne(millisecondsTimeout); }
+        public bool TryGetSessionTerminated(int millisecondsTimeout) { return _applicationTerminatedEvent.WaitOne(millisecondsTimeout); }
 
-        public static bool TryGetSessionTerminated(TimeSpan timeout) { return _applicationTerminatedEvent.WaitOne(timeout); }
+        public bool TryGetSessionTerminated(TimeSpan timeout) { return _applicationTerminatedEvent.WaitOne(timeout); }
 
         private void ListenerCallback(IAsyncResult result)
         {
@@ -242,7 +184,7 @@ namespace ScrumPokerServer
                         {
                             // Send denied
                         }
-
+                    break;
                 }
             }
             catch (Exception exception)
@@ -260,7 +202,7 @@ namespace ScrumPokerServer
 
         public bool TryGetMessage(TimeSpan timeout, out SessionMessage item) { return _messages.TryTake(timeout, out item); }
 
-        protected override void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
             if (_isDisposed)
                 return;

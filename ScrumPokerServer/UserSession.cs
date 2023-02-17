@@ -1,8 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Mime;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace ScrumPokerServer
 {
@@ -54,7 +58,7 @@ namespace ScrumPokerServer
                 result = null;
             else
             {
-                string[] segments = _localPath.Split('/').Where(s => s.Length > 0);
+                string[] segments = _localPath.Split('/').Where(s => s.Length > 0).ToArray();
                 if (!segments.Any(s => s == "." || s == ".." || InvalidFileNameChars.Any(c => s.Contains(c))))
                     try
                     {
@@ -69,6 +73,8 @@ namespace ScrumPokerServer
                         return (result = new FileInfo(fullPath)).Exists;
                     }
                     catch { result = null; }
+                else
+                    result = null;
             }
             return false;
         }

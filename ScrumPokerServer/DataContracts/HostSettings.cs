@@ -1,7 +1,10 @@
 using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -38,7 +41,7 @@ namespace ScrumPokerServer.DataContracts
         internal int portNumber = 8080;
 
         private Developer _adminUser;
-        [DataMember(Name = "adminUser", required = true)]
+        [DataMember(Name = "adminUser", IsRequired = true)]
         public Developer AdminUser
         {
             get { return _adminUser; }
@@ -76,7 +79,7 @@ namespace ScrumPokerServer.DataContracts
                     case AuthenticationSchemes.Digest:
                     case AuthenticationSchemes.IntegratedWindowsAuthentication:
                     case AuthenticationSchemes.Ntlm:
-                        _authentication = authentication;
+                        _authentication = value;
                         break;
                     default:
                         throw new ArgumentOutOfRangeException("value");
@@ -84,7 +87,7 @@ namespace ScrumPokerServer.DataContracts
             }
         }
 
-        [DataMember(Name = "authentication", Required = false, EmitDefaultValue = false)]
+        [DataMember(Name = "authentication", IsRequired = false, EmitDefaultValue = false)]
         private string __Authentication
         {
             get { return (_authentication == AuthenticationSchemes.Negotiate) ? null : _authentication.ToString("F"); }
@@ -98,7 +101,7 @@ namespace ScrumPokerServer.DataContracts
                     AuthenticationSchemes authentication;
                     if (!Enum.TryParse(value, out authentication))
                         throw new ArgumentOutOfRangeException("value");
-                    Authentication = value;
+                    Authentication = authentication;
                 }
             }
         }
@@ -115,9 +118,9 @@ namespace ScrumPokerServer.DataContracts
             {
                 DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(HostSettings));
                 serializer.WriteObject(stream, this);
-                data = ms.ToArray();
+                data = stream.ToArray();
             }
-            return _serializationEncoding.GetString(json, 0, json.Length);
+            return _serializationEncoding.GetString(data, 0, data.Length);
         }
 
         public static HostSettings FromJSON(string jsonText)
