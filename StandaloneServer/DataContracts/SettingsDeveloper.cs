@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace ScrumPokerServer.DataContracts
+namespace ScrumPoker.StandaloneServer.DataContracts
 {
     public class SettingsDeveloper : Developer, ICloneable
     {

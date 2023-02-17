@@ -7,7 +7,7 @@
           "runtimeArgs": [
               "--remote-debugging-port=9222"
           ],
-          "url": "${workspaceFolder}/webRoot/index.html", // Provide your project's url to finish configuring
+          "url": "${workspaceFolder}/wwwRoot/index.html", // Provide your project's url to finish configuring
           "presentation": {
               "hidden": true
           }
@@ -20,7 +20,7 @@
               "--headless",
               "--remote-debugging-port=9222"
           ],
-          "url": "${workspaceFolder}/webRoot/index.html", // Provide your project's url to finish configuring
+          "url": "${workspaceFolder}/wwwRoot/index.html", // Provide your project's url to finish configuring
           "presentation": {
               "hidden": true
           }
@@ -29,7 +29,7 @@
           "type": "vscode-edge-devtools.debug",
           "name": "Open Edge DevTools",
           "request": "attach",
-          "url": "${workspaceFolder}/webRoot/index.html", // Provide your project's url to finish configuring
+          "url": "${workspaceFolder}/wwwRoot/index.html", // Provide your project's url to finish configuring
           "presentation": {
               "hidden": true
           }

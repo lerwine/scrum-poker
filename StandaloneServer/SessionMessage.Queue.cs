@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 
-namespace ScrumPokerServer
+namespace ScrumPoker.StandaloneServer
 {
     public partial class SessionMessage
     {

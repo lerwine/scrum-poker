@@ -1,4 +1,4 @@
-namespace ScrumPokerServer.DataContracts
+namespace ScrumPoker.StandaloneServer.DataContracts
 {
     public enum StoryState
     {

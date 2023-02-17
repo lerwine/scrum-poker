@@ -2,7 +2,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
 
-namespace ScrumPokerServer.DataContracts
+namespace ScrumPoker.StandaloneServer.DataContracts
 {
     [DataContract]
     public class UserStoryEntity : TitleAndIdentifier

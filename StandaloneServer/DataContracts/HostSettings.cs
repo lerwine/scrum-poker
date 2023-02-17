@@ -8,7 +8,7 @@ using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ScrumPokerServer.DataContracts
+namespace ScrumPoker.StandaloneServer.DataContracts
 {
     [DataContract]
     public class HostSettings : ICloneable

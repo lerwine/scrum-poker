@@ -1,4 +1,4 @@
-﻿namespace ScrumPokerServer
+﻿namespace ScrumPoker.StandaloneServer
 {
     public class Program
     {

@@ -526,7 +526,7 @@ Set-Variable -Name 'ApplicationSession' -Option Constant -Scope 'Script' -Value 
 $HttpListener = [System.Net.HttpListener]::new();
 $HttpListener.Prefixes.Add($Script:ApplicationSession.BaseUrl.AbsoluteUri);
 if ($null -eq (Get-PSDrive -LiteralName 'ScrumPokerSite' -ErrorAction SilentlyContinue)) {
-    (New-PSDrive -Name 'ScrumPokerSite' -PSProvider FileSystem -Root ($PSScriptRoot | Join-Path -ChildPath 'WebRoot')) | Out-Null;
+    (New-PSDrive -Name 'ScrumPokerSite' -PSProvider FileSystem -Root ($PSScriptRoot | Join-Path -ChildPath 'wwwRoot')) | Out-Null;
 }
 $HttpListener.Start();
 "Listening on $($Script:ApplicationSession.BaseUrl.AbsoluteUri)" | Write-Host;

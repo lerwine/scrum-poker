@@ -1,6 +1,6 @@
 using System.Runtime.Serialization;
 
-namespace ScrumPokerServer.DataContracts
+namespace ScrumPoker.StandaloneServer.DataContracts
 {
     [DataContract]
     public abstract class TitleAndIdentifier

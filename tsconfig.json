@@ -2,7 +2,7 @@
     "compileOnSave": false,
     "compilerOptions": {
         "baseUrl": "./",
-        "outDir": "./webRoot/lib",
+        "outDir": "./wwwRoot/lib",
         "forceConsistentCasingInFileNames": true,
         "strict": true,
         "noImplicitOverride": true,

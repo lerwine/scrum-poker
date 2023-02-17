@@ -9,7 +9,7 @@ using System.Security.Principal;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace ScrumPokerServer
+namespace ScrumPoker.StandaloneServer
 {
     public class UserSession
     {

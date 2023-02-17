@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics;
 
-namespace ScrumPokerServer
+namespace ScrumPoker.StandaloneServer
 {
     public partial class SessionMessage : EventArgs
     {

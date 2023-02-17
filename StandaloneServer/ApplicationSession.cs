@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace ScrumPokerServer
+namespace ScrumPoker.StandaloneServer
 {
     public partial class ApplicationSession : IDisposable
     {

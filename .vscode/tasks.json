@@ -20,7 +20,7 @@
         "type": "process",
         "args": [
             "build",
-            "${workspaceFolder}/ScrumPokerServer/ScrumPokerServer.csproj",
+            "${workspaceFolder}/StandaloneServer/StandaloneServer.csproj",
             "/property:GenerateFullPaths=true",
             "/consoleloggerparameters:NoSummary"
         ],
