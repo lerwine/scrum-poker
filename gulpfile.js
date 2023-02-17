@@ -6,8 +6,8 @@ var gutil = require('gulp-util');
 var ts = require("gulp-typescript");
 var changed = require('gulp-changed');
 
-var tsDistProject = ts.createProject("tsconfig.json");
-var tsTestProject = ts.createProject("tsconfig.spec.json");
+var tsDistProject = ts.createProject("WebApp/ClientApp/tsconfig.json");
+var tsTestProject = ts.createProject("WebApp/ClientApp/tsconfig.spec.json");
 
 gulp.task('cleanDist', function() { return del([tsDistProject.config.compilerOptions.outDir]); });
 
