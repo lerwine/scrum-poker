@@ -13,10 +13,7 @@
             "/consoleloggerparameters:NoSummary"
         ],
         "problemMatcher": "$msCompile",
-        "group": {
-            "kind": "build",
-            "isDefault": true
-        }
+        "group": "build"
     },
     {
         "label": "Build Standalone Server",
@@ -38,7 +35,10 @@
         "problemMatcher": [
             "$tsc"
         ],
-        "group": "build"
+        "group": {
+            "kind": "build",
+            "isDefault": true
+        }
     }
 ]
 }
