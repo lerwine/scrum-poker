@@ -4,6 +4,7 @@ using System.Runtime.Serialization;
 
 namespace ScrumPoker.DataContracts
 {
+    [Obsolete("Replace with DTO object(s)")]
     public interface IScrumSession : ITitleAndIdentifier
     {
         string Description { get; set; }

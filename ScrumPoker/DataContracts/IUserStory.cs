@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace ScrumPoker.DataContracts
 {
+    [Obsolete("Replace with DTO object(s)")]
     public interface IUserStory : ITitleAndIdentifier
     {
         string Description { get; set; }
