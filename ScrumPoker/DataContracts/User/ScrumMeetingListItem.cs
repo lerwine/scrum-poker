@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 
 namespace ScrumPoker.DataContracts.User
@@ -43,7 +44,7 @@ namespace ScrumPoker.DataContracts.User
         /// <summary>
         /// The description of the current tem.
         /// </summary>
-        public string _description
+        public string Description
         {
             get { return _description; }
             set { _description = value.TrimmedOrNullIfEmpty(); }
@@ -53,7 +54,7 @@ namespace ScrumPoker.DataContracts.User
         public DateTime MeetingDate
         {
             get { return _meetingDate; }
-            set { _meetingDate = value.ToLocalDate() ?? DateTime.Now; }
+            set { _meetingDate = value.ToLocalDate(); }
         }
 
         [DataMember(Name = "meetingDate", EmitDefaultValue = false)]

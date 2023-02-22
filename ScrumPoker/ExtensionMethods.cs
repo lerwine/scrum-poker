@@ -191,6 +191,11 @@ namespace ScrumPoker
             return true;
         }
 
+        public static Guid? NullIfEmpty(this Guid? value)
+        {
+            return (value.HasValue && value.Value.Equals(Guid.Empty)) ? null : value;
+        }
+
         public static bool ToNullIfEmpty(this Guid? value, object syncRoot, ref Guid? target)
         {
             Monitor.Enter(syncRoot);
@@ -248,6 +253,13 @@ namespace ScrumPoker
             }
             finally { Monitor.Exit(syncRoot); }
             return true;
+        }
+
+        public static DateTime? ToLocalDate(this DateTime? value)
+        {
+            if (value.HasValue)
+                return (value.Value.Kind == DateTimeKind.Local) ? value.Value : value.Value.ToLocalTime();
+            return null;
         }
 
         public static bool ToLocalDate(this DateTime? value, object syncRoot, ref DateTime? target)

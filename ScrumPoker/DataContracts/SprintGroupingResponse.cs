@@ -9,8 +9,6 @@ namespace ScrumPoker.DataContracts
     {
         private string _title = "";
         [DataMember(Name = "title", IsRequired = true)]
-        [Required()]
-        [MinLength(1)]
         public string Title
         {
             get { return _title; }

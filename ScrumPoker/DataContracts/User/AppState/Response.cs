@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Runtime.Serialization;
 
 namespace ScrumPoker.DataContracts.User.AppState
 {
@@ -37,8 +38,8 @@ namespace ScrumPoker.DataContracts.User.AppState
         /// </summary>
         public Collection<UserListItem> Facilitators
         {
-            get { return _teams; }
-            set { _teams = value ?? new Collection<UserListItem>(); }
+            get { return _facilitators; }
+            set { _facilitators = value ?? new Collection<UserListItem>(); }
         }
     }
 }

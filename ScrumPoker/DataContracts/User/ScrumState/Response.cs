@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 
 namespace ScrumPoker.DataContracts.User.ScrumState
@@ -71,13 +73,12 @@ namespace ScrumPoker.DataContracts.User.ScrumState
             set { _currentScopePoints = (value < 0) ? 0 : value; }
         }
 
-        private static readonly PropertyDescriptor _pdSprintCapacity;
         private int? _sprintCapacity;
         [DataMember(Name = "sprintCapacity", EmitDefaultValue = false)]
         public int? SprintCapacity
         {
             get { return _sprintCapacity; }
-            set { _currentScopePoints = (value.HasValue && value.Value < 1) ? null : value; }
+            set { _sprintCapacity = (value.HasValue && value.Value < 1) ? null : value; }
         }
 
         private TeamListItem _team = null;

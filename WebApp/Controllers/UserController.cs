@@ -13,14 +13,14 @@ namespace ScrumPoker.WebApp.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class ScrumSessionController : ControllerBase
+public class UserController : ControllerBase
 {
     private readonly ScrumPokerContext _context;
     private readonly DeckService _deckService;
-    private readonly ILogger<ScrumSessionController> _logger;
+    private readonly ILogger<UserController> _logger;
     private readonly SessionTokenService _tokenService;
 
-    public ScrumSessionController(ScrumPokerContext context, DeckService deckService, ILogger<ScrumSessionController> logger, SessionTokenService tokenService)
+    public UserController(ScrumPokerContext context, DeckService deckService, ILogger<UserController> logger, SessionTokenService tokenService)
     {
         _context = context;
         _deckService = deckService;
@@ -28,43 +28,18 @@ public class ScrumSessionController : ControllerBase
         _tokenService = tokenService;
     }
 
-    // GET: api/ScrumSession/All/{token}
+    // GET: api/User/AppState
     /// <summary>
     /// Gets all sessions.
     /// </summary>
     /// <param name="token">The administrative token.</param>
     /// <returns></returns>
-    [HttpGet("All/{token:length(352)}")]
-    public async Task<ActionResult<GetAllSessionsResponseDTO>> GetAllSessions(string token)
+    [HttpGet("AppState")]
+    public async Task<ActionResult<GetAllSessionsResponseDTO>> GetAppState()
     {
-        if (!_tokenService.ValidateAdminTokenString(token))
-            return Unauthorized();
-        await using IAsyncEnumerator<ScrumSession> asyncEnumerator = _context.Sessions.Include(s => s.Organizer).AsAsyncEnumerable().GetAsyncEnumerator();
-        Collection<SessionAdminItemDTO> organizers = new();
-        while (await asyncEnumerator.MoveNextAsync())
-        {
-            ScrumSession s = asyncEnumerator.Current;
-            organizers.Add(new()
-            {
-                ID = s.ID,
-                Token = _tokenService.ToProtectedToken(s.Token),
-                Title = s.Title,
-                Stage = s.Stage,
-                Instructions = s.Instructions,
-                DeckTypeID = s.DeckTypeID,
-                NoHalfPoint = s.NoHalfPoint,
-                NoZeroPoint = s.NoZeroPoint,
-                LastActivity = s.LastActivity,
-                Organizer = (s.Organizer is null) ? null : new()
-                {
-                    ID = s.Organizer.ID,
-                    Name = s.Organizer.Name,
-                    EmailAddress = s.Organizer.EmailAddress,
-                    LastActivity = s.Organizer.LastActivity
-                }
-            });
-        }
-        return new GetAllSessionsResponseDTO { Organizers = organizers };
+        // if (!_tokenService.ValidateAdminTokenString(token))
+        //     return Unauthorized();
+        throw new NotImplementedException();
     }
 
     // GET: api/ScrumSession/Item/{token}

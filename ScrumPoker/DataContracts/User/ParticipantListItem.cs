@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 
 namespace ScrumPoker.DataContracts.User
@@ -10,15 +11,15 @@ namespace ScrumPoker.DataContracts.User
         private Guid? _selectedCardId;
         public Guid? SelectedCardId
         {
-            get { return IsParticipant ? _selectedCardId : null; }
-            set { _selectedCardId = value.ToNullIfEmpty(); }
+            get { return _selectedCardId; }
+            set { _selectedCardId = value.NullIfEmpty(); }
         }
 
         [DataMember(Name = "selectedCardId", EmitDefaultValue = false)]
         private string __SelectedCardId
         {
-            get { return IsParticipant ? _selectedCardId.ToJsonString() : null; }
-            set { _selectedCardId = value.JsonStringToGuidNotEmpty().ToNullIfEmpty(); }
+            get { return _selectedCardId.ToJsonString(); }
+            set { _selectedCardId = value.JsonStringToGuidNotEmpty().NullIfEmpty(); }
         }
         
         private int _assignedPoints = 0;

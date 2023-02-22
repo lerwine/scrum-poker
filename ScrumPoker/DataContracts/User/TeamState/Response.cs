@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 
 namespace ScrumPoker.DataContracts.User.TeamState
@@ -56,13 +58,13 @@ namespace ScrumPoker.DataContracts.User.TeamState
         /// <summary>
         /// The description of the current tem.
         /// </summary>
-        public string _description
+        public string Description
         {
             get { return _description; }
             set { _description = value.TrimmedOrNullIfEmpty(); }
         }
         
-        private Collection<ScrumMeetingListItem> _meetings = new Collection<TeamListItem>();
+        private Collection<ScrumMeetingListItem> _meetings = new Collection<ScrumMeetingListItem>();
         [DataMember(Name = "meetings", IsRequired = true)]
         /// <summary>
         /// Gets the teams that the current user belongs to.
@@ -70,7 +72,7 @@ namespace ScrumPoker.DataContracts.User.TeamState
         public Collection<ScrumMeetingListItem> Meetings
         {
             get { return _meetings; }
-            set { _meetings = value ?? new Collection<TeamListItem>(); }
+            set { _meetings = value ?? new Collection<ScrumMeetingListItem>(); }
         }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Serialization;
 
 namespace ScrumPoker.DataContracts.User
 {
@@ -57,7 +58,7 @@ namespace ScrumPoker.DataContracts.User
         /// <summary>
         /// The description of the current tem.
         /// </summary>
-        public string _description
+        public string Description
         {
             get { return _description; }
             set { _description = value.TrimmedOrNullIfEmpty(); }
