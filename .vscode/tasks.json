@@ -3,6 +3,19 @@
   "version": "2.0.0",
   "tasks": [
     {
+        "label": "Build Library",
+        "command": "dotnet",
+        "type": "process",
+        "args": [
+            "build",
+            "${workspaceFolder}/ScrumPoker/ScrumPoker.csproj",
+            "/property:GenerateFullPaths=true",
+            "/consoleloggerparameters:NoSummary"
+        ],
+        "problemMatcher": "$msCompile",
+        "group": "build"
+    },
+    {
         "label": "Build WebApp",
         "command": "dotnet",
         "type": "process",
