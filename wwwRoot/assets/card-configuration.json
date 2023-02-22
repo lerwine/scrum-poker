@@ -1,0 +1,395 @@
+{
+    "$schema": "card-configuration.schema.json",
+    "votingCard": {
+        "fill": "#e0e0e0",
+        "stroke": "#c0c0c0",
+        "text": "#808080"
+    },
+    "cards": [
+        {
+            "symbol": "?",
+            "middleSymbolTop": 90,
+            "smallSymbolFontSize": 16,
+            "largeSymbolFontSize": 72,
+            "type": "Ambiguous",
+            "title": "Need More Info",
+            "description": {
+                "text": "Further clarification is required to make an informed decision.",
+                "truncatedText": "Further clarification is required..."
+            }
+        }, {
+            "symbol": "0",
+            "middleSymbolTop": 90,
+            "largeSymbolFontSize": 72,
+            "type": "Points",
+            "title": "Already Completed",
+            "description": {
+                "text": "Requirements for user story have already been fulfilled.",
+                "truncatedText": "Requirements already fulfilled"
+            }
+        }, {
+            "value": 0.5,
+            "symbol": "½",
+            "type": "Points",
+            "title": "Half Story Point"
+        }, {
+            "value": 1,
+            "symbol": "1",
+            "type": "Points",
+            "title": "1 Story Point"
+        }, {
+            "value": 2,
+            "symbol": "2",
+            "type": "Points",
+            "title": "2 Story Points"
+        }, {
+            "value": 3,
+            "symbol": "3",
+            "type": "Points",
+            "title": "3 Story Points"
+        }, {
+            "value": 4,
+            "symbol": "4",
+            "type": "Points",
+            "title": "4 Story Points"
+        }, {
+            "value": 5,
+            "symbol": "5",
+            "type": "Points",
+            "title": "5 Story Points"
+        }, {
+            "value": 6,
+            "symbol": "6",
+            "type": "Points",
+            "title": "6 Story Points"
+        }, {
+            "value": 7,
+            "symbol": "7",
+            "type": "Points",
+            "title": "7 Story Points"
+        }, {
+            "value": 8,
+            "symbol": "8",
+            "type": "Points",
+            "title": "8 Story Points"
+        }, {
+            "value": 9,
+            "symbol": "9",
+            "type": "Points",
+            "title": "9 Story Points"
+        }, {
+            "value": 10,
+            "symbol": "10",
+            "type": "Points",
+            "title": "10 Story Points"
+        }, {
+            "value": 13,
+            "symbol": "13",
+            "type": "Points",
+            "title": "13 Story Points"
+        }, {
+            "value": 20,
+            "symbol": "20",
+            "type": "Points",
+            "title": "20 Story Points"
+        }, {
+            "value": 21,
+            "symbol": "21",
+            "type": "Points",
+            "title": "21 Story Points"
+        }, {
+            "value": 34,
+            "symbol": "34",
+            "type": "Points",
+            "title": "34 Story Points"
+        }, {
+            "value": 40,
+            "symbol": "40",
+            "type": "Points",
+            "title": "40 Story Points"
+        }, {
+            "value": 55,
+            "symbol": "55",
+            "type": "Points",
+            "title": " Story Points"
+        }, {
+            "value": 89,
+            "symbol": "89",
+            "type": "Points",
+            "title": " Story Points"
+        }, {
+            "value": 100,
+            "symbol": "100",
+            "smallSymbolFontSize": 14,
+            "largeSymbolFontSize": 68,
+            "type": "Points",
+            "title": "100 Story Points"
+        }, {
+            "value": 144,
+            "symbol": "144",
+            "smallSymbolFontSize": 14,
+            "largeSymbolFontSize": 68,
+            "type": "Points",
+            "title": "144 Story Points"
+        }, {
+            "value": 233,
+            "symbol": "233",
+            "smallSymbolFontSize": 14,
+            "largeSymbolFontSize": 68,
+            "type": "Points",
+            "title": "233 Story Points"
+        }, {
+            "symbol": "∞",
+            "smallSymbolFontSize": 28,
+            "largeSymbolFontSize": 92,
+            "type": "Unattainable",
+            "title": "Unattainable",
+            "middleSymbolTop": 90,
+            "description": {
+                "text": "User story cannot be completed.",
+                "truncatedText": "User story cannot be completed...",
+                "briefDetails": "Non-existent resources, invalid logic, etc."
+            }
+        }, {
+            "symbol": "!",
+            "type": "Abstain",
+            "title": "Skip Vote",
+            "upperSymbolPath": "M 14.5 21 C 14.5 17.41 17.41 14.5 21 14.5 C 24.59 14.5 27.5 17.41 27.5 21 C 27.5 24.59 24.59 27.5 21 27.5 C 17.41 27.5 14.5 24.59 14.5 21 Z M 24.76 23.56 C 26 21.75 25.77 19.32 24.23 17.77 C 22.68 16.23 20.25 16 18.44 17.24 Z M 17.25 18.44 C 16.02 20.24 16.24 22.67 17.79 24.22 C 19.33 25.76 21.75 26 23.56 24.77 Z",
+            "middleSymbolPath": "M 36 68 C 36 53.64 47.64 42 62 42 C 76.36 42 88 53.64 88 68 C 88 82.36 76.36 94 62 94 C 47.64 94 36 82.36 36 68 Z M 77.05 78.24 C 82 71.02 81.1 61.29 74.9 55.1 C 68.71 48.9 58.98 48 51.76 52.95 Z M 47 57.76 C 42.07 64.97 42.97 74.68 49.14 80.87 C 55.31 87.06 65.01 87.98 72.24 83.08 Z",
+            "lowerSymbolPath": "M 97.5 153 C 97.5 149.41 100.41 146.5 104 146.5 C 107.59 146.5 110.5 149.41 110.5 153 C 110.5 156.59 107.59 159.5 104 159.5 C 100.41 159.5 97.5 156.59 97.5 153 Z M 107.76 155.56 C 109 153.75 108.77 151.32 107.23 149.77 C 105.68 148.23 103.25 148 101.44 149.24 Z M 100.25 150.44 C 99.02 152.24 99.24 154.67 100.79 156.22 C 102.33 157.76 104.75 158 106.56 156.77 Z",
+            "description": {
+                "text": "Abstain from vote.",
+                "truncatedText": "Abstain from vote",
+                "fullDetails": "Insufficient expertise, conflict of interest, etc."
+            }
+        }
+    ],
+    "deckColors": [
+        {
+            "name": "Blue",
+            "fill": "#dae8fc",
+            "stroke": "#6c8ebf",
+            "text": "rgb(0, 0, 0)"
+        },
+        {
+            "name": "Green",
+            "fill": "#d5e8d4",
+            "stroke": "#82b366",
+            "text": "rgb(0, 0, 0)"
+        },
+        {
+            "name": "Red",
+            "fill": "#f8cecc",
+            "stroke": "#b85450",
+            "text": "rgb(0, 0, 0)"
+        },
+        {
+            "name": "Yellow",
+            "fill": "#fff2cc",
+            "stroke": "#d6b656",
+            "text": "rgb(0, 0, 0)"
+        }
+    ],
+    "deckTypes": [
+        {
+            "name": "Minimal Fibonacci",
+            "description": "Fibonacci sequence values up to 34.",
+            "previewImage": {
+                "fileName": "MinimalFibonacci-Preview.svg",
+                "width": 210,
+                "height": 166
+            },
+            "cards": ["?", "0", "½", "1", "2", "3", "5", "8", "13", "21", "34", "∞", "!" ],
+            "printableSheets": [
+                {
+                    "fileName": "LargeCards-1.svg",
+                    "maxValue": 5
+                },
+                {
+                    "fileName": "LargeCards-2.svg",
+                    "maxValue": 5
+                },
+                {
+                    "fileName": "LargeCards-3.svg",
+                    "maxValue": 5
+                },
+                {
+                    "fileName": "LargeCards-4.svg",
+                    "maxValue": 5
+                },
+                {
+                    "fileName": "LargeCards-Fibonacci-1.svg",
+                    "maxValue": 13
+                },
+                {
+                    "fileName": "LargeCards-Fibonacci-2.svg",
+                    "maxValue": 34
+                }
+            ]
+        },
+        {
+            "name": "Fibonacci",
+            "description": "Fibonacci sequence values up to 89.",
+            "previewImage": {
+                "fileName": "Fibonacci-Preview.svg",
+                "width": 210,
+                "height": 176
+            },
+            "cards": ["?", "0", "½", "1", "2", "3", "5", "8", "13", "21", "34", "55", "89", "∞", "!" ],
+            "printableSheets": [
+                {
+                    "fileName": "LargeCards-1.svg",
+                    "maxValue": 5
+                },
+                {
+                    "fileName": "LargeCards-2.svg",
+                    "maxValue": 5
+                },
+                {
+                    "fileName": "LargeCards-3.svg",
+                    "maxValue": 5
+                },
+                {
+                    "fileName": "LargeCards-4.svg",
+                    "maxValue": 5
+                },
+                {
+                    "fileName": "LargeCards-Fibonacci-1.svg",
+                    "maxValue": 13
+                },
+                {
+                    "fileName": "LargeCards-Fibonacci-2.svg",
+                    "maxValue": 34
+                },
+                {
+                    "fileName": "LargeCards-Fibonacci-3.svg",
+                    "maxValue": 89
+                }
+            ]
+        },
+        {
+            "name": "Extended Fibonacci",
+            "description": "Fibonacci sequence values up to 233.",
+            "previewImage": {
+                "fileName": "ExtFibonacci-Preview.svg",
+                "width": 210,
+                "height": 187
+            },
+            "cards": [ "?", "0", "½", "1", "2", "3", "5", "8", "13", "21", "34", "55", "89", "144", "233", "∞", "!" ],
+            "printableSheets": [
+                {
+                    "fileName": "LargeCards-1.svg",
+                    "maxValue": 5
+                },
+                {
+                    "fileName": "LargeCards-2.svg",
+                    "maxValue": 5
+                },
+                {
+                    "fileName": "LargeCards-3.svg",
+                    "maxValue": 5
+                },
+                {
+                    "fileName": "LargeCards-4.svg",
+                    "maxValue": 5
+                },
+                {
+                    "fileName": "LargeCards-Fibonacci-1.svg",
+                    "maxValue": 13
+                },
+                {
+                    "fileName": "LargeCards-Fibonacci-2.svg",
+                    "maxValue": 34
+                },
+                {
+                    "fileName": "LargeCards-Fibonacci-3.svg",
+                    "maxValue": 89
+                },
+                {
+                    "fileName": "LargeCards-Fibonacci-4.svg",
+                    "maxValue": 233
+                }
+            ]
+        },
+        {
+            "name": "Pseudo-Fibonacci",
+            "description": "Estimation values up to 100, similar to Fibonacci sequence.",
+            "previewImage": {
+                "fileName": "PseudoFibonacci-Preview.svg",
+                "width": 210,
+                "height": 165
+            },
+            "cards": [ "?", "0", "½", "1", "2", "3", "5", "8", "13", "20", "40", "100", "∞", "!" ],
+            "printableSheets": [
+                {
+                    "fileName": "LargeCards-1.svg",
+                    "maxValue": 5
+                },
+                {
+                    "fileName": "LargeCards-2.svg",
+                    "maxValue": 5
+                },
+                {
+                    "fileName": "LargeCards-3.svg",
+                    "maxValue": 5
+                },
+                {
+                    "fileName": "LargeCards-4.svg",
+                    "maxValue": 5
+                },
+                {
+                    "fileName": "LargeCards-Fibonacci-1.svg",
+                    "maxValue": 13
+                },
+                {
+                    "fileName": "LargeCards-SimplifiedAgile-1.svg",
+                    "maxValue": 100
+                },
+                {
+                    "fileName": "LargeCards-SimplifiedAgile-2.svg",
+                    "maxValue": 100
+                }
+            ]
+        },
+        {
+            "name": "Integral",
+            "description": "Estimation scale values from 1 to 10.",
+            "previewImage": {
+                "fileName": "Integral-Preview.svg",
+                "width": 210,
+                "height": 176
+            },
+            "cards": [ "?", "0", "½", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "∞", "!" ],
+            "printableSheets": [
+                {
+                    "fileName": "LargeCards-1.svg",
+                    "maxValue": 5
+                },
+                {
+                    "fileName": "LargeCards-2.svg",
+                    "maxValue": 5
+                },
+                {
+                    "fileName": "LargeCards-3.svg",
+                    "maxValue": 5
+                },
+                {
+                    "fileName": "LargeCards-4.svg",
+                    "maxValue": 5
+                },
+                {
+                    "fileName": "LargeCards-TenScale-1.svg",
+                    "maxValue": 10
+                },
+                {
+                    "fileName": "LargeCards-TenScale-2.svg",
+                    "maxValue": 10
+                },
+                {
+                    "fileName": "LargeCards-TenScale-3.svg",
+                    "maxValue": 10
+                }
+            ]
+        }
+    ]
+}

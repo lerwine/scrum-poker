@@ -21,8 +21,8 @@ namespace ScrumPoker.StandaloneServer
         private readonly ApplicationSession _appSession;
         public ApplicationSession AppSession { get { return _appSession; } }
         
-        private readonly ScrumPoker.DataContracts.TeamMember _user;
-        public ScrumPoker.DataContracts.TeamMember User { get { return _user; } }
+        private readonly DataContracts.TeamMember _user;
+        public DataContracts.TeamMember User { get { return _user; } }
         
         private readonly string _localPath;
         public string LocalPath { get { return _localPath; } }
@@ -87,12 +87,13 @@ namespace ScrumPoker.StandaloneServer
             _appSession = appSession;
             HttpListenerRequest request = context.Request;
             IPrincipal user = context.User;
-            if (user != null)
-            {
-                IIdentity identity = user.Identity;
-                if (identity != null && identity.IsAuthenticated)
-                    _user = appSession.SessionData.ScrumPokerUsers.FirstOrDefault(d => string.Equals(d.UserName, identity.Name, StringComparison.InvariantCultureIgnoreCase));
-            }
+            // TODO: Load user record
+            // if (user != null)
+            // {
+            //     IIdentity identity = user.Identity;
+            //     if (identity != null && identity.IsAuthenticated)
+            //         _user = appSession.SessionData.ScrumPokerUsers.FirstOrDefault(d => string.Equals(d.UserName, identity.Name, StringComparison.InvariantCultureIgnoreCase));
+            // }
             Uri url = request.Url;
             string s = url.LocalPath;
             _localPath = (s.EndsWith("/") && s.Length > 1) ? s.Substring(0, s.Length - 1) : s;

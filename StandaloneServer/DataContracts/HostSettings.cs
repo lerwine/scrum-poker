@@ -1,5 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -11,33 +13,34 @@ using System.Threading.Tasks;
 namespace ScrumPoker.StandaloneServer.DataContracts
 {
     [DataContract]
-    public class HostSettings : ICloneable
+    public class HostSettings : ValidatableObject, ICloneable
     {
-        private string _webRootPath;
-        [DataMember(Name = "webRootPath", EmitDefaultValue = false)]
+        private static readonly PropertyDescriptor _pdWebRootPath;
+        private string _webRootPath = "";
+        [DataMember(Name = "webRootPath", IsRequired = true)]
+        [Required]
         public string WebRootPath
         {
             get { return _webRootPath; }
-            set { _webRootPath = value.TrimmedOrNullIfEmpty(); }
+            set
+            {
+                if (value.ToEmptyIfNullOrTrimmed(SyncRoot, ref _webRootPath))
+                    RaisePropertyChanged(_pdWebRootPath);
+            }
         }
         
         public const int DEFAULT_PORT_NUMBER = 8080;
-
+        private static readonly PropertyDescriptor _pdPortNumber;
         private int? _portNumber;
         [DataMember(Name = "portNumber", EmitDefaultValue = false)]
+        [Range(1, 65535)]
         private int? __PortNumber
         {
             get { return _portNumber; }
             set
             {
-                if (value.HasValue && value.Value != DEFAULT_PORT_NUMBER)
-                {
-                    if (value.Value < 0 || value.Value > 65535)
-                        throw new ArgumentOutOfRangeException("value");
-                    _portNumber = value.Value; 
-                }
-                else
-                 _portNumber = null;
+                if (((value.HasValue && value.Value != DEFAULT_PORT_NUMBER) ? value : null).SetIfDifferent(SyncRoot, ref _portNumber))
+                    RaisePropertyChanged(_pdPortNumber);
             }
         }
 
@@ -47,36 +50,59 @@ namespace ScrumPoker.StandaloneServer.DataContracts
             set { __PortNumber = value; }
         }
         
-        private SettingsDeveloper _adminUser;
+        private static readonly PropertyDescriptor _pdAdminUser;
+        private MemberCredentials _adminUser;
         [DataMember(Name = "adminUser", IsRequired = true)]
-        public SettingsDeveloper AdminUser
+        [Required]
+        public MemberCredentials AdminUser
         {
             get { return _adminUser; }
             set
             {
-                if (value == null)
-                    throw new ArgumentNullException("value");
-                _adminUser = value;
+                if (value.SetIfDifferentObject(SyncRoot, ref _adminUser))
+                    RaisePropertyChanged(_pdAdminUser);
             }
         }
         
-        private Collection<SettingsDeveloper> _developers = new Collection<SettingsDeveloper>();
-        [DataMember(Name = "developers", IsRequired = true)]
-        public Collection<SettingsDeveloper> Developers
+        private static readonly PropertyDescriptor _pdScrumPokerUsers;
+        private Collection<MemberCredentials> _members = new Collection<MemberCredentials>();
+        [DataMember(Name = "members", IsRequired = true)]
+        [Required]
+        public Collection<MemberCredentials> ScrumPokerUsers
         {
-            get { return _developers; }
-            set { _developers = value ?? new Collection<SettingsDeveloper>(); }
+            get { return _members; }
+            set
+            {
+                if (value.SetIfDifferentObject(SyncRoot, ref _members))
+                    RaisePropertyChanged(_pdScrumPokerUsers);
+            }
         }
 
         private bool _useIntegratedWindowsAuthentication = false;
+        private static readonly PropertyDescriptor _pdUseIntegratedWindowsAuthentication;
+
         [DataMember(Name = "useIntegratedWindowsAuthentication", IsRequired = false, EmitDefaultValue = false)]
         public bool UseIntegratedWindowsAuthentication
         {
             get { return _useIntegratedWindowsAuthentication; }
-            set { _useIntegratedWindowsAuthentication = value; }
+            set
+            {
+                if (value.SetIfDifferent(SyncRoot, ref _useIntegratedWindowsAuthentication))
+                    RaisePropertyChanged(_pdUseIntegratedWindowsAuthentication);
+            }
         }
 
         private readonly static Encoding _serializationEncoding = new UTF8Encoding(false, false);
+
+        static HostSettings()
+        {
+            PropertyDescriptorCollection pdc = TypeDescriptor.GetProperties(typeof(HostSettings));
+            _pdWebRootPath = pdc["WebRootPath"];
+            _pdPortNumber = pdc["PortNumber"];
+            _pdAdminUser = pdc["AdminUser"];
+            _pdScrumPokerUsers = pdc["ScrumPokerUsers"];
+            _pdUseIntegratedWindowsAuthentication = pdc["UseIntegratedWindowsAuthentication"];
+        }
 
         public override string ToString()
         {
@@ -104,14 +130,14 @@ namespace ScrumPoker.StandaloneServer.DataContracts
             HostSettings result = new HostSettings
             {
                 _adminUser = (_adminUser == null) ? null : _adminUser.Clone(),
-                _developers = _developers,
+                _members = _members,
                 _portNumber = _portNumber,
                 _useIntegratedWindowsAuthentication = _useIntegratedWindowsAuthentication,
                 _webRootPath = _webRootPath,
             };
-            foreach (SettingsDeveloper d in _developers)
+            foreach (MemberCredentials d in _members)
                 if (d != null)
-                    result._developers.Add(d.Clone());
+                    result._members.Add(d.Clone());
             return result;
         }
 

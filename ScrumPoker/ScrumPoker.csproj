@@ -8,4 +8,9 @@
     <NoWarn>IDE1005,IDE0016,IDE0018,IDE0030,IDE0031,IDE0038,IDE0250</NoWarn>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+    <PackageReference Include="System.Runtime.Serialization.Primitives" Version="4.3.0" />
+  </ItemGroup>
+
 </Project>

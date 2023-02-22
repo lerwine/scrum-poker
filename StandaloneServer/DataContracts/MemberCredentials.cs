@@ -1,16 +1,23 @@
 using System;
+using System.ComponentModel;
 using System.Runtime.Serialization;
 
-namespace ScrumPoker.StandaloneServer
+
+namespace ScrumPoker.StandaloneServer.DataContracts
 {
-    public class MemberCredentials : ScrumPoker.DataContracts.ScrumPokerUser, ICloneable
+    public class MemberCredentials : ScrumPokerUser, ICloneable
     {
+        private readonly PropertyDescriptor _pdPassword = TypeDescriptor.GetProperties(typeof(MemberCredentials))["Password"];
         private string _password;
         [DataMember(Name = "password", EmitDefaultValue = false)]
         public string Password
         {
             get { return _password; }
-            set { _password = (value == null || value.Length > 0) ? value : null; }
+            set
+            {
+                if (value.ToNullIfEmpty(SyncRoot, ref _password))
+                    RaisePropertyChanged(_pdPassword);
+            }
         }
 
         public MemberCredentials() { }

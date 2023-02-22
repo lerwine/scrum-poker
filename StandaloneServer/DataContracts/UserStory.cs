@@ -1,41 +1,25 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Runtime.Serialization;
 
-namespace ScrumPoker.DataContracts
+namespace ScrumPoker.StandaloneServer.DataContracts
 {
-    public interface IUserStory : ITitleAndIdentifier
-    {
-        string Description { get; set; }
-
-        string AcceptanceCriteria { get; set; }
-        
-        Guid? ProjectId { get; set; }
-        
-        Guid? ThemeId { get; set; }
-        
-        DateTime Created { get; set; }
-        
-        int? Points { get; set; }
-        
-        StoryState State { get; set; }
-        
-        Guid? AssignedToId { get; set; }
-        
-        int Order { get; set; }
-        
-        ICollection<int> PreRequisiteIds { get; set; }
-    }
-    // TODO: Move to ScrumPoker.StandaloneServer
     [DataContract]
-    public class UserStory : TitleAndIdentifier, IUserStory
+    public class UserStory : TitleAndIdentifier, ScrumPoker.DataContracts.IUserStory
     {
+        private static readonly PropertyDescriptor _pdDescription;
         private string _description;
         [DataMember(Name = "description", EmitDefaultValue = false)]
         public string Description
         {
             get { return _description; }
-            set { _description = value.TrimmedOrNullIfEmpty(); }
+            set
+            {
+                if (value.ToTrimmedOrNullIfEmpty(SyncRoot, ref _description))
+                    RaisePropertyChanged(_pdDescription);
+            }
         }
 
         private string _acceptanceCriteria;
@@ -57,10 +41,10 @@ namespace ScrumPoker.DataContracts
         private string __ProjectId
         {
             get { return _projectId.ToJsonString(); }
-            set { _projectId = JsonStringToGuidNotEmpty(value); }
+            set { _projectId = value.JsonStringToGuidNotEmpty(); }
         }
 
-        private iGuidnt? _themeId;
+        private Guid? _themeId;
         public Guid? ThemeId
         {
             get { return _themeId; }
@@ -71,7 +55,7 @@ namespace ScrumPoker.DataContracts
         private string __ThemeId
         {
             get { return _themeId.ToJsonString(); }
-            set { _themeId = JsonStringToGuidNotEmpty(value); }
+            set { _themeId = value.JsonStringToGuidNotEmpty(); }
         }
         
         private DateTime _created = DateTime.Now;
@@ -84,7 +68,7 @@ namespace ScrumPoker.DataContracts
         [DataMember(Name = "created", IsRequired = true)]
         private string __Created
         {
-            get { return _created.ToJsonString(); }
+            get { return _created.ToJsonDateString(); }
             set { _created = value.JsonStringToDate() ?? DateTime.Now; }
         }
 
@@ -96,9 +80,9 @@ namespace ScrumPoker.DataContracts
             set { _points = (value.HasValue && value.Value >= 0) ? value : null; }
         }
 
-        private StoryState _state = StoryState.Draft;
+        private ScrumPoker.DataContracts.StoryState _state = ScrumPoker.DataContracts.StoryState.Draft;
         [DataMember(Name = "state", IsRequired = true)]
-        public StoryState State
+        public ScrumPoker.DataContracts.StoryState State
         {
             get { return _state; }
             set { _state = value; }
@@ -115,7 +99,7 @@ namespace ScrumPoker.DataContracts
         private string __AssignedToId
         {
             get { return _assignedToId.ToJsonString(); }
-            set { _assignedToId = JsonStringToGuidNotEmpty(value); }
+            set { _assignedToId = value.JsonStringToGuidNotEmpty(); }
         }
 
         private int _order = 0;
@@ -133,7 +117,6 @@ namespace ScrumPoker.DataContracts
             get { return _preRequisiteIds; }
             set { _preRequisiteIds = value ?? new Collection<int>(); }
         }
-        ICollection<int> IUserStory.PreRequisiteIds { get { return _preRequisiteIds; } }
 
         public override string ToString() { return this.ToJSON<UserStory>(); }
 

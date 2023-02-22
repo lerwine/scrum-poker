@@ -34,13 +34,13 @@ namespace ScrumPoker.StandaloneServer
         private readonly Uri _baseUrl;
         public Uri BaseUrl { get { return _baseUrl; } }
 
-        private readonly ScrumPoker.DataContracts.ScrumSession _sessionData = new ScrumPoker.DataContracts.ScrumSession();
+        private readonly DataContracts.ScrumSession _sessionData = new DataContracts.ScrumSession();
         
-        internal ScrumPoker.DataContracts.ScrumSession SessionData { get { return _sessionData; } }
+        internal DataContracts.ScrumSession SessionData { get { return _sessionData; } }
 
         private readonly HttpListener _listener;
 
-        private static bool TryGetCurrentAdminUser(out MemberCredentials result)
+        private static bool TryGetCurrentAdminUser(out DataContracts.MemberCredentials result)
         {
             WindowsIdentity wi = WindowsIdentity.GetCurrent();
             if (wi == null || !wi.IsAuthenticated || wi.IsAnonymous || wi.IsGuest || wi.IsSystem)
@@ -49,7 +49,7 @@ namespace ScrumPoker.StandaloneServer
                 return false;
             }
             int index = wi.Name.IndexOf('/');
-            result = new MemberCredentials()
+            result = new DataContracts.MemberCredentials()
             {
                 DisplayName = ((index < 0) ? wi.Name : wi.Name.Substring(index + 1)).Trim(),
                 UserName = wi.Name
@@ -58,7 +58,7 @@ namespace ScrumPoker.StandaloneServer
                 result.DisplayName = wi.Name;
             return true;
         }
-        public ApplicationSession(HostSettings settings)
+        public ApplicationSession(DataContracts.HostSettings settings)
         {
             if (settings == null)
                 throw new ArgumentNullException("settings");
@@ -67,7 +67,7 @@ namespace ScrumPoker.StandaloneServer
             _webRootDirectory = new DirectoryInfo(settings.WebRootPath);
             if (!_webRootDirectory.Exists)
                 throw new ArgumentException("Path specified by 'webRootPath' not found.", "settings");
-            MemberCredentials adminUser;
+            DataContracts.MemberCredentials adminUser;
             if (settings.AdminUser == null)
             {
                 if (!settings.UseIntegratedWindowsAuthentication)

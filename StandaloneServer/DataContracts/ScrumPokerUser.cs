@@ -1,68 +1,99 @@
 using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
-namespace ScrumPoker.DataContracts
+namespace ScrumPoker.StandaloneServer.DataContracts
 {
-    public interface IScrumPokerUser
-    {
-        string DisplayName { get; set; }
-
-        string UserName { get; set; }
-        
-        Guid? ColorId { get; set; }
-        
-        int? SprintCapacity { get; set; }
-        
-        bool IsParticipant { get; set; }
-    }
-    // TODO: Move to ScrumPoker.StandaloneServer
     [DataContract]
-    public class ScrumPokerUser : IScrumPokerUser
+    public class ScrumPokerUser : ValidatableObject, ScrumPoker.DataContracts.IScrumPokerUser
     {
+        private static readonly PropertyDescriptor _pdDisplayName;
         private string _displayName = "";
         [DataMember(Name = "displayName", IsRequired = true)]
         public string DisplayName
         {
             get { return _displayName; }
-            set { _displayName = value.EmptyIfNullOrTrimmed(); }
+            set
+            {
+                if (value.ToEmptyIfNullOrTrimmed(SyncRoot, ref _displayName))
+                    RaisePropertyChanged(_pdDisplayName);
+            }
         }
 
+        private static readonly PropertyDescriptor _pdUserName;
         private string _userName;
         [DataMember(Name = "userName", EmitDefaultValue = false)]
         public string UserName
         {
             get { return _isParticipant ? _userName ?? "" : null; }
-            set { _userName = value.TrimmedOrNullIfEmpty(); }
+            set
+            {
+                if (value.ToTrimmedOrNullIfEmpty(SyncRoot, ref _userName))
+                    RaisePropertyChanged(_pdUserName);
+            }
         }
 
+        private static readonly PropertyDescriptor _pdColorId;
         private Guid? _colorId;
         public Guid? ColorId
         {
             get { return _isParticipant ? (Guid?)(_colorId ?? Guid.Empty) : null; }
-            set { _colorId = (value.HasValue && !value.Value.Equals(Guid.Empty)) ? value : null; }
+            set
+            {
+                if (value.ToNullIfEmpty(SyncRoot, ref _colorId))
+                    RaisePropertyChanged(_pdColorId);
+            }
         }
 
         [DataMember(Name = "colorId", EmitDefaultValue = false)]
         private string __ColorId
         {
-            get { return _colorId ? _selectedCardId.ToJsonString() : null; }
-            set { _colorId = JsonStringToGuidNotEmpty(value); }
+            get { return _isParticipant ? _colorId.ToJsonString() : null; }
+            set
+            {
+                if (value.JsonStringToGuidNotEmpty().ToNullIfEmpty(SyncRoot, ref _colorId))
+                    RaisePropertyChanged(_pdColorId);
+            }
         }
 
+        private static readonly PropertyDescriptor _pdSprintCapacity;
         private int? _sprintCapacity;
         [DataMember(Name = "sprintCapacity", EmitDefaultValue = false)]
+        [Range(1, int.MaxValue)]
         public int? SprintCapacity
         {
             get { return _sprintCapacity; }
-            set { _sprintCapacity = (value.HasValue && value.Value >= 0) ? value : null; }
+            set
+            {
+                if (value.SetIfDifferent(SyncRoot, ref _sprintCapacity))
+                    RaisePropertyChanged(_pdSprintCapacity);
+            }
         }
 
         private bool _isParticipant = false;
+
+        private static readonly PropertyDescriptor _pdIsParticipant;
+
         [DataMember(Name = "isParticipant", EmitDefaultValue = false)]
         public bool IsParticipant
         {
             get { return _isParticipant; }
-            set { _isParticipant = true; }
+            set
+            {
+                if (value.SetIfDifferent(SyncRoot, ref _isParticipant))
+                    RaisePropertyChanged(_pdIsParticipant);
+            }
+        }
+
+        static ScrumPokerUser()
+        {
+            PropertyDescriptorCollection pdc = TypeDescriptor.GetProperties(typeof(ScrumPokerUser));
+            _pdDisplayName = pdc["DisplayName"];
+            _pdUserName = pdc["UserName"];
+            _pdColorId = pdc["ColorId"];
+            _pdSprintCapacity = pdc["SprintCapacity"];
+            _pdIsParticipant = pdc["IsParticipant"];
         }
 
         public ScrumPokerUser() { }

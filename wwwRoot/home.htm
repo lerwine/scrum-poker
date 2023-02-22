@@ -1,1 +1,24 @@
-<deck-type-list></deck-type-list>
+<div class="text-bg-secondary m-2 p-3 align-items-center d-flex justify-content-between rounded">
+    <h2>Teams</h2>
+    <small>Logged in as: <span class="fw-bold">{{userName}}</span></small>
+</div>
+<ul class="list-group" ng-show="teams">
+    <li class="list-group-item" ng-for="t in teams">
+        <div class="align-items-center d-flex justify-content-between">
+            <h4>{{t.teamName}}</h4>
+            <span class="badge bg-primary rounded-pill" ng-show="t.isFacilitator">facilitator</span>
+        </div>
+        <div>Team description</div>
+        <small class="text-muted" ng-hide="t.isFacilitator"><span class="fw-bold">Facilitator:</span> {{t.facilitatorName}}</small>
+        <div>
+            <button type="button" class="btn btn-primary" ng-click="constructor.openTeam(t.teamId)">Open</button>
+            <button type="button" class="btn btn-warning" ng-show="t.isFacilitator" ng-click="constructor.deleteTeam(t.teamId)">Delete</button>
+        </div>
+    </li>
+</ul>
+<div class="alert alert-warning" role="alert" ng-hide="teams">
+    You do not belong to any teams.
+</div>
+<div class="text-end mt-2" ng-show="isAdmin">
+    <button class="btn btn-primary" type="button">New Team</button>
+</div>
