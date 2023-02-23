@@ -18,10 +18,13 @@ namespace webServices {
       facilitators: IUserResponseItem[];
     }
 
-    export interface ITeamListItem {
+    export interface ITeamItem {
       teamId: string;
       teamName: string;
       teamDescription?: string;
+    }
+
+    export interface ITeamListItem extends ITeamItem {
       isFacilitator: boolean;
       facilitatorName?: string;
     }
@@ -100,7 +103,7 @@ namespace webServices {
       plannedEndDate?: Date;
     }
 
-    export interface IScrumState {
+    export interface IScrumState extends ITeamItem {
       plannedStartDate?: Date;
       plannedEndDate?: Date;
       initiative?: ISprintGrouping;
@@ -108,7 +111,6 @@ namespace webServices {
       milestone?: ISprintGrouping;
       currentScopePoints: number;
       sprintCapacity?: number;
-      team: ITeamListItem;
       facilitator: IUserResponseItem;
       participants: IParticpantListItem[];
       colorSchemes: IColorSchemeListItem[];
@@ -177,41 +179,31 @@ namespace webServices {
                   meetingDate: new Date(value.meetingDate)
                 };
               })
-            }
+            };
           });
       }
 
-      // plannedStartDate?: Date;
-      // plannedEndDate?: Date;
-      // initiative?: ISprintGrouping;
-      // epic?: ISprintGrouping;
-      // milestone?: ISprintGrouping;
-      // currentScopePoints: number;
-      // sprintCapacity?: number;
-      // team: ITeamListItem;
-      // facilitator: IUserResponseItem;
-      // participants: IParticpantListItem[];
-      // colorSchemes: IColorSchemeListItem[];
       getScrumState(teamId: string): angular.IPromise<IScrumState> {
-        return this.$http.get<IScrumStateResponse>('api/User/TeamState/' + teamId)
+        return this.$http.get<IScrumStateResponse>('api/User/ScrumMeeting/' + teamId)
           .then(function (result: ng.IHttpResponse<IScrumStateResponse>): IScrumState {
-            var result: IScrumState = {
-              currentScopePoints: result.data.currentScopePoints
-            };
-            return {
-              teamId: result.data.teamId,
-              title: result.data.title,
-              description: result.data.description,
+            var scrumState: IScrumState = {
+              initiative: result.data.initiative,
+              epic: result.data.epic,
+              milestone: result.data.milestone,
+              currentScopePoints: result.data.currentScopePoints,
+              sprintCapacity: result.data.sprintCapacity,
+              teamId: result.data.team.teamId,
+              teamName: result.data.team.title,
+              teamDescription: result.data.team.description,
               facilitator: result.data.facilitator,
-              meetings: result.data.meetings.map<IMeetingListItem>(function(value: ITeamStateMeetingItem): IMeetingListItem {
-                return {
-                  meetingId: value.meetingId,
-                  title: value.title,
-                  description: value.description,
-                  meetingDate: new Date(value.meetingDate)
-                };
-              })
-            }
+              participants: result.data.participants,
+              colorSchemes: result.data.colorSchemes
+            };
+            if (typeof result.data.plannedStartDate === 'string')
+              scrumState.plannedStartDate = new Date(result.data.plannedStartDate);
+            if (typeof result.data.plannedEndDate === 'string')
+              scrumState.plannedEndDate = new Date(result.data.plannedEndDate);
+            return scrumState;
           });
       }
 
