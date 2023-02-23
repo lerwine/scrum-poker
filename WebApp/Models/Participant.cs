@@ -9,6 +9,10 @@ public class Participant
 
     public Guid? DrawnCardId { get; set; }
 
+    public Guid ColorSchemeId { get; set; }
+
+    // TODO: Add color scheme entity
+
     public int PointsAssigned { get; set; }
 
     public int? ScrumCapacity { get; set; }
