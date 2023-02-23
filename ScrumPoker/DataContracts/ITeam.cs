@@ -1,12 +1,12 @@
 using System;
 
-namespace ScrumPoker.DataContracts.DTO
+namespace ScrumPoker.DataContracts
 {
-    public interface ITeam : IValidatableObject
+    public interface ITeam
     {
         Guid Id { get; set; }
 
-        string Name { get; set; }
+        string Title { get; set; }
 
         string Description { get; set; }
 

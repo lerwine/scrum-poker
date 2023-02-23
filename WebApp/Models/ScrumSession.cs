@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ScrumPoker.WebApp.Models;
 
+[Obsolete("Use PlanningMeeting")]
 public class ScrumSession : IScrumSession
 {
     public Guid ID { get; set; }
@@ -30,19 +31,19 @@ public class ScrumSession : IScrumSession
 
     public Collection<TeamMember>? TeamMembers { get; set; }
 
-    public DateTime GetLastActivity()
-    {
-        SessionOrganizer? organizer = Organizer;
-        DateTime lastActivity = (organizer is null || organizer.LastActivity < LastActivity) ? LastActivity : organizer.LastActivity;
-        Collection<TeamMember>? teamMembers = TeamMembers;
-        if (teamMembers != null)
-            foreach (TeamMember member in teamMembers)
-            {
-                if (member.LastActivity > lastActivity)
-                    lastActivity = member.LastActivity;
-            }
-        return lastActivity;
-    }
+    // public DateTime GetLastActivity()
+    // {
+    //     SessionOrganizer? organizer = Organizer;
+    //     DateTime lastActivity = (organizer is null || organizer.LastActivity < LastActivity) ? LastActivity : organizer.LastActivity;
+    //     Collection<TeamMember>? teamMembers = TeamMembers;
+    //     if (teamMembers != null)
+    //         foreach (TeamMember member in teamMembers)
+    //         {
+    //             if (member.LastActivity > lastActivity)
+    //                 lastActivity = member.LastActivity;
+    //         }
+    //     return lastActivity;
+    // }
 
     internal static void OnBuildEntity(EntityTypeBuilder<ScrumSession> builder)
     {

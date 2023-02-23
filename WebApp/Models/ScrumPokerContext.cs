@@ -1,4 +1,8 @@
+using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Security.Claims;
+using System.Security.Principal;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using ScrumPoker.WebApp.Services;
 
@@ -6,52 +10,96 @@ namespace ScrumPoker.WebApp.Models;
 
 public class ScrumPokerContext : DbContext
 {
-    public ScrumPokerContext(DbContextOptions<ScrumPokerContext> options)
-        : base(options) { }
+    private readonly ILogger<ScrumPokerContext> _logger;
 
-    public DbSet<ScrumSession> Sessions { get; set; } = null!;
+    public ScrumPokerContext(DbContextOptions<ScrumPokerContext> options)
+        : base(options)
+    {
+        _logger = Program.Services.GetRequiredService<ILogger<ScrumPokerContext>>();
+    }
+
+    public DbSet<UserProfile> Profles { get; set; } = null!;
+    
+    public DbSet<Team> Teams { get; set; } = null!;
     
     public DbSet<TeamMember> TeamMembers { get; set; } = null!;
     
-    public DbSet<SessionOrganizer> Organizers { get; set; } = null!;
+    public DbSet<PlanningMeeting> Meetings { get; set; } = null!;
     
-    internal async Task<ScrumSession?> FindSessionAsync(string? token, SessionTokenService tokenService, bool includeMembers = false, bool includeOrganizer = false)
+    public DbSet<Participant> Participants { get; set; } = null!;
+    
+    public DbSet<SprintInitiative> SprintInitiatives { get; set; } = null!;
+    
+    public DbSet<SprintEpic> SprintEpics { get; set; } = null!;
+    
+    public DbSet<SprintMilestone> SprintMilestones { get; set; } = null!;
+    
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+    [SuppressMessage("Usage", "CA1816:Dispose methods should call SuppressFinalize", Justification = "Inherited class will have called SuppressFinalize if necessary.")]
+    public override void Dispose()
     {
-        if (tokenService.TryUnrotectToken(token, out string? decryptedToken))
+        _logger.LogInformation($"Disposing {nameof(ScrumPokerContext)}: {nameof(DbContextId.InstanceId)}={{{nameof(DbContextId.InstanceId)}}}, {nameof(DbContextId.Lease)}={{{nameof(DbContextId.Lease)}}}",
+            ContextId.InstanceId, ContextId.Lease);
+        base.Dispose();
+    }
+
+    private UserProfile? _userProfile;
+    public async Task<UserProfile?> GetUserProfileAsync(CancellationToken cancellationToken)
+    {
+        IIdentity? identity = ClaimsPrincipal.Current?.Identity;
+        if (identity is not null && identity.IsAuthenticated)
         {
-            if (includeMembers)
-                return includeOrganizer ? await Sessions.Include(o => o.Organizer).Include(o => o.TeamMembers).FirstOrDefaultAsync(o => o.Token == decryptedToken) :
-                    await Sessions.Include(o => o.TeamMembers).FirstOrDefaultAsync(o => o.Token == decryptedToken);
-            return includeOrganizer ? await Sessions.Include(o => o.Organizer).FirstOrDefaultAsync(o => o.Token == decryptedToken) :
-                await Sessions.FirstOrDefaultAsync(o => o.Token == decryptedToken);
+            string? userName = identity.Name.NullIfEmpty();
+            if (userName is not null)
+            {
+                userName = userName.ToLower();
+                return await Profles.FirstOrDefaultAsync(p => p.UserName == userName, cancellationToken);
+            }
         }
         return null;
     }
-    
-    internal async Task<SessionOrganizer?> FindOrganizerAsync(string? token, SessionTokenService tokenService, bool includeSessions = false)
+    public bool TryGetUserProfile([MaybeNullWhen(false)] out UserProfile result)
     {
-        if (tokenService.TryUnrotectToken(token, out string? decryptedToken))
-            return includeSessions ? await Organizers.Include(o => o.Sessions).FirstOrDefaultAsync(o => o.Token == decryptedToken) :
-                await Organizers.FirstOrDefaultAsync(o => o.Token == decryptedToken);
-        return null;
+        IIdentity? identity = ClaimsPrincipal.Current?.Identity;
+        if (identity is not null && identity.IsAuthenticated)
+        {
+            string? userName = identity.Name.NullIfEmpty();
+            if (userName is not null)
+            {
+                StringComparer comparer = StringComparer.InvariantCultureIgnoreCase;
+                if (_userProfile is not null && comparer.Equals(_userProfile.UserName, userName))
+                {
+                    result = _userProfile;
+                    return true;
+                }
+                foreach (UserProfile u in Profles)
+                    if (comparer.Equals(u.UserName, userName))
+                    {
+                        _userProfile = result = u;
+                        return true;
+                    }
+            }
+        }
+        _userProfile = result = null;
+        return false;
     }
     
-    internal async Task<TeamMember?> FindTeamMemberAsync(string? token, SessionTokenService tokenService, bool includeSession = false)
-    {
-        if (tokenService.TryUnrotectToken(token, out string? decryptedToken))
-            return includeSession ? await TeamMembers.Include(o => o.Session).FirstOrDefaultAsync(o => o.Token == decryptedToken) :
-                await TeamMembers.FirstOrDefaultAsync(o => o.Token == decryptedToken);
-        return null;
-    }
-    
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
+
     /// <summary>
     /// Configures the data model.
     /// </summary>
     /// <param name="modelBuilder"> The builder being used to construct the model for this context.</param>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<ScrumSession>(ScrumSession.OnBuildEntity)
-        .Entity<TeamMember>(TeamMember.OnBuildEntity)
-        .Entity<SessionOrganizer>(SessionOrganizer.OnBuildEntity);
+        modelBuilder
+            .Entity<UserProfile>(UserProfile.OnBuildEntity)
+            .Entity<Team>(Team.OnBuildEntity)
+            .Entity<TeamMember>(TeamMember.OnBuildEntity)
+            .Entity<PlanningMeeting>(PlanningMeeting.OnBuildEntity)
+            .Entity<Participant>(Participant.OnBuildEntity)
+            .Entity<SprintInitiative>(SprintInitiative.OnBuildEntity)
+            .Entity<SprintEpic>(SprintEpic.OnBuildEntity)
+            .Entity<SprintMilestone>(SprintMilestone.OnBuildEntity);
     }
 }

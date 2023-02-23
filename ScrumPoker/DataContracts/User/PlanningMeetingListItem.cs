@@ -9,7 +9,7 @@ namespace ScrumPoker.DataContracts.User
     /// <summary>
     /// Response contract representing a scrum meeting.
     /// </summary>
-    public class ScrumMeetingListItem
+    public class PlanningMeetingListItem
     {
         private Guid _meetingId;
         /// <summary>

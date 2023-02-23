@@ -30,180 +30,68 @@ public class UserController : ControllerBase
 
     // GET: api/User/AppState
     /// <summary>
-    /// Gets all sessions.
+    /// Gets initial application state for the current user.
     /// </summary>
-    /// <param name="token">The administrative token.</param>
     /// <returns></returns>
     [HttpGet("AppState")]
-    public async Task<ActionResult<GetAllSessionsResponseDTO>> GetAppState()
+    public async Task<ActionResult<DataContracts.User.AppState.Response>> GetAppState(CancellationToken token = default)
+    {
+        UserProfile? userProfile = await _context.GetUserProfileAsync(token);
+        if (userProfile == null)
+             return Unauthorized();
+        Guid id = userProfile.Id;
+        List<Team> teams = await _context.TeamMembers.Where(m => m.UserId == id).Include(m => m.Team).Select(m => m.Team).Include(t => t.Facilitator).ToListAsync(token);
+        Collection<DataContracts.User.TeamListItem> resultTeams = new();
+        foreach (Team t in teams)
+            resultTeams.Add(new DataContracts.User.TeamListItem
+            {
+                TeamId = t.Id,
+                Description = t.Description,
+                FacilitatorId = t.FacilitatorId,
+                Title = t.Title
+            });
+        Collection<DataContracts.User.UserListItem> facilitators = new();
+        foreach (UserProfile u in teams.Select(t => t.Facilitator).GroupBy(f => f.Id).Select(g => g.First()))
+            facilitators.Add(new DataContracts.User.UserListItem
+            {
+                UserId = u.Id,
+                DisplayName = u.DisplayName,
+                UserName = u.UserName
+            });
+        return new DataContracts.User.AppState.Response
+        {
+            UserId = userProfile.Id,
+            DisplayName = userProfile.DisplayName,
+            UserName = userProfile.UserName,
+            IsAdmin = userProfile.IsAdmin,
+            Teams = resultTeams,
+            Facilitators = facilitators
+        };
+    }
+
+    // GET: api/User/Team/{id}
+    /// <summary>
+    /// Gets initial team state for the current user.
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("AppState")]
+    public async Task<ActionResult<DataContracts.User.TeamState.Response>> GetTeamState(Guid id)
     {
         // if (!_tokenService.ValidateAdminTokenString(token))
         //     return Unauthorized();
         throw new NotImplementedException();
     }
 
-    // GET: api/ScrumSession/Item/{token}
+    // GET: api/User/ScrumMeeting/{id}
     /// <summary>
-    /// Gets a session by the token string.
+    /// Gets initial scrum meeting state for the current user.
     /// </summary>
-    /// <param name="token">The session token.</param>
     /// <returns></returns>
-    [HttpGet("Item/{token:length(352)}")]
-    public async Task<ActionResult<GetSessionResponseDTO>> GetSession(string token)
+    [HttpGet("AppState")]
+    public async Task<ActionResult<DataContracts.User.ScrumState.Response>> GetScrumState(Guid id)
     {
-        if (_tokenService.TryUnrotectToken(token, out string? decryptedToken))
-        {
-            ScrumSession? ss = await _context.Sessions.Include(s => s.TeamMembers).FirstOrDefaultAsync(s => s.Token == decryptedToken);
-            if (ss is not null)
-            {
-                Collection<TeamMemberSessionItemDTO> teamMembers = new();
-                if (ss.TeamMembers is not null)
-                    foreach (TeamMember tm in ss.TeamMembers)
-                        teamMembers.Add(new()
-                        {
-                            ID = tm.ID,
-                            Name = tm.Name,
-                            EmailAddress = tm.EmailAddress,
-                            Token = _tokenService.ToProtectedToken(tm.Token),
-                            DrawnCardID = tm.DrawnCardID,
-                            LastActivity = tm.LastActivity
-                        });
-                DeckType deckType = _deckService.DeckTypes.FirstOrDefault(d => d.ID == ss.DeckTypeID) ?? _deckService.DeckTypes.First();
-                Collection<CardDefinitionDTO> cards = new();
-                if (deckType.Cards is not null)
-                    foreach (CardDefinition cd in deckType.Cards)
-                        cards.Add(new()
-                        {
-                            ID = cd.ID,
-                            Value = cd.Value,
-                            Symbol = cd.Symbol,
-                            Type = cd.Type,
-                            BaseName = cd.BaseName
-                        });
-                Collection<SheetDefinitionDTO> sheets = new();
-                if (deckType.Sheets is not null)
-                    foreach (SheetDefinition sd in deckType.Sheets)
-                        sheets.Add(new()
-                        {
-                            ID = sd.ID,
-                            URL = sd.URL,
-                            MaxValue = sd.MaxValue
-                        });
-                return new GetSessionResponseDTO
-                {
-                    ID = ss.ID,
-                    Title = ss.Title,
-                    Stage = ss.Stage,
-                    Instructions = ss.Instructions,
-                    DeckTypeID = ss.DeckTypeID,
-                    DeckType = new()
-                    {
-                        ID = deckType.ID,
-                        Name = deckType.Name,
-                        Description = deckType.Description,
-                        Preview = (deckType.Preview is null) ? null : new()
-                        {
-                            URL = deckType.Preview.URL,
-                            Height = deckType.Preview.Height,
-                            Width = deckType.Preview.Width
-                        },
-                        Cards = cards,
-                        Sheets = sheets
-                    },
-                    NoHalfPoint = ss.NoHalfPoint,
-                    NoZeroPoint = ss.NoZeroPoint,
-                    LastActivity = ss.LastActivity,
-                    TeamMembers = teamMembers
-                };
-            }
-        }
-        return NotFound();
-    }
-
-    // POST: api/ScrumSession/New/{token}
-    /// <summary>
-    /// Creates a new session.
-    /// </summary>
-    /// <param name="token">The organizer's token.</param>
-    /// <param name="session">Session creation parameters.</param>
-    /// <returns></returns>
-    [HttpPost("New/{token:length(352)}")]
-    public async Task<ActionResult<NewScrumSessionResponseDTO>> NewScrumSession(string token, object NewScrumSessionRequestDTO)
-    {
-        if (!_tokenService.TryUnrotectToken(token, out string? decryptedToken))
-            return Unauthorized();
-        SessionOrganizer? so = await _context.Organizers.FirstOrDefaultAsync(s => s.Token == decryptedToken);
-        if (so is null)
-            return Unauthorized();
-        throw new NotImplementedException();
-    }
-
-    // PUT: api/ScrumSession/SetInstruction/{token}
-    /// <summary>
-    /// Changes to the <see href="SessionStage.Instruction" /> stage and sets the instruction text.
-    /// </summary>
-    /// <param name="token">The session token.</param>
-    /// <param name="instructions">Instruction text.</param>
-    /// <returns></returns>
-    [HttpPut("SetInstructions/{token:length(352)}")]
-    public async Task<ActionResult<SetInstructionsResponseDTO>> SetInstructions(string token, string instructions)
-    {
-        if (!_tokenService.TryUnrotectToken(token, out string? decryptedToken))
-            return Unauthorized();
-        ScrumSession? ss = await _context.Sessions.Include(s => s.TeamMembers).Include(s => s.Organizer).FirstOrDefaultAsync(s => s.Token == decryptedToken);
-        if (ss is null)
-            return NotFound();
-        throw new NotImplementedException();
-    }
-
-    // PUT: api/ScrumSession/ShowCards
-    /// <summary>
-    /// Changes to the <see href="SessionStage.Show" /> stage.
-    /// </summary>
-    /// <param name="token">The session token.</param>
-    /// <returns></returns>
-    [HttpPut("ShowCards")]
-    public async Task<ActionResult<ShowCardsResponseDTO>> ShowCards(string token)
-    {
-        if (!_tokenService.TryUnrotectToken(token, out string? decryptedToken))
-            return Unauthorized();
-        ScrumSession? ss = await _context.Sessions.Include(s => s.TeamMembers).Include(s => s.Organizer).FirstOrDefaultAsync(s => s.Token == decryptedToken);
-        if (ss is null)
-            return NotFound();
-        throw new NotImplementedException();
-    }
-
-    // POST: api/ScrumSession/Status
-    /// <summary>
-    /// Gets updated session information.
-    /// </summary>
-    /// <param name="statusRequest">Status request parameters.</param>
-    /// <returns></returns>
-    [HttpPost("Status")]
-    public async Task<ActionResult<GetSessionUpdatesResponseDTO>> GetSessionUpdates(GetSessionUpdatesRequestDTO statusRequest)
-    {
-        if (!_tokenService.TryUnrotectToken(statusRequest.Token, out string? decryptedToken))
-            return Unauthorized();
-        ScrumSession? ss = await _context.Sessions.Include(s => s.TeamMembers).Include(s => s.Organizer).FirstOrDefaultAsync(s => s.Token == decryptedToken);
-        if (ss is null)
-            return NotFound();
-        throw new NotImplementedException();
-    }
-
-    // DELETE: api/ScrumSession/{token}
-    /// <summary>
-    /// Deletes a session.
-    /// </summary>
-    /// <param name="token">The session token.</param>
-    /// <returns></returns>
-    [HttpDelete("{token:length(352)}")]
-    public async Task<IActionResult> DeleteSession(string token)
-    {
-        if (!_tokenService.TryUnrotectToken(token, out string? decryptedToken))
-            return Unauthorized();
-        ScrumSession? ss = await _context.Sessions.Include(s => s.TeamMembers).FirstOrDefaultAsync(s => s.Token == decryptedToken);
-        if (ss is null)
-            return NotFound();
+        // if (!_tokenService.ValidateAdminTokenString(token))
+        //     return Unauthorized();
         throw new NotImplementedException();
     }
 }

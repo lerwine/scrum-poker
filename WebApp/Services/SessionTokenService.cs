@@ -8,6 +8,7 @@ using ScrumPoker.WebApp.Models;
 
 namespace ScrumPoker.WebApp.Services;
 
+[Obsolete("Use HttpContext.User")]
 public class SessionTokenService
 {
     public const int TOKEN_BYTE_LENGTH = 32;

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace ScrumPoker.DataContracts.User.TeamState
 {
     /// <summary>
-    /// Response data contract for GET: /api/User/TeamState/{teamId}
+    /// Response data contract for GET: /api/User/Team/{teamId}
     /// </summary>
     public class Response
     {
@@ -64,15 +64,15 @@ namespace ScrumPoker.DataContracts.User.TeamState
             set { _description = value.TrimmedOrNullIfEmpty(); }
         }
         
-        private Collection<ScrumMeetingListItem> _meetings = new Collection<ScrumMeetingListItem>();
+        private Collection<PlanningMeetingListItem> _meetings = new Collection<PlanningMeetingListItem>();
         [DataMember(Name = "meetings", IsRequired = true)]
         /// <summary>
         /// Gets the teams that the current user belongs to.
         /// </summary>
-        public Collection<ScrumMeetingListItem> Meetings
+        public Collection<PlanningMeetingListItem> Meetings
         {
             get { return _meetings; }
-            set { _meetings = value ?? new Collection<ScrumMeetingListItem>(); }
+            set { _meetings = value ?? new Collection<PlanningMeetingListItem>(); }
         }
     }
 }

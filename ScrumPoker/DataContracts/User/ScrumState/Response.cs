@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 namespace ScrumPoker.DataContracts.User.ScrumState
 {
     /// <summary>
-    /// Response data contract for GET: /api/User/ScrumState/{meetingId}
+    /// Response data contract for GET: /api/User/ScrumMeeting/{meetingId}
     /// </summary>
-    public class Response : ScrumMeetingListItem
+    public class Response : PlanningMeetingListItem
     {
         private DateTime? _plannedStartDate;
         public DateTime? PlannedStartDate

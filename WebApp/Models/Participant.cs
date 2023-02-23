@@ -1,25 +1,36 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
 namespace ScrumPoker.WebApp.Models;
 
-public interface IParticipant
+public class Participant
 {
-    Guid ID { get; set; }
+    public Guid Id { get; set; }
 
-    string Name { get; set; }
+    public Guid? DrawnCardId { get; set; }
 
-    string EmailAddress { get; set; }
+    public int PointsAssigned { get; set; }
 
-    DateTime LastActivity { get; set; }
-}
-
-public class Participant : IParticipant
-{
-    public Guid ID { get; set; }
-
-    public string Name { get; set; } = "";
-
-    public string EmailAddress { get; set; } = "";
-
-    public string Token { get; set; } = "";
+    public int? ScrumCapacity { get; set; }
 
     public DateTime LastActivity { get; set; }
+    
+    public Guid MeetingId { get; set; }
+
+#pragma warning disable CS8618
+    public PlanningMeeting Meeting { get; set; }
+#pragma warning restore CS8618
+
+    public Guid UserId { get; set; }
+
+#pragma warning disable CS8618
+    public UserProfile User { get; set; }
+#pragma warning restore CS8618
+    
+    internal static void OnBuildEntity(EntityTypeBuilder<Participant> builder)
+    {
+        _ = builder.HasOne(p => p.Meeting).WithMany(d => d.Participants).HasForeignKey(nameof(MeetingId)).IsRequired().OnDelete(DeleteBehavior.Restrict);
+        _ = builder.HasOne(p => p.User).WithMany(d => d.Participation).HasForeignKey(nameof(UserId)).IsRequired().OnDelete(DeleteBehavior.Restrict);
+        _ = builder.HasKey(nameof(MeetingId), nameof(UserId));
+    }
 }

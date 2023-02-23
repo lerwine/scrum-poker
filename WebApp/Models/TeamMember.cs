@@ -3,25 +3,24 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ScrumPoker.WebApp.Models;
 
-public interface ITeamMember : IParticipant
+public class TeamMember
 {
-    int? DrawnCardID { get; set; }
-}
+    public Guid TeamId { get; set; }
 
-public class TeamMember : Participant
-{
-    public int? DrawnCardID { get; set; }
+#pragma warning disable CS8618
+    public Team Team { get; set; }
+#pragma warning restore CS8618
 
-    public string? Explanation { get; set; }
+    public Guid UserId { get; set; }
 
-    public Guid SessionID { get; set; }
-
-    public ScrumSession? Session { get; set; }
+#pragma warning disable CS8618
+    public UserProfile User { get; set; }
+#pragma warning restore CS8618
     
     internal static void OnBuildEntity(EntityTypeBuilder<TeamMember> builder)
     {
-        _ = builder.HasOne(p => p.Session).WithMany(d => d.TeamMembers).HasForeignKey(nameof(SessionID)).IsRequired().OnDelete(DeleteBehavior.Restrict);
-        _ = builder.HasKey(nameof(ID));
-        _ = builder.HasIndex(nameof(Token));
+        _ = builder.HasOne(p => p.Team).WithMany(d => d.Members).HasForeignKey(nameof(TeamId)).IsRequired().OnDelete(DeleteBehavior.Restrict);
+        _ = builder.HasOne(p => p.User).WithMany(d => d.Memberships).HasForeignKey(nameof(UserId)).IsRequired().OnDelete(DeleteBehavior.Restrict);
+        _ = builder.HasKey(nameof(TeamId), nameof(UserId));
     }
 }

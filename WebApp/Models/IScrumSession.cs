@@ -1,5 +1,6 @@
 namespace ScrumPoker.WebApp.Models;
 
+[Obsolete("Use PlanningMeeting")]
 public interface IScrumSession
 {
     Guid ID { get; set; }
