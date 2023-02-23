@@ -18,14 +18,12 @@ public class UserController : ControllerBase
     private readonly ScrumPokerContext _context;
     private readonly DeckService _deckService;
     private readonly ILogger<UserController> _logger;
-    private readonly SessionTokenService _tokenService;
 
-    public UserController(ScrumPokerContext context, DeckService deckService, ILogger<UserController> logger, SessionTokenService tokenService)
+    public UserController(ScrumPokerContext context, DeckService deckService, ILogger<UserController> logger)
     {
         _context = context;
         _deckService = deckService;
         _logger = logger;
-        _tokenService = tokenService;
     }
 
     // GET: api/User/AppState
