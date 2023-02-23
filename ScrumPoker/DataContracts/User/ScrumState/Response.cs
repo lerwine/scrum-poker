@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace ScrumPoker.DataContracts.User.ScrumState
 {
+    [DataContract]
     /// <summary>
     /// Response data contract for GET: /api/User/ScrumMeeting/{meetingId}
     /// </summary>
@@ -118,8 +119,17 @@ namespace ScrumPoker.DataContracts.User.ScrumState
             set { _participants = value ?? new Collection<ParticipantListItem>(); }
         }
 
-        // TODO: Add Deck Information
+        private Collection<ColorSchemeListItem> _colorSchemes = new Collection<ColorSchemeListItem>();
+        [DataMember(Name = "colorSchemes", IsRequired = true)]
+        /// <summary>
+        /// Gets the teams that the current user belongs to.
+        /// </summary>
+        public Collection<ColorSchemeListItem> ColorSchemes
+        {
+            get { return _colorSchemes; }
+            set { _colorSchemes = value ?? new Collection<ColorSchemeListItem>(); }
+        }
 
-        // TODO: Add Card Color List
+        // TODO: Add Deck Information
     }
 }

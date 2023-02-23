@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 
 namespace ScrumPoker.DataContracts.User
 {
+    [DataContract]
     /// <summary>
     /// Response contract representing a team.
     /// </summary>

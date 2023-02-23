@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ScrumPoker.DataContracts.User
 {
+    [DataContract]
     public class ParticipantListItem : UserListItem
     {
         private Guid? _selectedCardId;
@@ -22,6 +23,15 @@ namespace ScrumPoker.DataContracts.User
             set { _selectedCardId = value.JsonStringToGuidNotEmpty().NullIfEmpty(); }
         }
         
+        public Guid ColorSchemeId { get; set; }
+
+        [DataMember(Name = "colorSchemeId", IsRequired = true)]
+        private string __ColorSchemeId
+        {
+            get { return ColorSchemeId.ToJsonString(); }
+            set { ColorSchemeId = value.JsonStringToGuid() ?? Guid.Empty; }
+        }
+        
         private int _assignedPoints = 0;
 
         [DataMember(Name = "assignedPoints", IsRequired = true)]
@@ -29,6 +39,14 @@ namespace ScrumPoker.DataContracts.User
         {
             get { return _assignedPoints; } 
             set { _assignedPoints = (value < 0) ? 0 : value; }
+        }
+
+        private int? _sprintCapacity;
+        [DataMember(Name = "sprintCapacity", EmitDefaultValue = false)]
+        public int? SprintCapacity
+        {
+            get { return _sprintCapacity; }
+            set { _sprintCapacity = (value.HasValue && value.Value < 1) ? null : value; }
         }
 
         // TODO: Add Card Color ID

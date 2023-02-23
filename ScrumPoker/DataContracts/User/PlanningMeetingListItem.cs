@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ScrumPoker.DataContracts.User
 {
+    [DataContract]
     /// <summary>
     /// Response contract representing a scrum meeting.
     /// </summary>

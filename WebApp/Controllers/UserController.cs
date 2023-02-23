@@ -72,7 +72,7 @@ public class UserController : ControllerBase
     /// Gets initial team state for the current user.
     /// </summary>
     /// <returns></returns>
-    [HttpGet("AppState")]
+    [HttpGet("TeamState/{id}")]
     public async Task<ActionResult<DataContracts.User.TeamState.Response>> GetTeamState(Guid id)
     {
         // if (!_tokenService.ValidateAdminTokenString(token))
@@ -85,7 +85,7 @@ public class UserController : ControllerBase
     /// Gets initial scrum meeting state for the current user.
     /// </summary>
     /// <returns></returns>
-    [HttpGet("AppState")]
+    [HttpGet("ScrumMeeting/{id}")]
     public async Task<ActionResult<DataContracts.User.ScrumState.Response>> GetScrumState(Guid id)
     {
         // if (!_tokenService.ValidateAdminTokenString(token))

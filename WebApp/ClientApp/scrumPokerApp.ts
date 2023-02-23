@@ -1,12 +1,8 @@
-
 (function (angular: ng.IAngularStatic) {
     var app: ng.IModule = angular.module("scrumPokerApp", ["ngRoute"]);
-    var s = "{\"title\":\"My Sprint Session\",\"adminUser\":{\"assignedPoints\":0,\"displayName\":\"Admin\",\"userName\":\"admin\"}," +
-        "\"currentScopePoints\":0,\"deckId\":1,\"members\":[{\"assignedPoints\":0,\"displayName\":\"Paul\",\"userName\":\"pmc\"}," +
-        "{\"assignedPoints\":0,\"displayName\":\"John\",\"userName\":\"walrus\"}],\"projects\":[],\"stories\":[{\"identifier\":\"SPNT0010002\"," +
-        "\"title\":\"Procurement Form\",\"_points\":null,\"created\":\"\\/Date(1676583255847-0500)\\/\",\"order\":0,\"preRequisiteIds\":[],\"state\":0}," +
-        "{\"identifier\":\"SPNT0010002\",\"title\":\"Procurement Form\",\"_points\":null,\"created\":\"\\/Date(1676583255857-0500)\\/\"," +
-        "\"order\":0,\"preRequisiteIds\":[0],\"state\":0}],\"themes\":[]}";
+    
+    app.service("userAppStateService", webServices.UserService);
+
     app.service("DeckTypesService", deckDefinitions.DeckTypesService);
     // app.service("DeckTypesService", function ($http: ng.IHttpService): deckTypesService.IDeckTypesServiceResult {
     //     var deckDefinitions: dataEntities.IDeckDefinitions = {
@@ -25,6 +21,15 @@
     //     });
     //     return new DeckTypesService(deckDefinitions, promise);
     // });
+
+    class HomeController {
+        constructor($scope: IHomeControllerScope, userAppStateService: webServices.UserService) {
+            $scope.userName = userAppStateService.userName;
+            $scope.displayName = userAppStateService.displayName;
+            $scope.isAdmin = userAppStateService.isAdmin;
+            $scope.teams = userAppStateService.getTeams();
+        }
+    }
 
     class DeckTypeController {
         constructor($scope: IDeckTypeControllerScope, deckTypesService: deckDefinitions.DeckTypesService) {
@@ -129,10 +134,12 @@
                     controllerAs: "controller"
                 })
                 .when('/home', {
-                    templateUrl: "home.htm"/*, controller: "MainController"*/,
+                    templateUrl: "home.htm",
+                    controller: HomeController,
+                    controllerAs: "controller",
                     resolve: {
-                        'deckTypesService': function (deckTypesService: deckDefinitions.DeckTypesService) {
-                            return deckTypesService.promise;
+                        'userAppStateService': function (userAppStateService: webServices.UserService) {
+                            return userAppStateService.promise;
                         }
                     }
                 })

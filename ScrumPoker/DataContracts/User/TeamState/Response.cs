@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace ScrumPoker.DataContracts.User.TeamState
 {
+    [DataContract]
     /// <summary>
     /// Response data contract for GET: /api/User/Team/{teamId}
     /// </summary>

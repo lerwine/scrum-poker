@@ -18,6 +18,20 @@ declare interface ISize {
     height: number;
 }
 
+declare interface IHomeTeamListItem {
+    teamId: string;
+    teamName: string;
+    teamDescription?: string;
+    isFacilitator: boolean;
+    facilitatorName?: string;
+}
+declare interface IHomeControllerScope extends ng.IScope {
+    displayName?: string;
+    userName: string;
+    isAdmin: boolean;
+    teams: webServices.ITeamListItem[];
+}
+
 declare interface IDeckTypeControllerScope extends ng.IScope {
     deckTypes: deckDefinitions.IDeckTypeListItem[];
 }

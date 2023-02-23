@@ -1,6 +1,11 @@
 <div class="text-bg-secondary m-2 p-3 align-items-center d-flex justify-content-between rounded">
     <h2>Teams</h2>
-    <small>Logged in as: <span class="fw-bold">{{userName}}</span></small>
+    <small>Logged in as:
+        <span ng-switch="typeof displayName">
+            <span ng-switch-when="string"><span class="fw-bold" ng-switch-default>{{displayName}}</span> ({{userName}})</span>
+            <span class="fw-bold" ng-switch-default>{{userName}}</span>
+        </span>
+    </small>
 </div>
 <ul class="list-group" ng-show="teams">
     <li class="list-group-item" ng-for="t in teams">
@@ -8,11 +13,11 @@
             <h4>{{t.teamName}}</h4>
             <span class="badge bg-primary rounded-pill" ng-show="t.isFacilitator">facilitator</span>
         </div>
-        <div>Team description</div>
+        <div ng-show="teamDescription">{{teamDescription}}</div>
         <small class="text-muted" ng-hide="t.isFacilitator"><span class="fw-bold">Facilitator:</span> {{t.facilitatorName}}</small>
         <div>
-            <button type="button" class="btn btn-primary" ng-click="constructor.openTeam(t.teamId)">Open</button>
-            <button type="button" class="btn btn-warning" ng-show="t.isFacilitator" ng-click="constructor.deleteTeam(t.teamId)">Delete</button>
+            <button type="button" class="btn btn-primary" ng-click="controller.openTeam(t.teamId)">Open</button>
+            <button type="button" class="btn btn-warning" ng-show="t.isFacilitator" ng-click="controller.deleteTeam(t.teamId)">Delete</button>
         </div>
     </li>
 </ul>
@@ -20,5 +25,5 @@
     You do not belong to any teams.
 </div>
 <div class="text-end mt-2" ng-show="isAdmin">
-    <button class="btn btn-primary" type="button">New Team</button>
+    <button class="btn btn-primary" type="button" ng-click="controller.newTeam()">New Team</button>
 </div>

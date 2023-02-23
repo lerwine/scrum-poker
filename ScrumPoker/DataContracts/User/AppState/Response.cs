@@ -4,6 +4,7 @@ using System.Runtime.Serialization;
 
 namespace ScrumPoker.DataContracts.User.AppState
 {
+    [DataContract]
     /// <summary>
     /// Response data contract for GET: /api/User/AppState
     /// </summary>
