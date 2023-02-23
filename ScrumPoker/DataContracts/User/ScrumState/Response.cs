@@ -107,12 +107,9 @@ namespace ScrumPoker.DataContracts.User.ScrumState
                 _facilitator = value;
             }
         }
-        
+
         private Collection<ParticipantListItem> _participants = new Collection<ParticipantListItem>();
         [DataMember(Name = "participants", IsRequired = true)]
-        /// <summary>
-        /// Gets the teams that the current user belongs to.
-        /// </summary>
         public Collection<ParticipantListItem> Participants
         {
             get { return _participants; }
@@ -121,9 +118,6 @@ namespace ScrumPoker.DataContracts.User.ScrumState
 
         private Collection<ColorSchemeListItem> _colorSchemes = new Collection<ColorSchemeListItem>();
         [DataMember(Name = "colorSchemes", IsRequired = true)]
-        /// <summary>
-        /// Gets the teams that the current user belongs to.
-        /// </summary>
         public Collection<ColorSchemeListItem> ColorSchemes
         {
             get { return _colorSchemes; }
