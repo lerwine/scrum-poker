@@ -1,12 +1,14 @@
 declare namespace dataEntities {
     /**
      * Defines card types.
+     * @todo Convert to schema at wwwRoot\assets\card-configuration.schema.json
      * JSON Schema: deck-definitions.schema.json#/$defs/cardType
      */
     export type CardType = "Ambiguous" | "Points" | "Unattainable" | "Abstain";
 
     /**
      * Defines the preview image for the current deck type.
+     * @todo Convert to schema at wwwRoot\assets\card-configuration.schema.json
      * JSON Schema: deck-definitions.schema.json#/$defs/deckPreviewImage
      */
     export interface IDeckPreviewImage extends ISize {
@@ -18,6 +20,7 @@ declare namespace dataEntities {
     
     /**
      * Card description information.
+     * @todo Convert to schema at wwwRoot\assets\card-configuration.schema.json
      * JSON Schema: deck-definitions.schema.json#/$defs/cardDescription
      */
     export interface ICardDescription {
@@ -43,6 +46,7 @@ declare namespace dataEntities {
     }
 
     /**
+     * @todo Convert to schema at wwwRoot\assets\card-configuration.schema.json
      * JSON Schema: deck-definitions.schema.json#/$defs/textAndFont
      */
     export interface ITextAndFont {
@@ -51,6 +55,7 @@ declare namespace dataEntities {
     }
 
     /**
+     * @todo Convert to schema at wwwRoot\assets\card-configuration.schema.json
      * JSON Schema: deck-definitions.schema.json#/$defs/textAndTruncated
      */
     export interface ITextAndTruncated {
@@ -85,12 +90,14 @@ declare namespace dataEntities {
 
         /**
          * @TODO: Make this obsolete
+         * @todo: This is no longer used
          */
-        baseName: string;
+        baseName?: string;
     }
 
     /**
      * Cards whose symbol can be represented with text.
+     * @todo Convert to schema at wwwRoot\assets\card-configuration.schema.json
      * JSON Schema: deck-definitions.schema.json#/$defs/simpleCardEntity
      */
     export interface ISimpleCardEntity extends ICardEntity {
@@ -117,6 +124,7 @@ declare namespace dataEntities {
 
     /**
      * Cards whose symbol is rendered with a path.
+     * @todo Convert to schema at wwwRoot\assets\card-configuration.schema.json
      * JSON Schema: deck-definitions.schema.json#/$defs/pathCardEntity
      */
     export interface IPathCardEntity extends ICardEntity {
@@ -138,6 +146,7 @@ declare namespace dataEntities {
 
     /**
      * Defines a printable sheet of Scrum Poker cards for the current deck type.
+     * @todo Convert to schema at wwwRoot\assets\card-configuration.schema.json
      * JSON Schema: deck-definitions.schema.json#/$defs/printableSheetEntity
      */
     export interface IPrintableSheetEntity {
@@ -154,6 +163,7 @@ declare namespace dataEntities {
     
     /**
      * Represents a deck of Scrum Poker cards.
+     * @todo Convert to schema at wwwRoot\assets\card-configuration.schema.json
      * JSON Schema: deck-definitions.schema.json#/$defs/deckTypeEntity
      */
     export interface IDeckTypeEntity extends INameAndDescription {
@@ -163,9 +173,9 @@ declare namespace dataEntities {
         previewImage: IDeckPreviewImage;
 
         /**
-         * Defines the individual cards that make up the deck.
+         * Symbols for the individual cards that make up the deck.
          */
-        cards: (ISimpleCardEntity | IPathCardEntity)[];
+        cards: string[];
 
         /**
          * Defines the printable sheets of cards for the current deck type.
@@ -175,14 +185,14 @@ declare namespace dataEntities {
 
     /**
      * Defines a deck color scheme.
-     * JSON Schema: deck-definitions.schema.json#/$defs/deckColorEntity
+     * JSON Schema: card-configuration.schema.json#/$defs/cardColorEntity
      */
     export interface IDeckColor {
         /**
-         * The display name for the color scheme.
+         * The identifier for the color scheme.
          */
         name: string;
-        
+
         /**
          * The fill color.
          */
@@ -198,6 +208,30 @@ declare namespace dataEntities {
          */
         text: string;
     }
+
+    export interface IColorSchema {
+        /**
+         * The identifier for the color scheme.
+         */
+        name: string;
+        
+        /**
+         * The fill color for the "voting" card.
+         */
+        votingFill: string;
+        
+        /**
+         * The stroke color for the "voting" card.
+         */
+        votingStroke: string;
+        
+        /**
+         * The text color for the "voting" card.
+         */
+        votingText: string;
+
+        cardColors: IDeckColor[];
+    }
     
     /**
      * Defines the Scum Poker deck and card types that are available.
@@ -206,7 +240,7 @@ declare namespace dataEntities {
     export interface IDeckDefinitions {
         /**
          * Color scheme for "voting" pseudo-card.
-         * JSON Schema: deck-definitions.schema.json#/$defs/votingCardEntity
+         * @todo Obsolete: Use colorSchemas
          */
         votingCard: {
             fill: string;
@@ -215,7 +249,14 @@ declare namespace dataEntities {
         };
 
         /**
+         * Color schemes for cards.
+         * JSON Schema: deck-definitions.schema.json#/$defs/colorSchemaEntity
+         */
+        colorSchemas: IColorSchema[];
+
+        /**
          * Defines card colors schemes.
+         * @todo Obsolete: Use colorSchemas
          */
         deckColors: IDeckColor[];
 
@@ -223,5 +264,10 @@ declare namespace dataEntities {
          * Defines card deck types.
          */
         deckTypes: IDeckTypeEntity[];
+
+        /**
+         * Defines the individual cards that can be used in decks.
+         */
+        cards: (ISimpleCardEntity | IPathCardEntity)[];
     }
 }

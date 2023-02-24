@@ -1,10 +1,5 @@
 {
     "$schema": "card-configuration.schema.json",
-    "votingCard": {
-        "fill": "#e0e0e0",
-        "stroke": "#c0c0c0",
-        "text": "#808080"
-    },
     "cards": [
         {
             "symbol": "?",
@@ -111,12 +106,12 @@
             "value": 55,
             "symbol": "55",
             "type": "Points",
-            "title": " Story Points"
+            "title": "55 Story Points"
         }, {
             "value": 89,
             "symbol": "89",
             "type": "Points",
-            "title": " Story Points"
+            "title": "89 Story Points"
         }, {
             "value": 100,
             "symbol": "100",
@@ -164,31 +159,41 @@
             }
         }
     ],
-    "deckColors": [
+    "colorSchemas": [
         {
-            "name": "Blue",
-            "fill": "#dae8fc",
-            "stroke": "#6c8ebf",
-            "text": "rgb(0, 0, 0)"
-        },
-        {
-            "name": "Green",
-            "fill": "#d5e8d4",
-            "stroke": "#82b366",
-            "text": "rgb(0, 0, 0)"
-        },
-        {
-            "name": "Red",
-            "fill": "#f8cecc",
-            "stroke": "#b85450",
-            "text": "rgb(0, 0, 0)"
-        },
-        {
-            "name": "Yellow",
-            "fill": "#fff2cc",
-            "stroke": "#d6b656",
-            "text": "rgb(0, 0, 0)"
+            "name": "Default4",
+            "votingFill": "#e0e0e0",
+            "votingStroke": "#c0c0c0",
+            "votingText": "#808080",
+            "cardColors": [
+                {
+                    "name": "Blue",
+                    "fill": "#dae8fc",
+                    "stroke": "#6c8ebf",
+                    "text": "rgb(0, 0, 0)"
+                },
+                {
+                    "name": "Green",
+                    "fill": "#d5e8d4",
+                    "stroke": "#82b366",
+                    "text": "rgb(0, 0, 0)"
+                },
+                {
+                    "name": "Red",
+                    "fill": "#f8cecc",
+                    "stroke": "#b85450",
+                    "text": "rgb(0, 0, 0)"
+                },
+                {
+                    "name": "Yellow",
+                    "fill": "#fff2cc",
+                    "stroke": "#d6b656",
+                    "text": "rgb(0, 0, 0)"
+                }
+            ]
         }
+    ],
+    "deckColors": [
     ],
     "deckTypes": [
         {

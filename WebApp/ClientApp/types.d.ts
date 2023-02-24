@@ -45,7 +45,7 @@ declare interface IDeckCardControllerScope extends ng.IScope {
 
 declare interface INewSessionRouteParams extends ng.route.IRouteParamsService {
     deckId: string;
-    colorId: string;
+    schemaId: string;
 }
 
 declare interface INewSessionControllerScope extends ng.IScope {

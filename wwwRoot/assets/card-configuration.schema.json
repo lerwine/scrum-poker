@@ -1,20 +1,16 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://raw.githubusercontent.com/lerwine/scrum-poker/main/src/deck-definitions.schema.json",
+  "$id": "https://raw.githubusercontent.com/lerwine/scrum-poker/main/wwwRoot/assets/card-configuration.schema.json",
   "title": "Scrum Poker Deck Types",
   "description": "Defines the Scum Poker deck and card types that are available.",
   "type": "object",
   "properties": {
-    "votingCard": {
-      "$ref": "#/$defs/votingCardEntity",
-      "description": "Defines the color scheme for the voting card"
-    },
-    "deckColors": {
+    "colorSchemas": {
       "type": "array",
-      "description": "Defines card colors. For each color of each card base name, there should be an SVG file in the assets folder with the file name baseName + '-' + color + '.svg'",
+      "description": "Defines card colors.",
       "uniqueItems": true,
-      "items": { "$ref": "#/$defs/deckColorEntity" },
-      "minContains": 4
+      "items": { "$ref": "#/$defs/colorSchemaEntity" },
+      "minContains": 1
     },
     "cards": {
       "type": "array",
@@ -35,7 +31,7 @@
       "minContains": 2
     }
   },
-  "required": [ "votingCard", "deckColors", "deckTypes", "cards" ],
+  "required": [ "colorSchemas", "deckTypes", "cards" ],
   "$defs": {
     "rgbColor": {
       "type": "string",
@@ -60,10 +56,19 @@
         }
       ]
     },
-    "baseFileName": {
+    "identifierName": {
       "type": "string",
-      "pattern": "^\\w[-\\w]*( +[-\\w]+)*$",
+      "pattern": "^[A-Z][A-Za-z\\d]+$",
       "minLength": 1
+    },
+    "pathDataString": {
+      "type": "string",
+      "pattern": "^M( \\S+)+ Z$",
+      "minLength": 4
+    },
+    "spaceNormalizedText": {
+      "type": "string",
+      "pattern": "^\\S+( \\S+)*$"
     },
     "svgFileName": {
       "type": "string",
@@ -78,60 +83,44 @@
       "type": "string",
       "pattern": "^(\\?|½|∞|!|0|[1-9]\\d*)$"
     },
-    "votingCardEntity": {
-      "type": "object",
-      "properties": {
-        "fill": {
-          "$ref": "#/$defs/htmlColor",
-          "description": "The fill color."
-        },
-        "stroke": {
-          "$ref": "#/$defs/htmlColor",
-          "description": "The stroke color."
-        },
-        "text": {
-          "$ref": "#/$defs/htmlColor",
-          "description": "The text color."
-        }
-      },
-      "required": [ "fill", "stroke", "text" ]
-    },
-    "textAndFont": {
-      "type": "object",
-      "properties": {
-        "text": {
-          "type": "string",
-          "minLength": 1
-        },
-        "font": {
-          "type": "string",
-          "minLength": 1
-        }
-      },
-      "required": [ "text", "font" ]
-    },
-    "textAndTruncated": {
-      "type": "object",
-      "properties": {
-        "text": {
-          "type": "string",
-          "minLength": 1
-        },
-        "truncated": {
-          "type": "string",
-          "minLength": 1
-        }
-      },
-      "required": [ "text", "truncated" ]
-    },
-    "deckColorEntity": {
+    "colorSchemaEntity": {
       "type": "object",
       "description": "Defines a deck color scheme",
       "properties": {
         "name": {
-          "type": "string",
+          "$ref": "#/$defs/spaceNormalizedText",
           "description": "The display name for the color scheme",
-          "pattern": "^[A-Z][A-Za-z\\d]+$",
+          "minLength": 1
+        },
+        "votingFill": {
+          "$ref": "#/$defs/htmlColor",
+          "description": "The fill color for the \"voting\" card."
+        },
+        "votingStroke": {
+          "$ref": "#/$defs/htmlColor",
+          "description": "The stroke color for the \"voting\" card."
+        },
+        "votingText": {
+          "$ref": "#/$defs/htmlColor",
+          "description": "The stroke color for the \"voting\" card."
+        },
+        "cardColors": {
+          "type": "array",
+          "description": "Defines card colors.",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/cardColorEntity" },
+          "minContains": 2
+        }
+      },
+      "required": [ "name", "votingFill", "votingStroke", "votingText", "cardColors" ]
+    },
+    "cardColorEntity": {
+      "type": "object",
+      "description": "Defines a deck color scheme",
+      "properties": {
+        "name": {
+          "$ref": "#/$defs/spaceNormalizedText",
+          "description": "The display name for the color",
           "minLength": 1
         },
         "fill": {
@@ -153,15 +142,15 @@
       "type": "object",
       "properties": {
         "text": {
-          "type": "string",
+          "$ref": "#/$defs/spaceNormalizedText",
           "minLength": 1
         },
         "truncatedText": {
-          "type": "string",
+          "$ref": "#/$defs/spaceNormalizedText",
           "minLength": 1
         },
         "briefDetails": {
-          "type": "string",
+          "$ref": "#/$defs/spaceNormalizedText",
           "minLength": 1
         },
         "fullDetails": {
@@ -176,8 +165,8 @@
       "description": "Defines a card within a Scrum Poker deck.",
       "properties": {
         "title": {
+          "$ref": "#/$defs/spaceNormalizedText",
           "description": "The title of the card.",
-          "type": "string",
           "minLength": 1
         },
         "symbol": {
@@ -201,21 +190,10 @@
           "$ref": "#/$defs/cardType",
           "description": "The generalized card type."
         },
-        "upperSymbolPath": {
-          "type": "string",
-          "minLength": 1
-        },
-        "middleSymbolPath": {
-          "type": "string",
-          "minLength": 1
-        },
-        "lowerSymbolPath": {
-          "type": "string",
-          "minLength": 1
-        },
-        "description": {
-          "$ref": "#/$defs/cardDescription"
-        }
+        "upperSymbolPath": { "$ref": "#/$defs/pathDataString" },
+        "middleSymbolPath": { "$ref": "#/$defs/pathDataString" },
+        "lowerSymbolPath": { "$ref": "#/$defs/pathDataString" },
+        "description": { "$ref": "#/$defs/cardDescription" }
       },
       "required": [ "title", "symbol", "type", "upperSymbolPath", "middleSymbolPath", "lowerSymbolPath" ]
     },
@@ -232,10 +210,23 @@
           "description": "The title of the card.",
           "oneOf": [
             {
-              "type": "string",
+              "$ref": "#/$defs/spaceNormalizedText",
               "minLength": 1
             },
-            { "$ref": "#/$defs/textAndTruncated" }
+            {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "$ref": "#/$defs/spaceNormalizedText",
+                  "minLength": 1
+                },
+                "truncated": {
+                  "$ref": "#/$defs/spaceNormalizedText",
+                  "minLength": 1
+                }
+              },
+              "required": [ "text", "truncated" ]
+            }
           ]
         },
         "symbol": {
@@ -271,9 +262,7 @@
           "type": "number",
           "minimum": 8
         },
-        "description": {
-          "$ref": "#/$defs/cardDescription"
-        }
+        "description": { "$ref": "#/$defs/cardDescription" }
       },
       "required": [ "title", "symbol", "type" ]
     },
@@ -317,8 +306,9 @@
       "uniqueItems": true,
       "properties": {
         "name": {
-          "type": "string",
-          "description": "The name of the deck type."
+          "$ref": "#/$defs/spaceNormalizedText",
+          "description": "The name of the deck type.",
+          "minLength": 1
         },
         "description": {
           "type": "string",

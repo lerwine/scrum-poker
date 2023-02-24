@@ -4,23 +4,6 @@
     app.service("userAppStateService", webServices.UserService);
 
     app.service("DeckTypesService", deckDefinitions.DeckTypesService);
-    // app.service("DeckTypesService", function ($http: ng.IHttpService): deckTypesService.IDeckTypesServiceResult {
-    //     var deckDefinitions: dataEntities.IDeckDefinitions = {
-    //         votingCard: {
-    //             fill: "",
-    //             stroke: "",
-    //             text: ""
-    //         },
-    //         deckColors: [],
-    //         deckTypes: []
-    //     };
-    //     var promise = $http.get<dataEntities.IDeckDefinitions>('assets/deck-definitions.json').then(function (result: ng.IHttpResponse<dataEntities.IDeckDefinitions>): void {
-    //         deckDefinitions.votingCard = result.data.votingCard;
-    //         deckDefinitions.deckColors = result.data.deckColors;
-    //         deckDefinitions.deckTypes = result.data.deckTypes;
-    //     });
-    //     return new DeckTypesService(deckDefinitions, promise);
-    // });
 
     class HomeController {
         constructor($scope: IHomeControllerScope, userAppStateService: webServices.UserService) {
@@ -54,18 +37,18 @@
 
     class NewSessionController {
         deckId: number;
-        colorId: number;
+        schemaId: number;
         allCards: deckDefinitions.ICardItem[] = [];
         hasErrors: boolean = true;
 
         constructor($scope: INewSessionControllerScope, $routeParams: INewSessionRouteParams, deckTypesService: deckDefinitions.DeckTypesService) {
             this.deckId = parseInt($routeParams.deckId);
-            this.colorId = parseInt($routeParams.colorId);
+            this.schemaId = parseInt($routeParams.schemaId);
             deckTypesService.selectDeck(this.deckId);
             var currentDeck: dataEntities.IDeckTypeEntity | undefined = deckTypesService.currentDeck;
             if (typeof currentDeck === 'undefined')
                 return;
-            deckTypesService.selectColor(0);
+            deckTypesService.selectColor(this.schemaId, 0);
             this.allCards = deckTypesService.getCards();
             $scope.name = currentDeck.name;
             $scope.description = currentDeck.description;
