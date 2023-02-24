@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ScrumPoker.WebApp.Models;
 
-public class UserProfile : DataContracts.IUserProfile
+public class UserProfile
 {
     public Guid Id { get; set; }
 
