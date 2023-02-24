@@ -3,7 +3,8 @@
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <RootNamespace>ScrumPoker</RootNamespace>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFrameworks>netstandard2.1;net462</TargetFrameworks>
+    <!-- Forcing lower c# language version so source files can be included in a PowerShell Add-Type command -->
     <LangVersion>4.0</LangVersion>
     <NoWarn>IDE1005,IDE0016,IDE0018,IDE0030,IDE0031,IDE0038,IDE0250</NoWarn>
   </PropertyGroup>
