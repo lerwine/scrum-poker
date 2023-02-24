@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ScrumPoker.WebApp.Models;
-public class Team : DataContracts.ITeam
+public class Team
 {
     public Guid Id { get; set; }
 

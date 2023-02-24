@@ -49,7 +49,6 @@ internal class Program
         app.UseHttpsRedirection();
         app.UseStaticFiles();
         app.UseRouting();
-
         app.MapControllerRoute(
             name: "default",
             // 
