@@ -13,6 +13,9 @@ namespace ScrumPoker.DataContracts.User.ScrumState
     /// </summary>
     public class Response : PlanningMeetingListItem
     {
+        public const string SUB_ROUTE = "ScrumMeeting";
+        public const string FULL_ROUTE = Routings.User_Route + "/" + SUB_ROUTE;
+
         private DateTime? _plannedStartDate;
         public DateTime? PlannedStartDate
         {
@@ -21,7 +24,9 @@ namespace ScrumPoker.DataContracts.User.ScrumState
         }
 
         [DataMember(Name = "plannedStartDate", EmitDefaultValue = false)]
+        #pragma warning disable IDE0051, IDE1006
         private string __PlannedStartDate
+        #pragma warning restore IDE0051, IDE1006
         {
             get { return _plannedStartDate.ToJsonDateString(); }
             set { _plannedStartDate = value.JsonStringToDate().ToLocalDate(); }
@@ -35,7 +40,9 @@ namespace ScrumPoker.DataContracts.User.ScrumState
         }
 
         [DataMember(Name = "plannedEndDate", EmitDefaultValue = false)]
+        #pragma warning disable IDE0051, IDE1006
         private string __PlannedEndDate
+        #pragma warning restore IDE0051, IDE1006
         {
             get { return _plannedEndDate.ToJsonDateString(); }
             set { _plannedEndDate = value.JsonStringToDate().ToLocalDate(); }
@@ -64,7 +71,6 @@ namespace ScrumPoker.DataContracts.User.ScrumState
             get { return _milestone; }
             set { _milestone = value; }
         }
-
 
         private int _currentScopePoints = 0;
         [DataMember(Name = "currentScopePoints", IsRequired = true)]

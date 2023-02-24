@@ -10,6 +10,9 @@ namespace ScrumPoker.DataContracts.User.AppState
     /// </summary>
     public class Response : UserListItem
     {
+        public const string SUB_ROUTE = "AppState";
+        public const string FULL_ROUTE = Routings.User_Route + "/" + SUB_ROUTE;
+
         private bool _isAdmin = false;
         [DataMember(Name = "isAdmin", IsRequired = true)]
         /// <summary>

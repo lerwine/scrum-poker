@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+// using System.Net.Mime;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -11,8 +12,9 @@ using ScrumPoker.WebApp.Services;
 
 namespace ScrumPoker.WebApp.Controllers;
 
+// [Produces(MediaTypeNames.Application.Json)]
 [ApiController]
-[Route("api/[controller]")]
+[Route(Routings.User_Route)]
 public class UserController : ControllerBase
 {
     private readonly ScrumPokerContext _context;
@@ -31,7 +33,9 @@ public class UserController : ControllerBase
     /// Gets initial application state for the current user.
     /// </summary>
     /// <returns></returns>
-    [HttpGet("AppState")]
+    [HttpGet(DataContracts.User.AppState.Response.SUB_ROUTE)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<DataContracts.User.AppState.Response>> GetAppState(CancellationToken token = default)
     {
         UserProfile? userProfile = await _context.GetUserProfileAsync(token);
@@ -56,7 +60,7 @@ public class UserController : ControllerBase
                 DisplayName = u.DisplayName,
                 UserName = u.UserName
             });
-        return new DataContracts.User.AppState.Response
+        return Ok(new DataContracts.User.AppState.Response
         {
             UserId = userProfile.Id,
             DisplayName = userProfile.DisplayName,
@@ -64,7 +68,7 @@ public class UserController : ControllerBase
             IsAdmin = userProfile.IsAdmin,
             Teams = resultTeams,
             Facilitators = facilitators
-        };
+        });
     }
 
     // GET: api/User/Team/{id}
@@ -72,19 +76,26 @@ public class UserController : ControllerBase
     /// Gets initial team state for the current user.
     /// </summary>
     /// <returns></returns>
-    [HttpGet("TeamState/{id}")]
+    [HttpGet(DataContracts.User.TeamState.Response.SUB_ROUTE + "/{" + DataContracts.User.TeamState.Response.PARAM_NAME + ":guid}")]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<DataContracts.User.TeamState.Response>> GetTeamState(Guid id, CancellationToken token = default)
     {
         UserProfile? userProfile = await _context.GetUserProfileAsync(token);
         if (userProfile is null)
              return Unauthorized();
-        Team? team = await _context.Teams.Include(t => t.Facilitator).FindAsync(id);
+        Team? team = await _context.Teams.Include(t => t.Facilitator).FirstOrDefaultAsync(t => t.Id == id, token);
         if (team is null)
             return NotFound();
         Guid userId = userProfile.Id;
         if (!userProfile.IsAdmin && team.FacilitatorId != userId)
         {
+#if NET462
             TeamMember tm = await _context.TeamMembers.Where(m => m.TeamId == id && m.UserId == userId).FirstOrDefaultAsync(token);
+#else
+            TeamMember? tm = await _context.TeamMembers.Where(m => m.TeamId == id && m.UserId == userId).FirstOrDefaultAsync(token);
+#endif
             if (tm is null)
                 return Unauthorized();
         }
@@ -120,7 +131,7 @@ public class UserController : ControllerBase
                         Description = pm.Description,
                         MeetingDate = pm.MeetingDate
                     });
-        return response;
+        return Ok(response);
     }
 
     // GET: api/User/ScrumMeeting/{id}
@@ -128,7 +139,10 @@ public class UserController : ControllerBase
     /// Gets initial scrum meeting state for the current user.
     /// </summary>
     /// <returns></returns>
-    [HttpGet("ScrumMeeting/{id}")]
+    [HttpGet(DataContracts.User.ScrumState.Response.SUB_ROUTE + "/{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<DataContracts.User.ScrumState.Response>> GetScrumState(Guid id, CancellationToken token = default)
     {
         UserProfile? userProfile = await _context.GetUserProfileAsync(token);
@@ -144,14 +158,27 @@ public class UserController : ControllerBase
         if (!(userProfile.IsAdmin || team.FacilitatorId == userId || participants.Any(p => p.UserId == userId)))
             return Unauthorized();
         UserProfile facilitator;
-        Dictionary<Guid, DataContracts.User.UserListItem> usersLookedUp = new();
-        usersLookedUp.Add(userId, new()
+        Dictionary<Guid, DataContracts.User.UserListItem> usersLookedUp = new()
         {
-            UserId = userProfile.Id,
-            DisplayName = userProfile.DisplayName,
-            UserName = userProfile.UserName
-        });
-        facilitator = (userId == team.FacilitatorId) ? userProfile : await _context.Profles.FindAsync(team.FacilitatorId);
+            {
+                userId,
+                new()
+                {
+                    UserId = userProfile.Id,
+                    DisplayName = userProfile.DisplayName,
+                    UserName = userProfile.UserName
+                }
+            }
+        };
+        if (userId == team.FacilitatorId)
+            facilitator = userProfile;
+        else
+            try { facilitator = await _context.Profles.FirstAsync(p => p.Id == team.FacilitatorId, token); }
+            catch (InvalidOperationException)
+            {
+                throw new InvalidOperationException($"Possible database corruption: Unable to find UserProfile {{ Id = \"{team.FacilitatorId}\"}}, which is associated with Team {{ Id = \"{team.Id}\"}}.");
+            }
+        facilitator = (userId == team.FacilitatorId) ? userProfile : await _context.Profles.FirstAsync(p => p.Id == team.FacilitatorId, token);
         DataContracts.User.ScrumState.Response response = new()
         {
             PlannedStartDate = planningMeeting.PlannedStartDate,
@@ -192,7 +219,8 @@ public class UserController : ControllerBase
                 UserName = facilitator.UserName
             }
         };
-        foreach (Participant participant in planningMeeting.Particpants)
+        // TODO: Add Deck Information
+        foreach (Participant participant in planningMeeting.Participants)
             response.Participants.Add(new()
             {
                 UserId = participant.UserId,
@@ -203,6 +231,6 @@ public class UserController : ControllerBase
                 AssignedPoints = participant.PointsAssigned,
                 SprintCapacity = participant.ScrumCapacity
             });
-        return response;
+        return Ok(response);
     }
 }

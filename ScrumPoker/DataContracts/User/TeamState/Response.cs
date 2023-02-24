@@ -13,6 +13,10 @@ namespace ScrumPoker.DataContracts.User.TeamState
     /// </summary>
     public class Response
     {
+        public const string SUB_ROUTE = "TeamState";
+        public const string FULL_ROUTE = Routings.User_Route + "/" + SUB_ROUTE;
+        public const string PARAM_NAME = "id";
+        
         private Guid _teamId;
         /// <summary>
         /// Gets the team's unique identifier.
@@ -24,7 +28,9 @@ namespace ScrumPoker.DataContracts.User.TeamState
         }
 
         [DataMember(Name = "teamId", IsRequired = true)]
+        #pragma warning disable IDE0051, IDE1006
         private string __TeamId
+        #pragma warning restore IDE0051, IDE1006
         {
             get { return _teamId.ToJsonString(); }
             set { _teamId = value.JsonStringToGuid() ?? Guid.Empty; }
