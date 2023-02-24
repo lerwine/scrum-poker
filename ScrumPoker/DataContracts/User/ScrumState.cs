@@ -5,13 +5,13 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
 
-namespace ScrumPoker.DataContracts.User.ScrumState
+namespace ScrumPoker.DataContracts.User
 {
     [DataContract]
     /// <summary>
     /// Response data contract for GET: /api/User/ScrumMeeting/{meetingId}
     /// </summary>
-    public class Response : PlanningMeetingListItem
+    public class ScrumState : PlanningMeetingListItem
     {
         public const string SUB_ROUTE = "ScrumMeeting";
         public const string FULL_ROUTE = Routings.User_Route + "/" + SUB_ROUTE;

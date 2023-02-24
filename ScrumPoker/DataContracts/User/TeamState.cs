@@ -5,13 +5,13 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
 
-namespace ScrumPoker.DataContracts.User.TeamState
+namespace ScrumPoker.DataContracts.User
 {
     [DataContract]
     /// <summary>
     /// Response data contract for GET: /api/User/Team/{teamId}
     /// </summary>
-    public class Response
+    public class TeamState
     {
         public const string SUB_ROUTE = "TeamState";
         public const string FULL_ROUTE = Routings.User_Route + "/" + SUB_ROUTE;
@@ -81,5 +81,11 @@ namespace ScrumPoker.DataContracts.User.TeamState
             get { return _meetings; }
             set { _meetings = value ?? new Collection<PlanningMeetingListItem>(); }
         }
+
+        // TODO: Add Epics
+
+        // TODO: Add Milestones without Epics
+
+        // TODO: Add Initiatives
     }
 }

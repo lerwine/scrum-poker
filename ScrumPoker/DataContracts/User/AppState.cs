@@ -1,14 +1,17 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Runtime.Serialization;
+using System.Threading.Tasks;
 
-namespace ScrumPoker.DataContracts.User.AppState
+namespace ScrumPoker.DataContracts.User
 {
     [DataContract]
     /// <summary>
-    /// Response data contract for GET: /api/User/AppState
+    /// Response data contract for GET: /api/User/Team/{teamId}
     /// </summary>
-    public class Response : UserListItem
+    public class AppState : UserListItem
     {
         public const string SUB_ROUTE = "AppState";
         public const string FULL_ROUTE = Routings.User_Route + "/" + SUB_ROUTE;

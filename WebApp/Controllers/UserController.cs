@@ -33,10 +33,10 @@ public class UserController : ControllerBase
     /// Gets initial application state for the current user.
     /// </summary>
     /// <returns></returns>
-    [HttpGet(DataContracts.User.AppState.Response.SUB_ROUTE)]
+    [HttpGet(DataContracts.User.AppState.SUB_ROUTE)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<DataContracts.User.AppState.Response>> GetAppState(CancellationToken token = default)
+    public async Task<ActionResult<DataContracts.User.AppState>> GetAppState(CancellationToken token = default)
     {
         UserProfile? userProfile = await _context.GetUserProfileAsync(token);
         if (userProfile is null)
@@ -60,7 +60,7 @@ public class UserController : ControllerBase
                 DisplayName = u.DisplayName,
                 UserName = u.UserName
             });
-        return Ok(new DataContracts.User.AppState.Response
+        return Ok(new DataContracts.User.AppState
         {
             UserId = userProfile.Id,
             DisplayName = userProfile.DisplayName,
@@ -76,11 +76,11 @@ public class UserController : ControllerBase
     /// Gets initial team state for the current user.
     /// </summary>
     /// <returns></returns>
-    [HttpGet(DataContracts.User.TeamState.Response.SUB_ROUTE + "/{" + DataContracts.User.TeamState.Response.PARAM_NAME + ":guid}")]
+    [HttpGet(DataContracts.User.TeamState.SUB_ROUTE + "/{" + DataContracts.User.TeamState.PARAM_NAME + ":guid}")]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<DataContracts.User.TeamState.Response>> GetTeamState(Guid id, CancellationToken token = default)
+    public async Task<ActionResult<DataContracts.User.TeamState>> GetTeamState(Guid id, CancellationToken token = default)
     {
         UserProfile? userProfile = await _context.GetUserProfileAsync(token);
         if (userProfile is null)
@@ -99,7 +99,7 @@ public class UserController : ControllerBase
             if (tm is null)
                 return Unauthorized();
         }
-        DataContracts.User.TeamState.Response response = new()
+        DataContracts.User.TeamState response = new()
         {
             TeamId = team.Id,
             Facilitator = new DataContracts.User.UserListItem
@@ -139,11 +139,11 @@ public class UserController : ControllerBase
     /// Gets initial scrum meeting state for the current user.
     /// </summary>
     /// <returns></returns>
-    [HttpGet(DataContracts.User.ScrumState.Response.SUB_ROUTE + "/{id:guid}")]
+    [HttpGet(DataContracts.User.ScrumState.SUB_ROUTE + "/{id:guid}")]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<DataContracts.User.ScrumState.Response>> GetScrumState(Guid id, CancellationToken token = default)
+    public async Task<ActionResult<DataContracts.User.ScrumState>> GetScrumState(Guid id, CancellationToken token = default)
     {
         UserProfile? userProfile = await _context.GetUserProfileAsync(token);
         if (userProfile is null)
@@ -179,7 +179,7 @@ public class UserController : ControllerBase
                 throw new InvalidOperationException($"Possible database corruption: Unable to find UserProfile {{ Id = \"{team.FacilitatorId}\"}}, which is associated with Team {{ Id = \"{team.Id}\"}}.");
             }
         facilitator = (userId == team.FacilitatorId) ? userProfile : await _context.Profles.FirstAsync(p => p.Id == team.FacilitatorId, token);
-        DataContracts.User.ScrumState.Response response = new()
+        DataContracts.User.ScrumState response = new()
         {
             PlannedStartDate = planningMeeting.PlannedStartDate,
             PlannedEndDate = planningMeeting.PlannedEndDate,

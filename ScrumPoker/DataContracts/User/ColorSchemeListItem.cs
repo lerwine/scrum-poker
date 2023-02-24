@@ -5,7 +5,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
 
-namespace ScrumPoker.DataContracts.User.ScrumState
+namespace ScrumPoker.DataContracts.User
 {
     [DataContract]
     public class ColorSchemeListItem
