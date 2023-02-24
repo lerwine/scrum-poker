@@ -1,7 +1,5 @@
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using System.IO;
-using ScrumPoker.WebApp.Models;
 using ScrumPoker.WebApp.Services;
 
 internal class Program

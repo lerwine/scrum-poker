@@ -4,9 +4,9 @@ using System.Security.Claims;
 using System.Security.Principal;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using ScrumPoker.WebApp.Services;
+using ScrumPoker.WebApp.Models;
 
-namespace ScrumPoker.WebApp.Models;
+namespace ScrumPoker.WebApp.Services;
 
 public class ScrumPokerContext : DbContext
 {
@@ -44,7 +44,7 @@ public class ScrumPokerContext : DbContext
     }
 
     private UserProfile? _userProfile;
-    
+
     public async Task<UserProfile?> GetUserProfileAsync(CancellationToken cancellationToken)
     {
         IIdentity? identity = ClaimsPrincipal.Current?.Identity;
