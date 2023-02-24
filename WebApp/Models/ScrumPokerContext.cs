@@ -44,6 +44,7 @@ public class ScrumPokerContext : DbContext
     }
 
     private UserProfile? _userProfile;
+    
     public async Task<UserProfile?> GetUserProfileAsync(CancellationToken cancellationToken)
     {
         IIdentity? identity = ClaimsPrincipal.Current?.Identity;
@@ -58,6 +59,7 @@ public class ScrumPokerContext : DbContext
         }
         return null;
     }
+    
     public bool TryGetUserProfile([MaybeNullWhen(false)] out UserProfile result)
     {
         IIdentity? identity = ClaimsPrincipal.Current?.Identity;
