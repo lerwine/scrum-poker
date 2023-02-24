@@ -1,3 +1,5 @@
+using System.Collections.ObjectModel;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ScrumPoker.WebApp.Models;
@@ -35,12 +37,22 @@ public class SprintInitiative
         set { _plannedEndDate = value.ToLocalDate(); }
     }
 
+    public Guid TeamId { get; set; }
+
 #pragma warning disable CS8618
-    public PlanningMeeting Meeting { get; set; }
+    public Team Team { get; set; }
 #pragma warning restore CS8618
+
+    private Collection<PlanningMeeting> _meetings = new();
+    public Collection<PlanningMeeting> Meetings
+    {
+        get { return _meetings; }
+        set { _meetings = value ?? new Collection<PlanningMeeting>(); }
+    }
 
     internal static void OnBuildEntity(EntityTypeBuilder<SprintInitiative> builder)
     {
         _ = builder.HasKey(nameof(Id));
+        _ = builder.HasOne(i => i.Team).WithMany(t => t.Initiatives).HasForeignKey(nameof (TeamId)).IsRequired().OnDelete(DeleteBehavior.Restrict);
     }
 }

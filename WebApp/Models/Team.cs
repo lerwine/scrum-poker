@@ -50,6 +50,27 @@ public class Team
         get { return _meetings; }
         set { _meetings = value ?? new Collection<PlanningMeeting>(); }
     }
+
+    private Collection<SprintEpic> _epics = new();
+    public Collection<SprintEpic> Epics
+    {
+        get { return _epics; }
+        set { _epics = value ?? new Collection<SprintEpic>(); }
+    }
+    
+    private Collection<SprintInitiative> _initiatives = new();
+    public Collection<SprintInitiative> Initiatives
+    {
+        get { return _initiatives; }
+        set { _initiatives = value ?? new Collection<SprintInitiative>(); }
+    }
+    
+    private Collection<SprintMilestone> _milestones = new();
+    public Collection<SprintMilestone> Milestones
+    {
+        get { return _milestones; }
+        set { _milestones = value ?? new Collection<SprintMilestone>(); }
+    }
     
     internal static void OnBuildEntity(EntityTypeBuilder<Team> builder)
     {

@@ -82,14 +82,17 @@ public class PlanningMeeting
     public Team Team { get; set; }
 #pragma warning restore CS8618
 
+    // TODO: Need to validate that the Initiative belongs to the same team as the current PlanningMeeting before being saved to DB
     public Guid? InitiativeId { get; set; }
 
     public SprintInitiative? Initiative { get; set; }
 
+    // TODO: Need to validate that the Epic belongs to the same team as the current PlanningMeeting before being saved to DB
     public Guid? EpicId { get; set; }
 
     public SprintEpic? Epic { get; set; }
 
+    // TODO: Need to validate that the Milestone belongs to the same team as the current PlanningMeeting before being saved to DB
     public Guid? MilestoneId { get; set; }
 
     public SprintMilestone? Milestone { get; set; }
@@ -103,9 +106,9 @@ public class PlanningMeeting
     
     internal static void OnBuildEntity(EntityTypeBuilder<PlanningMeeting> builder)
     {
-        _ = builder.HasOne(p => p.Initiative).WithOne(d => d.Meeting).HasForeignKey(nameof(InitiativeId)).OnDelete(DeleteBehavior.Restrict);
-        _ = builder.HasOne(p => p.Epic).WithOne(d => d.Meeting).HasForeignKey(nameof(EpicId)).OnDelete(DeleteBehavior.Restrict);
-        _ = builder.HasOne(p => p.Milestone).WithOne(d => d.Meeting).HasForeignKey(nameof(MilestoneId)).OnDelete(DeleteBehavior.Restrict);
+        _ = builder.HasOne(p => p.Initiative).WithMany(d => d.Meetings).HasForeignKey(nameof(InitiativeId)).OnDelete(DeleteBehavior.Restrict);
+        _ = builder.HasOne(p => p.Epic).WithMany(d => d.Meetings).HasForeignKey(nameof(EpicId)).OnDelete(DeleteBehavior.Restrict);
+        _ = builder.HasOne(p => p.Milestone).WithMany(d => d.Meetings).HasForeignKey(nameof(MilestoneId)).OnDelete(DeleteBehavior.Restrict);
         _ = builder.HasOne(p => p.Team).WithMany(d => d.Meetings).HasForeignKey(nameof(TeamId)).IsRequired().OnDelete(DeleteBehavior.Restrict);
         _ = builder.HasKey(nameof(Id));
     }
