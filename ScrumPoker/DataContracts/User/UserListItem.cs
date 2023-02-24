@@ -10,7 +10,9 @@ namespace ScrumPoker.DataContracts.User
     public class UserListItem
     {
         [DataMember(Name = "userId", IsRequired = true)]
+        #pragma warning disable IDE0051, IDE1006
         private string __UserId
+        #pragma warning restore IDE0051, IDE1006
         {
             get { return _userId.ToJsonString(); }
             set { _userId = value.JsonStringToGuid() ?? Guid.Empty; }

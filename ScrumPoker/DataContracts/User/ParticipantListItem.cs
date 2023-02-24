@@ -17,7 +17,9 @@ namespace ScrumPoker.DataContracts.User
         }
 
         [DataMember(Name = "selectedCardId", EmitDefaultValue = false)]
+        #pragma warning disable IDE0051, IDE1006
         private string __SelectedCardId
+        #pragma warning restore IDE0051, IDE1006
         {
             get { return _selectedCardId.ToJsonString(); }
             set { _selectedCardId = value.JsonStringToGuidNotEmpty().NullIfEmpty(); }
@@ -26,7 +28,9 @@ namespace ScrumPoker.DataContracts.User
         public Guid ColorSchemeId { get; set; }
 
         [DataMember(Name = "colorSchemeId", IsRequired = true)]
+        #pragma warning disable IDE0051, IDE1006
         private string __ColorSchemeId
+        #pragma warning restore IDE0051, IDE1006
         {
             get { return ColorSchemeId.ToJsonString(); }
             set { ColorSchemeId = value.JsonStringToGuid() ?? Guid.Empty; }

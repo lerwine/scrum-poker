@@ -23,7 +23,9 @@ namespace ScrumPoker.DataContracts.User
         }
 
         [DataMember(Name = "meetingId", IsRequired = true)]
+        #pragma warning disable IDE0051, IDE1006
         private string __MeetingId
+        #pragma warning restore IDE0051, IDE1006
         {
             get { return _meetingId.ToJsonString(); }
             set { _meetingId = value.JsonStringToGuid() ?? Guid.Empty; }
@@ -59,7 +61,9 @@ namespace ScrumPoker.DataContracts.User
         }
 
         [DataMember(Name = "meetingDate", EmitDefaultValue = false)]
+        #pragma warning disable IDE0051, IDE1006
         private string __MeetingDate
+        #pragma warning restore IDE0051, IDE1006
         {
             get { return _meetingDate.ToJsonDateString(); }
             set { _meetingDate = value.JsonStringToDate().ToLocalDate() ?? DateTime.Now; }
