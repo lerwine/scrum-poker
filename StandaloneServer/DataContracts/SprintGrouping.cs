@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 namespace ScrumPoker.StandaloneServer.DataContracts
 {
     [DataContract]
-    public class SprintGrouping : TitleAndIdentifier, ScrumPoker.DataContracts.ISprintGrouping
+    public class SprintGrouping : TitleAndIdentifier
     {
         private static readonly PropertyDescriptor _pdDescription;
         private string _description;

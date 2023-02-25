@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 namespace ScrumPoker.StandaloneServer.DataContracts
 {
     [DataContract]
-    public abstract class TitleAndIdentifier : ValidatableObject, ScrumPoker.DataContracts.ITitleAndIdentifier
+    public abstract class TitleAndIdentifier : ValidatableObject
     {
         private static readonly PropertyDescriptor _pdTitle;
         private string _title = "";

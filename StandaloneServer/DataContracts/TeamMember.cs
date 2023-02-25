@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 namespace ScrumPoker.StandaloneServer.DataContracts
 {
     [DataContract]
-    public class TeamMember : ScrumPokerUser, ScrumPoker.DataContracts.ITeamMember
+    public class TeamMember : ScrumPokerUser
     {
         private static readonly PropertyDescriptor _pdSelectedCardId;
         private Guid? _selectedCardId;
@@ -20,7 +20,9 @@ namespace ScrumPoker.StandaloneServer.DataContracts
         }
 
         [DataMember(Name = "selectedCardId", EmitDefaultValue = false)]
+#pragma warning disable IDE1006
         private string __SelectedCardId
+#pragma warning restore IDE1006
         {
             get { return IsParticipant ? _selectedCardId.ToJsonString() : null; }
             set

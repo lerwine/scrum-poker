@@ -39,7 +39,9 @@ namespace ScrumPoker.DataContracts.User
         }
 
         [DataMember(Name = "facilitatorId", IsRequired = true)]
+        #pragma warning disable IDE0051, IDE1006
         private string __FacilitatorId
+        #pragma warning restore IDE0051, IDE1006
         {
             get { return _facilitatorId.ToJsonString(); }
             set { _facilitatorId = value.JsonStringToGuid() ?? Guid.Empty; }

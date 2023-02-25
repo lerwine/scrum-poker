@@ -9,7 +9,7 @@ using System.Threading;
 namespace ScrumPoker.StandaloneServer.DataContracts
 {
     [DataContract]
-    public class ScrumSession : TitleAndIdentifier, ScrumPoker.DataContracts.IScrumSession
+    public class ScrumSession : TitleAndIdentifier
     {
         private static readonly PropertyDescriptor _pdDescription;
         private string _description;
@@ -37,8 +37,6 @@ namespace ScrumPoker.StandaloneServer.DataContracts
             }
         }
 
-        ScrumPoker.DataContracts.ISprintGrouping ScrumPoker.DataContracts.IScrumSession.Initiative { get { return Initiative; } set { Initiative = (SprintGrouping)value; } }
-
         private static readonly PropertyDescriptor _pdEpic;
         private SprintGrouping _epic;
         [DataMember(Name = "epic", EmitDefaultValue = false)]
@@ -51,8 +49,6 @@ namespace ScrumPoker.StandaloneServer.DataContracts
                     RaisePropertyChanged(_pdEpic);
             }
         }
-
-        ScrumPoker.DataContracts.ISprintGrouping ScrumPoker.DataContracts.IScrumSession.Epic { get { return Epic; } set { Epic = (SprintGrouping)value; } }
 
         private static readonly PropertyDescriptor _pdMilestone;
         private SprintGrouping _milestone;
@@ -67,8 +63,6 @@ namespace ScrumPoker.StandaloneServer.DataContracts
             }
         }
 
-        ScrumPoker.DataContracts.ISprintGrouping ScrumPoker.DataContracts.IScrumSession.Milestone { get { return Milestone; } set { Milestone = (SprintGrouping)value; } }
-
         private static readonly PropertyDescriptor _pdPlannedStartDate;
         private DateTime? _plannedStartDate;
         public DateTime? PlannedStartDate
@@ -82,7 +76,9 @@ namespace ScrumPoker.StandaloneServer.DataContracts
         }
 
         [DataMember(Name = "plannedStartDate", EmitDefaultValue = false)]
+#pragma warning disable IDE1006
         private string __PlannedStartDate
+#pragma warning restore IDE1006
         {
             get { return _plannedStartDate.ToJsonDateString(); }
             set
@@ -105,7 +101,9 @@ namespace ScrumPoker.StandaloneServer.DataContracts
         }
 
         [DataMember(Name = "plannedEndDate", EmitDefaultValue = false)]
+#pragma warning disable IDE1006
         private string __PlannedEndDate
+#pragma warning restore IDE1006
         {
             get { return _plannedEndDate.ToJsonDateString(); }
             set
@@ -156,7 +154,9 @@ namespace ScrumPoker.StandaloneServer.DataContracts
         }
 
         [DataMember(Name = "deckId", IsRequired = true)]
+#pragma warning disable IDE1006
         private string __DeckId
+#pragma warning restore IDE1006
         {
             get { return _deckId.ToJsonString(); }
             set
@@ -179,7 +179,9 @@ namespace ScrumPoker.StandaloneServer.DataContracts
         }
 
         [DataMember(Name = "organizerId", IsRequired = true)]
+#pragma warning disable IDE1006
         private string __OrganizerId
+#pragma warning restore IDE1006
         {
             get { return _organizerId.ToJsonString(); }
             set

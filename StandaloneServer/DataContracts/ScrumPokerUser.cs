@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 namespace ScrumPoker.StandaloneServer.DataContracts
 {
     [DataContract]
-    public class ScrumPokerUser : ValidatableObject, ScrumPoker.DataContracts.IScrumPokerUser
+    public class ScrumPokerUser : ValidatableObject
     {
         private static readonly PropertyDescriptor _pdDisplayName;
         private string _displayName = "";
