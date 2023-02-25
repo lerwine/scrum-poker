@@ -72,6 +72,16 @@ public class PlanningMeeting
 
     public Guid DeckTypeId { get; set; }
     
+#pragma warning disable CS8618
+    public DeckType DeckType { get; set; }
+#pragma warning restore CS8618
+
+    public Guid ColorSchemeId { get; set; }
+    
+#pragma warning disable CS8618
+    public ColorSchema ColorScheme { get; set; }
+#pragma warning restore CS8618
+    
     public Guid TeamId { get; set; }
 
 #pragma warning disable CS8618
@@ -106,6 +116,8 @@ public class PlanningMeeting
         _ = builder.HasOne(p => p.Epic).WithMany(d => d.Meetings).HasForeignKey(nameof(EpicId)).OnDelete(DeleteBehavior.Restrict);
         _ = builder.HasOne(p => p.Milestone).WithMany(d => d.Meetings).HasForeignKey(nameof(MilestoneId)).OnDelete(DeleteBehavior.Restrict);
         _ = builder.HasOne(p => p.Team).WithMany(d => d.Meetings).HasForeignKey(nameof(TeamId)).IsRequired().OnDelete(DeleteBehavior.Restrict);
+        _ = builder.HasOne(p => p.DeckType).WithMany(d => d.Meetings).HasForeignKey(nameof(DeckTypeId)).IsRequired().OnDelete(DeleteBehavior.Restrict);
+        _ = builder.HasOne(p => p.ColorScheme).WithMany(d => d.Meetings).HasForeignKey(nameof(ColorSchemeId)).IsRequired().OnDelete(DeleteBehavior.Restrict);
         _ = builder.HasKey(nameof(Id));
     }
 }

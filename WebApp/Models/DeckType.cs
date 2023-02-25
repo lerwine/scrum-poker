@@ -30,6 +30,13 @@ public class DeckType
         get { return _sheets; }
         set { _sheets = value ?? new Collection<SheetDefinition>(); }
     }
+    
+    private Collection<PlanningMeeting> _meetings = new();
+    public Collection<PlanningMeeting> Meetings
+    {
+        get { return _meetings; }
+        set { _meetings = value ?? new Collection<PlanningMeeting>(); }
+    }
 
     internal static void OnBuildEntity(EntityTypeBuilder<DeckType> builder)
     {

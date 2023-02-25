@@ -42,11 +42,11 @@ public class ColorSchema
         set { _cardColors = value ?? new Collection<CardColor>(); }
     }
 
-    private Collection<SheetDefinition> _sheets = new();
-    public Collection<SheetDefinition> Sheets
+    private Collection<PlanningMeeting> _meetings = new();
+    public Collection<PlanningMeeting> Meetings
     {
-        get { return _sheets; }
-        set { _sheets = value ?? new Collection<SheetDefinition>(); }
+        get { return _meetings; }
+        set { _meetings = value ?? new Collection<PlanningMeeting>(); }
     }
 
     internal static void OnBuildEntity(EntityTypeBuilder<ColorSchema> builder)
