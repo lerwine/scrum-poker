@@ -16,21 +16,21 @@ public class CardColor
     }
 
     private ColorModel.CssColor _fill;
-    public ColorModel.CssColor VotingFill
+    public ColorModel.CssColor Fill
     {
         get { return _fill; }
         set { _fill = value; }
     }
 
     private ColorModel.CssColor _stroke;
-    public ColorModel.CssColor VotingStroke
+    public ColorModel.CssColor Stroke
     {
         get { return _stroke; }
         set { _stroke = value; }
     }
 
     private ColorModel.CssColor _text;
-    public ColorModel.CssColor VotingText
+    public ColorModel.CssColor Text
     {
         get { return _text; }
         set { _text = value; }
