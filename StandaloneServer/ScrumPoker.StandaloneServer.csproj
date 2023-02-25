@@ -16,7 +16,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ScrumPoker\ScrumPoker.csproj" />
+    <ProjectReference Include="..\ScrumPoker\ScrumPoker.csproj">
+      <SetTargetFramework>TargetFramework=netstandard2.1</SetTargetFramework>
+    </ProjectReference>
   </ItemGroup>
 
 </Project>

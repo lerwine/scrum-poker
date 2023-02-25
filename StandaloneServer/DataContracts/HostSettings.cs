@@ -34,9 +34,9 @@ namespace ScrumPoker.StandaloneServer.DataContracts
         private int? _portNumber;
         [DataMember(Name = "portNumber", EmitDefaultValue = false)]
         [Range(1, 65535)]
-#pragma warning disable IDE1006
+#pragma warning disable IDE1006, IDE0051, IDE0052
         private int? __PortNumber
-#pragma warning restore IDE1006
+#pragma warning restore IDE1006, IDE0051, IDE0052
         {
             get { return _portNumber; }
             set

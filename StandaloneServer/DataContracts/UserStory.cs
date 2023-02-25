@@ -38,9 +38,9 @@ namespace ScrumPoker.StandaloneServer.DataContracts
         }
 
         [DataMember(Name = "projectId", EmitDefaultValue = false)]
-#pragma warning disable IDE1006
+#pragma warning disable IDE1006, IDE0051
         private string __ProjectId
-#pragma warning restore IDE1006
+#pragma warning restore IDE1006, IDE0051
         {
             get { return _projectId.ToJsonString(); }
             set { _projectId = value.JsonStringToGuidNotEmpty(); }
@@ -54,9 +54,9 @@ namespace ScrumPoker.StandaloneServer.DataContracts
         }
 
         [DataMember(Name = "themeId", EmitDefaultValue = false)]
-#pragma warning disable IDE1006
+#pragma warning disable IDE1006, IDE0051
         private string __ThemeId
-#pragma warning restore IDE1006
+#pragma warning restore IDE1006, IDE0051
         {
             get { return _themeId.ToJsonString(); }
             set { _themeId = value.JsonStringToGuidNotEmpty(); }
@@ -70,9 +70,9 @@ namespace ScrumPoker.StandaloneServer.DataContracts
         }
 
         [DataMember(Name = "created", IsRequired = true)]
-#pragma warning disable IDE1006
+#pragma warning disable IDE1006, IDE0051
         private string __Created
-#pragma warning restore IDE1006
+#pragma warning restore IDE1006, IDE0051
         {
             get { return _created.ToJsonDateString(); }
             set { _created = value.JsonStringToDate() ?? DateTime.Now; }
@@ -102,9 +102,9 @@ namespace ScrumPoker.StandaloneServer.DataContracts
         }
 
         [DataMember(Name = "assignedToId", EmitDefaultValue = false)]
-#pragma warning disable IDE1006
+#pragma warning disable IDE1006, IDE0051
         private string __AssignedToId
-#pragma warning restore IDE1006
+#pragma warning restore IDE1006, IDE0051
         {
             get { return _assignedToId.ToJsonString(); }
             set { _assignedToId = value.JsonStringToGuidNotEmpty(); }

@@ -20,9 +20,9 @@ namespace ScrumPoker.StandaloneServer.DataContracts
         }
 
         [DataMember(Name = "selectedCardId", EmitDefaultValue = false)]
-#pragma warning disable IDE1006
+#pragma warning disable IDE1006, IDE0051
         private string __SelectedCardId
-#pragma warning restore IDE1006
+#pragma warning restore IDE1006, IDE0051
         {
             get { return IsParticipant ? _selectedCardId.ToJsonString() : null; }
             set

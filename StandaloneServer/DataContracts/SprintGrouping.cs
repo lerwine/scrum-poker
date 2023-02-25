@@ -33,7 +33,9 @@ namespace ScrumPoker.StandaloneServer.DataContracts
         }
 
         [DataMember(Name = "startDate", EmitDefaultValue = false)]
+#pragma warning disable IDE1006, IDE0051
         private string __StartDate
+#pragma warning restore IDE1006, IDE0051
         {
             get { return _startDate.ToJsonDateString(); }
             set
@@ -56,7 +58,9 @@ namespace ScrumPoker.StandaloneServer.DataContracts
         }
 
         [DataMember(Name = "plannedEndDate", EmitDefaultValue = false)]
+#pragma warning disable IDE1006, IDE0051
         private string __PlannedEndDate
+#pragma warning restore IDE1006, IDE0051
         {
             get { return _plannedEndDate.ToJsonDateString(); }
             set
