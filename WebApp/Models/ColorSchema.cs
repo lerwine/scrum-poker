@@ -52,7 +52,5 @@ public class ColorSchema
     internal static void OnBuildEntity(EntityTypeBuilder<ColorSchema> builder)
     {
         _ = builder.HasKey(nameof(Id));
-        // _ = builder.HasOne(i => i.Team).WithMany(t => t.Milestones).HasForeignKey(nameof (TeamId)).IsRequired().OnDelete(DeleteBehavior.Restrict);
-        // _ = builder.HasOne(i => i.Epic).WithMany(t => t.Milestones).HasForeignKey(nameof (TeamId)).OnDelete(DeleteBehavior.Restrict);
     }
 }
