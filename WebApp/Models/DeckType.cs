@@ -7,12 +7,27 @@ public class DeckType
 {
     public Guid Id { get; set; }
 
-    public string Name { get; set; } = "";
-    
-    public string Description { get; set; } = "";
-    
-    public string PreviewUrl { get; set; } = "";
+    private string _name = "";
+    public string Name
+    {
+        get { return _name; }
+        set { _name = value.EmptyIfNullOrTrimmed(); }
+    }
 
+    private string? _description;
+    public string? Description
+    {
+        get { return _description; }
+        set { _description = value.TrimmedOrNullIfEmpty(); }
+    }
+
+    private string _previewUrl = "";
+    public string PreviewUrl
+    {
+        get { return _previewUrl; }
+        set { _previewUrl = value.EmptyIfNullOrTrimmed(); }
+    }
+    
     public int Width { get; set; }
 
     public int Height { get; set; }
