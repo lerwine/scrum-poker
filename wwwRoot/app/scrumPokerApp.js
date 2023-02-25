@@ -1,30 +1,16 @@
 "use strict";
 (function (angular) {
     var app = angular.module("scrumPokerApp", ["ngRoute"]);
-    var s = "{\"title\":\"My Sprint Session\",\"adminUser\":{\"assignedPoints\":0,\"displayName\":\"Admin\",\"userName\":\"admin\"}," +
-        "\"currentScopePoints\":0,\"deckId\":1,\"developers\":[{\"assignedPoints\":0,\"displayName\":\"Paul\",\"userName\":\"pmc\"}," +
-        "{\"assignedPoints\":0,\"displayName\":\"John\",\"userName\":\"walrus\"}],\"projects\":[],\"stories\":[{\"identifier\":\"SPNT0010002\"," +
-        "\"title\":\"Procurement Form\",\"_points\":null,\"created\":\"\\/Date(1676583255847-0500)\\/\",\"order\":0,\"preRequisiteIds\":[],\"state\":0}," +
-        "{\"identifier\":\"SPNT0010002\",\"title\":\"Procurement Form\",\"_points\":null,\"created\":\"\\/Date(1676583255857-0500)\\/\"," +
-        "\"order\":0,\"preRequisiteIds\":[0],\"state\":0}],\"themes\":[]}";
+    app.service("userAppStateService", webServices.UserService);
     app.service("DeckTypesService", deckDefinitions.DeckTypesService);
-    // app.service("DeckTypesService", function ($http: ng.IHttpService): deckTypesService.IDeckTypesServiceResult {
-    //     var deckDefinitions: dataEntities.IDeckDefinitions = {
-    //         votingCard: {
-    //             fill: "",
-    //             stroke: "",
-    //             text: ""
-    //         },
-    //         deckColors: [],
-    //         deckTypes: []
-    //     };
-    //     var promise = $http.get<dataEntities.IDeckDefinitions>('assets/deck-definitions.json').then(function (result: ng.IHttpResponse<dataEntities.IDeckDefinitions>): void {
-    //         deckDefinitions.votingCard = result.data.votingCard;
-    //         deckDefinitions.deckColors = result.data.deckColors;
-    //         deckDefinitions.deckTypes = result.data.deckTypes;
-    //     });
-    //     return new DeckTypesService(deckDefinitions, promise);
-    // });
+    class HomeController {
+        constructor($scope, userAppStateService) {
+            $scope.userName = userAppStateService.userName;
+            $scope.displayName = userAppStateService.displayName;
+            $scope.isAdmin = userAppStateService.isAdmin;
+            $scope.teams = userAppStateService.getTeams();
+        }
+    }
     class DeckTypeController {
         constructor($scope, deckTypesService) {
             $scope.deckTypes = deckTypesService.getAllDeckTypes();
@@ -48,12 +34,12 @@
             this.allCards = [];
             this.hasErrors = true;
             this.deckId = parseInt($routeParams.deckId);
-            this.colorId = parseInt($routeParams.colorId);
+            this.schemaId = parseInt($routeParams.schemaId);
             deckTypesService.selectDeck(this.deckId);
             var currentDeck = deckTypesService.currentDeck;
             if (typeof currentDeck === 'undefined')
                 return;
-            deckTypesService.selectColor(0);
+            deckTypesService.selectColor(this.schemaId, 0);
             this.allCards = deckTypesService.getCards();
             $scope.name = currentDeck.name;
             $scope.description = currentDeck.description;
@@ -73,21 +59,21 @@
             $scope.needInfoCard = true;
             $scope.cards = [];
             $scope.userStories = [];
-            $scope.developers = [];
+            $scope.members = [];
             var controller = this;
             $scope.$watch('sprintName', function (newValue, oldValue) {
                 if (newValue.trim().length == 0)
                     controller.hasErrors = true;
                 else
-                    controller.hasErrors = $scope.userStories.length == 0 || $scope.developers.length == 0;
+                    controller.hasErrors = $scope.userStories.length == 0 || $scope.members.length == 0;
             });
             $scope.$watchCollection('userStories', function (newValue, oldValue) {
                 if (newValue.length == 0)
                     controller.hasErrors = true;
                 else
-                    controller.hasErrors = $scope.sprintName.trim().length == 0 || $scope.developers.length == 0;
+                    controller.hasErrors = $scope.sprintName.trim().length == 0 || $scope.members.length == 0;
             });
-            $scope.$watchCollection('developers', function (newValue, oldValue) {
+            $scope.$watchCollection('members', function (newValue, oldValue) {
                 if (newValue.length == 0)
                     controller.hasErrors = true;
                 else
@@ -118,10 +104,12 @@
                 controllerAs: "controller"
             })
                 .when('/home', {
-                templateUrl: "home.htm" /*, controller: "MainController"*/,
+                templateUrl: "home.htm",
+                controller: HomeController,
+                controllerAs: "controller",
                 resolve: {
-                    'deckTypesService': function (deckTypesService) {
-                        return deckTypesService.promise;
+                    'userAppStateService': function (userAppStateService) {
+                        return userAppStateService.promise;
                     }
                 }
             })
