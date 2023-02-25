@@ -9,9 +9,19 @@ public class Participant
 
     public Guid? DrawnCardId { get; set; }
 
-    public Guid ColorSchemeId { get; set; }
 
-    // TODO: Add color scheme entity
+#pragma warning disable CS8618
+    public CardDefinition DrawnCard { get; set; }
+
+#pragma warning restore CS8618
+
+    public Guid CardColorId { get; set; }
+
+
+#pragma warning disable CS8618
+    public CardColor CardColor { get; set; }
+
+#pragma warning restore CS8618
 
     public int PointsAssigned { get; set; }
 
@@ -35,6 +45,8 @@ public class Participant
     {
         _ = builder.HasOne(p => p.Meeting).WithMany(d => d.Participants).HasForeignKey(nameof(MeetingId)).IsRequired().OnDelete(DeleteBehavior.Restrict);
         _ = builder.HasOne(p => p.User).WithMany(d => d.Participation).HasForeignKey(nameof(UserId)).IsRequired().OnDelete(DeleteBehavior.Restrict);
+        _ = builder.HasOne(p => p.CardColor).WithMany(d => d.Participants).HasForeignKey(nameof(CardColorId)).IsRequired().OnDelete(DeleteBehavior.Restrict);
+        _ = builder.HasOne(p => p.DrawnCard).WithMany(d => d.Participants).HasForeignKey(nameof(DrawnCardId)).IsRequired().OnDelete(DeleteBehavior.Restrict);
         _ = builder.HasKey(nameof(MeetingId), nameof(UserId));
     }
 }

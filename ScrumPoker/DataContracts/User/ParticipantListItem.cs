@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Threading.Tasks;
 
 namespace ScrumPoker.DataContracts.User
 {
@@ -25,15 +22,15 @@ namespace ScrumPoker.DataContracts.User
             set { _selectedCardId = value.JsonStringToGuidNotEmpty().NullIfEmpty(); }
         }
         
-        public Guid ColorSchemeId { get; set; }
+        public Guid CardColorId { get; set; }
 
-        [DataMember(Name = "colorSchemeId", IsRequired = true)]
+        [DataMember(Name = "cardColorId", IsRequired = true)]
         #pragma warning disable IDE0051, IDE1006
         private string __ColorSchemeId
         #pragma warning restore IDE0051, IDE1006
         {
-            get { return ColorSchemeId.ToJsonString(); }
-            set { ColorSchemeId = value.JsonStringToGuid() ?? Guid.Empty; }
+            get { return CardColorId.ToJsonString(); }
+            set { CardColorId = value.JsonStringToGuid() ?? Guid.Empty; }
         }
         
         private int _assignedPoints = 0;

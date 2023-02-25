@@ -1,8 +1,6 @@
-using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
 using System.Security.Principal;
-using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using ScrumPoker.WebApp.Models;
 
@@ -34,7 +32,16 @@ public class ScrumPokerContext : DbContext
     
     public DbSet<SprintMilestone> SprintMilestones { get; set; } = null!;
     
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+    public DbSet<DeckType> DeckTypes { get; set; } = null!;
+
+    public DbSet<CardDefinition> Cards { get; set; } = null!;
+    
+    public DbSet<ColorSchema> ColorSchemas { get; set; } = null!;
+    
+    public DbSet<CardColor> CardColors { get; set; } = null!;
+    
+    public DbSet<SheetDefinition> PrintableSheets { get; set; } = null!;
+    
     [SuppressMessage("Usage", "CA1816:Dispose methods should call SuppressFinalize", Justification = "Inherited class will have called SuppressFinalize if necessary.")]
     public override void Dispose()
     {
@@ -86,8 +93,6 @@ public class ScrumPokerContext : DbContext
         return false;
     }
     
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-
     /// <summary>
     /// Configures the data model.
     /// </summary>
@@ -102,6 +107,11 @@ public class ScrumPokerContext : DbContext
             .Entity<Participant>(Participant.OnBuildEntity)
             .Entity<SprintInitiative>(SprintInitiative.OnBuildEntity)
             .Entity<SprintEpic>(SprintEpic.OnBuildEntity)
-            .Entity<SprintMilestone>(SprintMilestone.OnBuildEntity);
+            .Entity<SprintMilestone>(SprintMilestone.OnBuildEntity)
+            .Entity<DeckType>(DeckType.OnBuildEntity)
+            .Entity<CardDefinition>(CardDefinition.OnBuildEntity)
+            .Entity<ColorSchema>(ColorSchema.OnBuildEntity)
+            .Entity<CardColor>(CardColor.OnBuildEntity)
+            .Entity<SheetDefinition>(SheetDefinition.OnBuildEntity);
     }
 }

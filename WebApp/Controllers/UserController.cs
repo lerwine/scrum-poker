@@ -1,13 +1,8 @@
 using System.Collections.ObjectModel;
 // using System.Net.Mime;
-using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using ScrumPoker.WebApp.Models;
-using ScrumPoker.WebApp.Models.DTO;
 using ScrumPoker.WebApp.Services;
 
 namespace ScrumPoker.WebApp.Controllers;
@@ -18,14 +13,13 @@ namespace ScrumPoker.WebApp.Controllers;
 public class UserController : ControllerBase
 {
     private readonly ScrumPokerContext _context;
-    private readonly DeckService _deckService;
-    private readonly ILogger<UserController> _logger;
+    // private readonly ILogger<UserController> _logger;
 
-    public UserController(ScrumPokerContext context, DeckService deckService, ILogger<UserController> logger)
+    // public UserController(ScrumPokerContext context, ILogger<UserController> logger)
+    public UserController(ScrumPokerContext context)
     {
         _context = context;
-        _deckService = deckService;
-        _logger = logger;
+        // _logger = logger;
     }
 
     // GET: api/User/AppState
@@ -227,7 +221,7 @@ public class UserController : ControllerBase
                 DisplayName = participant.User.DisplayName,
                 UserName = participant.User.UserName,
                 SelectedCardId = participant.DrawnCardId,
-                ColorSchemeId = participant.ColorSchemeId,
+                CardColorId = participant.CardColorId,
                 AssignedPoints = participant.PointsAssigned,
                 SprintCapacity = participant.ScrumCapacity
             });

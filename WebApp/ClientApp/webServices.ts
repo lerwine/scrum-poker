@@ -68,7 +68,7 @@ namespace webServices {
 
     interface IParticpantListItem extends IUserResponseItem {
       selectedCardId?: string;
-      colorSchemeId: string;
+      cardColorId: string;
       assignedPoints: number;
       sprintCapacity?: number;
     }

@@ -1,0 +1,449 @@
+namespace ScrumPoker.ColorModel
+{
+    public enum NamedColors
+    {
+        [RgbColor(0xF0, 0xF8, 0xFF)]
+        AliceBlue,
+
+        [RgbColor(0xFA, 0xEB, 0xD7)]
+        AntiqueWhite,
+
+        [RgbColor(0x00, 0xFF, 0xFF)]
+        Aqua,
+
+        [RgbColor(0x7F, 0xFF, 0xD4)]
+        Aquamarine,
+
+        [RgbColor(0xF0, 0xFF, 0xFF)]
+        Azure,
+
+        [RgbColor(0xF5, 0xF5, 0xDC)]
+        Beige,
+
+        [RgbColor(0xFF, 0xE4, 0xC4)]
+        Bisque,
+
+        [RgbColor(0x00, 0x00, 0x00)]
+        Black,
+
+        [RgbColor(0xFF, 0xEB, 0xCD)]
+        BlanchedAlmond,
+
+        [RgbColor(0x00, 0x00, 0xFF)]
+        Blue,
+
+        [RgbColor(0x8A, 0x2B, 0xE2)]
+        BlueViolet,
+
+        [RgbColor(0xA5, 0x2A, 0x2A)]
+        Brown,
+
+        [RgbColor(0xDE, 0xB8, 0x87)]
+        BurlyWood,
+
+        [RgbColor(0x5F, 0x9E, 0xA0)]
+        CadetBlue,
+
+        [RgbColor(0x7F, 0xFF, 0x00)]
+        Chartreuse,
+
+        [RgbColor(0xD2, 0x69, 0x1E)]
+        Chocolate,
+
+        [RgbColor(0xFF, 0x7F, 0x50)]
+        Coral,
+
+        [RgbColor(0x64, 0x95, 0xED)]
+        CornflowerBlue,
+
+        [RgbColor(0xFF, 0xF8, 0xDC)]
+        Cornsilk,
+
+        [RgbColor(0xDC, 0x14, 0x3C)]
+        Crimson,
+
+        [RgbColor(0x00, 0xFF, 0xFF)]
+        Cyan,
+
+        [RgbColor(0x00, 0x00, 0x8B)]
+        DarkBlue,
+
+        [RgbColor(0x00, 0x8B, 0x8B)]
+        DarkCyan,
+
+        [RgbColor(0xB8, 0x86, 0x0B)]
+        DarkGoldenRod,
+
+        [RgbColor(0xA9, 0xA9, 0xA9)]
+        DarkGray,
+
+        [RgbColor(0xA9, 0xA9, 0xA9)]
+        DarkGrey,
+
+        [RgbColor(0x00, 0x64, 0x00)]
+        DarkGreen,
+
+        [RgbColor(0xBD, 0xB7, 0x6B)]
+        DarkKhaki,
+
+        [RgbColor(0x8B, 0x00, 0x8B)]
+        DarkMagenta,
+
+        [RgbColor(0x55, 0x6B, 0x2F)]
+        DarkOliveGreen,
+
+        [RgbColor(0xFF, 0x8C, 0x00)]
+        DarkOrange,
+
+        [RgbColor(0x99, 0x32, 0xCC)]
+        DarkOrchid,
+
+        [RgbColor(0x8B, 0x00, 0x00)]
+        DarkRed,
+
+        [RgbColor(0xE9, 0x96, 0x7A)]
+        DarkSalmon,
+
+        [RgbColor(0x8F, 0xBC, 0x8F)]
+        DarkSeaGreen,
+
+        [RgbColor(0x48, 0x3D, 0x8B)]
+        DarkSlateBlue,
+
+        [RgbColor(0x2F, 0x4F, 0x4F)]
+        DarkSlateGray,
+
+        [RgbColor(0x2F, 0x4F, 0x4F)]
+        DarkSlateGrey,
+
+        [RgbColor(0x00, 0xCE, 0xD1)]
+        DarkTurquoise,
+
+        [RgbColor(0x94, 0x00, 0xD3)]
+        DarkViolet,
+
+        [RgbColor(0xFF, 0x14, 0x93)]
+        DeepPink,
+
+        [RgbColor(0x00, 0xBF, 0xFF)]
+        DeepSkyBlue,
+
+        [RgbColor(0x69, 0x69, 0x69)]
+        DimGray,
+
+        [RgbColor(0x69, 0x69, 0x69)]
+        DimGrey,
+
+        [RgbColor(0x1E, 0x90, 0xFF)]
+        DodgerBlue,
+
+        [RgbColor(0xB2, 0x22, 0x22)]
+        FireBrick,
+
+        [RgbColor(0xFF, 0xFA, 0xF0)]
+        FloralWhite,
+
+        [RgbColor(0x22, 0x8B, 0x22)]
+        ForestGreen,
+
+        [RgbColor(0xFF, 0x00, 0xFF)]
+        Fuchsia,
+
+        [RgbColor(0xDC, 0xDC, 0xDC)]
+        Gainsboro,
+
+        [RgbColor(0xF8, 0xF8, 0xFF)]
+        GhostWhite,
+
+        [RgbColor(0xFF, 0xD7, 0x00)]
+        Gold,
+
+        [RgbColor(0xDA, 0xA5, 0x20)]
+        GoldenRod,
+
+        [RgbColor(0x80, 0x80, 0x80)]
+        Gray,
+
+        [RgbColor(0x80, 0x80, 0x80)]
+        Grey,
+
+        [RgbColor(0x00, 0x80, 0x00)]
+        Green,
+
+        [RgbColor(0xAD, 0xFF, 0x2F)]
+        GreenYellow,
+
+        [RgbColor(0xF0, 0xFF, 0xF0)]
+        HoneyDew,
+
+        [RgbColor(0xFF, 0x69, 0xB4)]
+        HotPink,
+
+        [RgbColor(0xCD, 0x5C, 0x5C)]
+        IndianRed,
+
+        [RgbColor(0x4B, 0x00, 0x82)]
+        Indigo,
+
+        [RgbColor(0xFF, 0xFF, 0xF0)]
+        Ivory,
+
+        [RgbColor(0xF0, 0xE6, 0x8C)]
+        Khaki,
+
+        [RgbColor(0xE6, 0xE6, 0xFA)]
+        Lavender,
+
+        [RgbColor(0xFF, 0xF0, 0xF5)]
+        LavenderBlush,
+
+        [RgbColor(0x7C, 0xFC, 0x00)]
+        LawnGreen,
+
+        [RgbColor(0xFF, 0xFA, 0xCD)]
+        LemonChiffon,
+
+        [RgbColor(0xAD, 0xD8, 0xE6)]
+        LightBlue,
+
+        [RgbColor(0xF0, 0x80, 0x80)]
+        LightCoral,
+
+        [RgbColor(0xE0, 0xFF, 0xFF)]
+        LightCyan,
+
+        [RgbColor(0xFA, 0xFA, 0xD2)]
+        LightGoldenRodYellow,
+
+        [RgbColor(0xD3, 0xD3, 0xD3)]
+        LightGray,
+
+        [RgbColor(0xD3, 0xD3, 0xD3)]
+        LightGrey,
+
+        [RgbColor(0x90, 0xEE, 0x90)]
+        LightGreen,
+
+        [RgbColor(0xFF, 0xB6, 0xC1)]
+        LightPink,
+
+        [RgbColor(0xFF, 0xA0, 0x7A)]
+        LightSalmon,
+
+        [RgbColor(0x20, 0xB2, 0xAA)]
+        LightSeaGreen,
+
+        [RgbColor(0x87, 0xCE, 0xFA)]
+        LightSkyBlue,
+
+        [RgbColor(0x77, 0x88, 0x99)]
+        LightSlateGray,
+
+        [RgbColor(0x77, 0x88, 0x99)]
+        LightSlateGrey,
+
+        [RgbColor(0xB0, 0xC4, 0xDE)]
+        LightSteelBlue,
+
+        [RgbColor(0xFF, 0xFF, 0xE0)]
+        LightYellow,
+
+        [RgbColor(0x00, 0xFF, 0x00)]
+        Lime,
+
+        [RgbColor(0x32, 0xCD, 0x32)]
+        LimeGreen,
+
+        [RgbColor(0xFA, 0xF0, 0xE6)]
+        Linen,
+
+        [RgbColor(0xFF, 0x00, 0xFF)]
+        Magenta,
+
+        [RgbColor(0x80, 0x00, 0x00)]
+        Maroon,
+
+        [RgbColor(0x66, 0xCD, 0xAA)]
+        MediumAquaMarine,
+
+        [RgbColor(0x00, 0x00, 0xCD)]
+        MediumBlue,
+
+        [RgbColor(0xBA, 0x55, 0xD3)]
+        MediumOrchid,
+
+        [RgbColor(0x93, 0x70, 0xDB)]
+        MediumPurple,
+
+        [RgbColor(0x3C, 0xB3, 0x71)]
+        MediumSeaGreen,
+
+        [RgbColor(0x7B, 0x68, 0xEE)]
+        MediumSlateBlue,
+
+        [RgbColor(0x00, 0xFA, 0x9A)]
+        MediumSpringGreen,
+
+        [RgbColor(0x48, 0xD1, 0xCC)]
+        MediumTurquoise,
+
+        [RgbColor(0xC7, 0x15, 0x85)]
+        MediumVioletRed,
+
+        [RgbColor(0x19, 0x19, 0x70)]
+        MidnightBlue,
+
+        [RgbColor(0xF5, 0xFF, 0xFA)]
+        MintCream,
+
+        [RgbColor(0xFF, 0xE4, 0xE1)]
+        MistyRose,
+
+        [RgbColor(0xFF, 0xE4, 0xB5)]
+        Moccasin,
+
+        [RgbColor(0xFF, 0xDE, 0xAD)]
+        NavajoWhite,
+
+        [RgbColor(0x00, 0x00, 0x80)]
+        Navy,
+
+        [RgbColor(0xFD, 0xF5, 0xE6)]
+        OldLace,
+
+        [RgbColor(0x80, 0x80, 0x00)]
+        Olive,
+
+        [RgbColor(0x6B, 0x8E, 0x23)]
+        OliveDrab,
+
+        [RgbColor(0xFF, 0xA5, 0x00)]
+        Orange,
+
+        [RgbColor(0xFF, 0x45, 0x00)]
+        OrangeRed,
+
+        [RgbColor(0xDA, 0x70, 0xD6)]
+        Orchid,
+
+        [RgbColor(0xEE, 0xE8, 0xAA)]
+        PaleGoldenRod,
+
+        [RgbColor(0x98, 0xFB, 0x98)]
+        PaleGreen,
+
+        [RgbColor(0xAF, 0xEE, 0xEE)]
+        PaleTurquoise,
+
+        [RgbColor(0xDB, 0x70, 0x93)]
+        PaleVioletRed,
+
+        [RgbColor(0xFF, 0xEF, 0xD5)]
+        PapayaWhip,
+
+        [RgbColor(0xFF, 0xDA, 0xB9)]
+        PeachPuff,
+
+        [RgbColor(0xCD, 0x85, 0x3F)]
+        Peru,
+
+        [RgbColor(0xFF, 0xC0, 0xCB)]
+        Pink,
+
+        [RgbColor(0xDD, 0xA0, 0xDD)]
+        Plum,
+
+        [RgbColor(0xB0, 0xE0, 0xE6)]
+        PowderBlue,
+
+        [RgbColor(0x80, 0x00, 0x80)]
+        Purple,
+
+        [RgbColor(0x66, 0x33, 0x99)]
+        RebeccaPurple,
+
+        [RgbColor(0xFF, 0x00, 0x00)]
+        Red,
+
+        [RgbColor(0xBC, 0x8F, 0x8F)]
+        RosyBrown,
+
+        [RgbColor(0x41, 0x69, 0xE1)]
+        RoyalBlue,
+
+        [RgbColor(0x8B, 0x45, 0x13)]
+        SaddleBrown,
+
+        [RgbColor(0xFA, 0x80, 0x72)]
+        Salmon,
+
+        [RgbColor(0xF4, 0xA4, 0x60)]
+        SandyBrown,
+
+        [RgbColor(0x2E, 0x8B, 0x57)]
+        SeaGreen,
+
+        [RgbColor(0xFF, 0xF5, 0xEE)]
+        SeaShell,
+
+        [RgbColor(0xA0, 0x52, 0x2D)]
+        Sienna,
+
+        [RgbColor(0xC0, 0xC0, 0xC0)]
+        Silver,
+
+        [RgbColor(0x87, 0xCE, 0xEB)]
+        SkyBlue,
+
+        [RgbColor(0x6A, 0x5A, 0xCD)]
+        SlateBlue,
+
+        [RgbColor(0x70, 0x80, 0x90)]
+        SlateGray,
+
+        [RgbColor(0x70, 0x80, 0x90)]
+        SlateGrey,
+
+        [RgbColor(0xFF, 0xFA, 0xFA)]
+        Snow,
+
+        [RgbColor(0x00, 0xFF, 0x7F)]
+        SpringGreen,
+
+        [RgbColor(0x46, 0x82, 0xB4)]
+        SteelBlue,
+
+        [RgbColor(0xD2, 0xB4, 0x8C)]
+        Tan,
+
+        [RgbColor(0x00, 0x80, 0x80)]
+        Teal,
+
+        [RgbColor(0xD8, 0xBF, 0xD8)]
+        Thistle,
+
+        [RgbColor(0xFF, 0x63, 0x47)]
+        Tomato,
+
+        [RgbColor(0x40, 0xE0, 0xD0)]
+        Turquoise,
+
+        [RgbColor(0xEE, 0x82, 0xEE)]
+        Violet,
+
+        [RgbColor(0xF5, 0xDE, 0xB3)]
+        Wheat,
+
+        [RgbColor(0xFF, 0xFF, 0xFF)]
+        White,
+
+        [RgbColor(0xF5, 0xF5, 0xF5)]
+        WhiteSmoke,
+
+        [RgbColor(0xFF, 0xFF, 0x00)]
+        Yellow,
+
+        [RgbColor(0x9A, 0xCD, 0x32)]
+        YellowGreen
+    }
+}

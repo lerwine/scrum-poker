@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -19,7 +15,7 @@ public class PlanningMeeting
         set { _title = value.EmptyIfNullOrTrimmed(); }
     }
 
-    public SessionStage Stage { get; set; }
+    public DataContracts.SessionStage Stage { get; set; }
 
     private string? _description = null;
     public string? Description
