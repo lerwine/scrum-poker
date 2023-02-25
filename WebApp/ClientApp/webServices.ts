@@ -98,7 +98,7 @@ namespace webServices {
 
     export interface ISprintGrouping {
       title: string;
-      description?: Date;
+      description?: string;
       startDate?: Date;
       plannedEndDate?: Date;
     }
@@ -117,6 +117,22 @@ namespace webServices {
       // TODO: Add Deck Information
     }
 
+    function fromDateString(value?: string) : Date | undefined {
+      if (typeof value !== 'string')
+        return;
+      return new Date(value);
+    }
+
+    function fromSprintGroupingResponse(value?: ISprintGroupingResponse): ISprintGrouping | undefined {
+      if (typeof value === 'undefined')
+        return;
+      return {
+        title: value.title,
+        description: value.description,
+        startDate: fromDateString(value.startDate),
+        plannedEndDate: fromDateString(value.plannedEndDate)
+      };
+    }
     export class UserService {
       private _promise: angular.IPromise<void>;
       private _response?: IAppStateResponse;
@@ -187,9 +203,9 @@ namespace webServices {
         return this.$http.get<IScrumStateResponse>('api/User/ScrumMeeting/' + teamId)
           .then(function (result: ng.IHttpResponse<IScrumStateResponse>): IScrumState {
             var scrumState: IScrumState = {
-              initiative: result.data.initiative,
-              epic: result.data.epic,
-              milestone: result.data.milestone,
+              initiative: fromSprintGroupingResponse(result.data.initiative),
+              epic: fromSprintGroupingResponse(result.data.epic),
+              milestone: fromSprintGroupingResponse(result.data.milestone),
               currentScopePoints: result.data.currentScopePoints,
               sprintCapacity: result.data.sprintCapacity,
               teamId: result.data.team.teamId,
