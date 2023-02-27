@@ -1,6 +1,6 @@
 # ScrumPoker
 
-Scrum poker web application
+Scrum Planning Poker web application
 
 ## Methods of execution
 
