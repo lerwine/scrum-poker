@@ -91,17 +91,17 @@ public class PlanningMeeting
     // TODO: Need to validate that the Initiative belongs to the same team as the current PlanningMeeting before being saved to DB
     public Guid? InitiativeId { get; set; }
 
-    public SprintInitiative? Initiative { get; set; }
+    public Initiative? Initiative { get; set; }
 
     // TODO: Need to validate that the Epic belongs to the same team as the current PlanningMeeting before being saved to DB
     public Guid? EpicId { get; set; }
 
-    public SprintEpic? Epic { get; set; }
+    public Epic? Epic { get; set; }
 
     // TODO: Need to validate that the Milestone belongs to the same team as the current PlanningMeeting before being saved to DB
     public Guid? MilestoneId { get; set; }
 
-    public SprintMilestone? Milestone { get; set; }
+    public Milestone? Milestone { get; set; }
 
     private Collection<Participant> _participants = new();
     public Collection<Participant> Participants

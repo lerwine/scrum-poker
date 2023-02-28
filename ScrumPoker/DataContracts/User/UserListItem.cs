@@ -20,7 +20,7 @@ namespace ScrumPoker.DataContracts.User
 
         private Guid _userId;
         /// <summary>
-        /// Gets the user's unique identifier.
+        /// Gets or sets the user's unique identifier.
         /// </summary>
         public Guid UserId
         {
@@ -31,7 +31,7 @@ namespace ScrumPoker.DataContracts.User
         private string _displayName = "";
         [DataMember(Name = "displayName", IsRequired = true)]
         /// <summary>
-        /// The display name of the currently authenticated user.
+        /// The display name of the current user.
         /// </summary>
         public string DisplayName
         {
@@ -42,7 +42,7 @@ namespace ScrumPoker.DataContracts.User
         private string _userName = "";
         [DataMember(Name = "userName", IsRequired = true)]
         /// <summary>
-        /// The login name of the currently authenticated user.
+        /// The login name of the currentl user.
         /// </summary>
         public string UserName
         {

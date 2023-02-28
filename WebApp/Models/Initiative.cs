@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ScrumPoker.WebApp.Models;
 
-public class SprintEpic
+public class Initiative
 {
     public Guid Id { get; set; }
 
@@ -50,16 +50,9 @@ public class SprintEpic
         set { _meetings = value ?? new Collection<PlanningMeeting>(); }
     }
 
-    private Collection<SprintMilestone> _milestones = new();
-    public Collection<SprintMilestone> Milestones
-    {
-        get { return _milestones; }
-        set { _milestones = value ?? new Collection<SprintMilestone>(); }
-    }
-
-    internal static void OnBuildEntity(EntityTypeBuilder<SprintEpic> builder)
+    internal static void OnBuildEntity(EntityTypeBuilder<Initiative> builder)
     {
         _ = builder.HasKey(nameof(Id));
-        _ = builder.HasOne(i => i.Team).WithMany(t => t.Epics).HasForeignKey(nameof (TeamId)).IsRequired().OnDelete(DeleteBehavior.Restrict);
+        _ = builder.HasOne(i => i.Team).WithMany(t => t.Initiatives).HasForeignKey(nameof (TeamId)).IsRequired().OnDelete(DeleteBehavior.Restrict);
     }
 }

@@ -9,12 +9,11 @@ namespace ScrumPoker.DataContracts.User
 {
     [DataContract]
     /// <summary>
-    /// Response data contract for GET: /api/User/Team/{teamId}
+    /// Response data contract for GET: /api/User
     /// </summary>
     public class AppState : UserListItem
     {
-        public const string SUB_ROUTE = "AppState";
-        public const string FULL_ROUTE = Routings.User_Route + "/" + SUB_ROUTE;
+        // public const string FULL_ROUTE = Routings.User_Route;
 
         private bool _isAdmin = false;
         [DataMember(Name = "isAdmin", IsRequired = true)]

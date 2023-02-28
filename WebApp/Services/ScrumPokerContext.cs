@@ -26,11 +26,11 @@ public class ScrumPokerContext : DbContext
     
     public DbSet<Participant> Participants { get; set; } = null!;
     
-    public DbSet<SprintInitiative> SprintInitiatives { get; set; } = null!;
+    public DbSet<Initiative> Initiatives { get; set; } = null!;
     
-    public DbSet<SprintEpic> SprintEpics { get; set; } = null!;
+    public DbSet<Epic> Epics { get; set; } = null!;
     
-    public DbSet<SprintMilestone> SprintMilestones { get; set; } = null!;
+    public DbSet<Milestone> Milestones { get; set; } = null!;
     
     public DbSet<DeckType> DeckTypes { get; set; } = null!;
 
@@ -105,9 +105,9 @@ public class ScrumPokerContext : DbContext
             .Entity<TeamMember>(TeamMember.OnBuildEntity)
             .Entity<PlanningMeeting>(PlanningMeeting.OnBuildEntity)
             .Entity<Participant>(Participant.OnBuildEntity)
-            .Entity<SprintInitiative>(SprintInitiative.OnBuildEntity)
-            .Entity<SprintEpic>(SprintEpic.OnBuildEntity)
-            .Entity<SprintMilestone>(SprintMilestone.OnBuildEntity)
+            .Entity<Initiative>(Initiative.OnBuildEntity)
+            .Entity<Epic>(Epic.OnBuildEntity)
+            .Entity<Milestone>(Milestone.OnBuildEntity)
             .Entity<DeckType>(DeckType.OnBuildEntity)
             .Entity<CardDefinition>(CardDefinition.OnBuildEntity)
             .Entity<ColorSchema>(ColorSchema.OnBuildEntity)

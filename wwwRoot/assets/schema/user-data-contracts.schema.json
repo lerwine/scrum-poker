@@ -1,0 +1,350 @@
+{
+    "schema": "https://json-schema.org/draft/2020-12/schema",
+    "id": "https://raw.githubusercontent.com/lerwine/scrum-poker/main/wwwRoot/assets/schema/user-data-contracts.schema.json",
+    "title": "User data contracts",
+    "description": "User data contracts",
+    "type": "object",
+    "properties": {
+        "c": { "$ref": "#/$defs/colorString" }
+    },
+    "$defs": {
+        "guid": {
+            "type": "string",
+            "pattern": "^[A-Za-z\\d]{32}$",
+            "minLength": 32,
+            "maxLength": 32
+        },
+        "nonEmptyString": {
+            "type": "string",
+            "pattern": "^\\s*\\S",
+            "minLength": 1
+        },
+        "nonNegativeInt": {
+            "type": "integer",
+            "minimum": 0
+        },
+        "positiveInt": {
+            "type": "integer",
+            "minimum": 1
+        },
+        "dateString": {
+            "type": "string",
+            "pattern": "^\\d{4}-(0\\d|1[012])-([012]\\d|3[01])$",
+            "minLength": 10,
+            "maxLength": 10
+        },
+        "userListItem": {
+          "description": "Base properties for user entities",
+          "type": "object",
+          "properties": {
+            "userId": {
+                "description": "The user's unique identifier.",
+                "$ref": "#/$defs/guid"
+            },
+            "userName": {
+                "description": "The login name for the user.",
+                "$ref": "#/$defs/nonEmptyString"
+            },
+            "displayName": {
+                "description": "The display name for the user.",
+                "$ref": "#/$defs/nonEmptyString"
+            }
+          },
+          "required": [ "userId", "userName", "displayName" ]
+        },
+        "teamListItem": {
+          "description": "Base properties for user entities",
+          "type": "object",
+          "properties": {
+            "teamId": {
+                "description": "The team's unique identifier.",
+                "$ref": "#/$defs/guid"
+            },
+            "facilitatorId": {
+                "description": "The unique ID for the user representing the facilitator.",
+                "$ref": "#/$defs/guid"
+            },
+            "title": {
+                "description": "The display name for the team.",
+                "$ref": "#/$defs/nonEmptyString"
+            },
+            "description": {
+                "description": "The optional description of the team.",
+                "$ref": "#/$defs/nonEmptyString"
+            }
+          },
+          "required": [ "teamId", "facilitatorId", "title" ]
+        },
+        "planningMeetingListItem": {
+            "description": "Item listing for planning meetings.",
+            "type": "object",
+            "properties": {
+                "meetingId": {
+                    "description": "The planning meeting's unique identifier.",
+                    "$ref": "#/$defs/guid"
+                },
+                "title": {
+                    "description": "The display name for the planning meeting.",
+                    "$ref": "#/$defs/nonEmptyString"
+                },
+                "description": {
+                    "description": "The optional description of the planning meeting.",
+                    "$ref": "#/$defs/nonEmptyString"
+                },
+                "meetingDate": {
+                    "description": "The date of the planning meeting.",
+                    "$ref": "#/$defs/dateString"
+                }
+            },
+            "required": [ "meetingId", "title", "meetingDate" ]
+        },
+        "sprintGroupingResponse": {
+            "description": "Item listing for epics.",
+            "type": "object",
+            "properties": {
+                "title": {
+                    "description": "The display name for the epic.",
+                    "$ref": "#/$defs/nonEmptyString"
+                },
+                "description": {
+                    "description": "The optional description of the epic.",
+                    "$ref": "#/$defs/nonEmptyString"
+                },
+                "startDate": {
+                    "description": "The optional start date of the epic.",
+                    "$ref": "#/$defs/dateString"
+                },
+                "plannedEndDate": {
+                    "description": "The optional end date of the epic.",
+                    "$ref": "#/$defs/dateString"
+                }
+            },
+            "required": [ "title" ]
+        },
+        "epicListItem": {
+            "description": "Item listing for epics.",
+            "allOf": [
+                { "$ref": "#/$defs/sprintGroupingResponse" },
+                {
+                    "type": "object",
+                    "properties": {
+                        "epicId": {
+                            "description": "The epic's unique identifier.",
+                            "$ref": "#/$defs/guid"
+                        }
+                    },
+                    "required": [ "epicId" ]
+                }
+            ]
+        },
+        "milestoneListItem": {
+            "description": "Item listing for milestones.",
+            "allOf": [
+                { "$ref": "#/$defs/sprintGroupingResponse" },
+                {
+                    "type": "object",
+                    "properties": {
+                        "milestoneId": {
+                            "description": "The milestone's unique identifier.",
+                            "$ref": "#/$defs/guid"
+                        }
+                    },
+                    "required": [ "milestoneId" ]
+                }
+            ]
+        },
+        "initiativeListItem": {
+            "description": "Item listing for initiatives.",
+            "allOf": [
+                { "$ref": "#/$defs/sprintGroupingResponse" },
+                {
+                    "type": "object",
+                    "properties": {
+                        "initiativeId": {
+                            "description": "The initiative's unique identifier.",
+                            "$ref": "#/$defs/guid"
+                        }
+                    },
+                    "required": [ "initiativeId" ]
+                }
+            ]
+        },
+        "participantListItem": {
+            "description": "List item for sprint planning meeting participants",
+            "allOf": [
+                { "$ref": "#/$defs/userListItem" },
+                {
+                    "type": "object",
+                    "properties": {
+                        "selectedCardId": {
+                            "description": "The optional unique identifier of the selected card.",
+                            "$ref": "#/$defs/guid"
+                        },
+                        "cardColorId": {
+                            "description": "The unique identifier of the card color schema for the participant.",
+                            "$ref": "#/$defs/guid"
+                        },
+                        "assignedPoints": {
+                            "description": "The points assigned to the user.",
+                            "$ref": "#/$defs/nonNegativeInt"
+                        },
+                        "sprintCapacity": {
+                            "description": "The optional maximum print capacity for the user.",
+                            "$ref": "#/$defs/positiveInt"
+                        }
+                    },
+                    "required": [ "cardColorId", "assignedPoints" ]
+                }
+            ]
+        },
+        "colorSchemeListItem": {
+            "description": "Item listing for epics.",
+            "type": "object",
+            "properties": {
+                "schemeId": {
+                    "description": "The color scheme's unique identifier.",
+                    "$ref": "#/$defs/guid"
+                },
+                "name": {
+                    "description": "The display name for the epic.",
+                    "$ref": "#/$defs/nonEmptyString"
+                },
+                "fill": {
+                    "description": "The fill color.",
+                    "$ref": "colorString.json"
+                },
+                "stroke": {
+                    "description": "The stroke color.",
+                    "$ref": "colorString.json"
+                },
+                "text": {
+                    "description": "The text color.",
+                    "$ref": "colorString.json"
+                }
+            },
+            "required": [ "schemeId", "name", "fill", "stroke", "text" ]
+        },
+        "scrumState": {
+            "description": "Response data contract for GET: api/User/ScrumMeeting/{id}",
+            "allOf": [
+                { "$ref": "#/$defs/planningMeetingListItem" },
+                {
+                    "type": "object",
+                    "properties": {
+                        "plannedStartDate": {
+                            "description": "The optional planned start date of the sprint.",
+                            "$ref": "#/$defs/dateString"
+                        },
+                        "plannedEndDate": {
+                            "description": "The optional plannned end date of the sprint.",
+                            "$ref": "#/$defs/dateString"
+                        },
+                        "initiative": {
+                            "description": "The optional initiative for the sprint.",
+                            "$ref": "#/$defs/initiativeListItem"
+                        },
+                        "epic": {
+                            "description": "The optional epic for the sprint.",
+                            "$ref": "#/$defs/epicListItem"
+                        },
+                        "milestone": {
+                            "description": "The optional milestone for the sprint.",
+                            "$ref": "#/$defs/milestoneListItem"
+                        },
+                        "currentScopePoints": {
+                            "description": "The points assigned to the sprint.",
+                            "$ref": "#/$defs/nonNegativeInt"
+                        },
+                        "sprintCapacity": {
+                            "description": "The optional maximum capacity for the sprint.",
+                            "$ref": "#/$defs/positiveInt"
+                        },
+                        "team": {
+                            "description": "The team for the current sprint.",
+                            "$ref": "#/$defs/teamListItem"
+                        },
+                        "facilitator": {
+                            "description": "The team facilitator for the current sprint.",
+                            "$ref": "#/$defs/userListItem"
+                        },
+                        "participants": {
+                            "description": "The sprint planning meeting participants.",
+                            "type": "array",
+                            "items": [
+                                { "$ref": "#/$defs/participantListItem" }
+                            ]
+                        },
+                        "colorSchemes": {
+                            "description": "The color schemes used for particpants' cards.",
+                            "type": "array",
+                            "items": [
+                                { "$ref": "#/$defs/colorSchemeListItem" }
+                            ]
+                        }
+                    },
+                    "required": [ "team", "facilitator", "participants", "colorSchemes" ]
+                }
+            ]
+        },
+        "teamState": {
+            "description": "Response data contract for GET: api/User/TeamState/{id}",
+            "type": "object",
+            "properties": {
+                "teamId": {
+                    "description": "The team's unique identifier.",
+                    "$ref": "#/$defs/guid"
+                },
+                "facilitator": {
+                    "description": "The team's facilitator'.",
+                    "$ref": "#/$defs/userListItem"
+                },
+                "title": {
+                    "description": "The display name for the team.",
+                    "$ref": "#/$defs/nonEmptyString"
+                },
+                "description": {
+                    "description": "The optional description of the team.",
+                    "$ref": "#/$defs/nonEmptyString"
+                },
+                "meetings": {
+                    "description": "The planning meetings that the current user belongs to.",
+                    "type": "array",
+                    "items": [
+                        { "$ref": "#/$defs/planningMeetingListItem" }
+                    ]
+                }
+            },
+            "required": [ "teamId", "facilitator", "title", "meetings" ]
+        },
+        "appState": {
+            "description": "Response data contract for GET: /api/User",
+            "allOf": [
+                { "$ref": "#/$defs/userListItem" },
+                {
+                    "type": "object",
+                    "properties": {
+                        "isAdmin": {
+                            "description": "Indicates whether the user is registered as an administrative user.",
+                            "type": "boolean"
+                        },
+                        "teams": {
+                            "description": "The teams that the current user belongs to.",
+                            "type": "array",
+                            "items": [
+                                { "$ref": "#/$defs/teamListItem" }
+                            ]
+                        },
+                        "facilitators": {
+                            "description": "The team facilitators that are referenced in one more more teams.",
+                            "type": "array",
+                            "items": [
+                                { "$ref": "#/$defs/userListItem" }
+                            ]
+                        }
+                    },
+                    "required": [ "isAdmin", "teams", "facilitators" ]
+                }
+            ]
+        }
+    }
+}

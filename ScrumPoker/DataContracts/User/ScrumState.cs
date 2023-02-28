@@ -9,12 +9,13 @@ namespace ScrumPoker.DataContracts.User
 {
     [DataContract]
     /// <summary>
-    /// Response data contract for GET: /api/User/ScrumMeeting/{meetingId}
+    /// Response data contract for GET: /api/User/ScrumMeeting/{id}
     /// </summary>
     public class ScrumState : PlanningMeetingListItem
     {
         public const string SUB_ROUTE = "ScrumMeeting";
         public const string FULL_ROUTE = Routings.User_Route + "/" + SUB_ROUTE;
+        public const string PARAM_NAME = "id";
 
         private DateTime? _plannedStartDate;
         public DateTime? PlannedStartDate
@@ -48,25 +49,25 @@ namespace ScrumPoker.DataContracts.User
             set { _plannedEndDate = value.JsonStringToDate().ToLocalDate(); }
         }
 
-        private SprintGroupingResponse _initiative;
+        private InitiativeListItem _initiative;
         [DataMember(Name = "initiative", EmitDefaultValue = false)]
-        public SprintGroupingResponse Initiative
+        public InitiativeListItem Initiative
         {
             get { return _initiative; }
             set { _initiative = value; }
         }
 
-        private SprintGroupingResponse _epic;
+        private EpicListItem _epic;
         [DataMember(Name = "epic", EmitDefaultValue = false)]
-        public SprintGroupingResponse Epic
+        public EpicListItem Epic
         {
             get { return _epic; }
             set { _epic = value; }
         }
 
-        private SprintGroupingResponse _milestone;
+        private MilestoneListItem _milestone;
         [DataMember(Name = "milestone", EmitDefaultValue = false)]
-        public SprintGroupingResponse Milestone
+        public MilestoneListItem Milestone
         {
             get { return _milestone; }
             set { _milestone = value; }

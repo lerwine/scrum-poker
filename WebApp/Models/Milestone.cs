@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ScrumPoker.WebApp.Models;
 
-public class SprintInitiative
+public class Milestone
 {
     public Guid Id { get; set; }
 
@@ -22,7 +22,6 @@ public class SprintInitiative
         set { _description = value.TrimmedOrNullIfEmpty(); }
     }
 
-
     private DateTime? _startDate;
     public DateTime? StartDate
     {
@@ -37,6 +36,11 @@ public class SprintInitiative
         set { _plannedEndDate = value.ToLocalDate(); }
     }
 
+    // TODO: Need to validate that the Epic belongs to the same team as the current Milestone before being saved to DB
+    public Guid? EpicId { get; set; }
+
+    public Epic? Epic { get; set; }
+
     public Guid TeamId { get; set; }
 
 #pragma warning disable CS8618
@@ -50,9 +54,10 @@ public class SprintInitiative
         set { _meetings = value ?? new Collection<PlanningMeeting>(); }
     }
 
-    internal static void OnBuildEntity(EntityTypeBuilder<SprintInitiative> builder)
+    internal static void OnBuildEntity(EntityTypeBuilder<Milestone> builder)
     {
         _ = builder.HasKey(nameof(Id));
-        _ = builder.HasOne(i => i.Team).WithMany(t => t.Initiatives).HasForeignKey(nameof (TeamId)).IsRequired().OnDelete(DeleteBehavior.Restrict);
+        _ = builder.HasOne(i => i.Team).WithMany(t => t.Milestones).HasForeignKey(nameof (TeamId)).IsRequired().OnDelete(DeleteBehavior.Restrict);
+        _ = builder.HasOne(i => i.Epic).WithMany(t => t.Milestones).HasForeignKey(nameof (TeamId)).OnDelete(DeleteBehavior.Restrict);
     }
 }

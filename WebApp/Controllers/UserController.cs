@@ -22,12 +22,12 @@ public class UserController : ControllerBase
         // _logger = logger;
     }
 
-    // GET: api/User/AppState
+    // GET: api/User
     /// <summary>
     /// Gets initial application state for the current user.
     /// </summary>
-    /// <returns></returns>
-    [HttpGet(DataContracts.User.AppState.SUB_ROUTE)]
+    /// <returns>A <see cref="DataContracts.User.AppState" /> object getting the current user's application state.</returns>
+    [HttpGet]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<DataContracts.User.AppState>> GetAppState(CancellationToken token = default)
@@ -65,7 +65,7 @@ public class UserController : ControllerBase
         });
     }
 
-    // GET: api/User/Team/{id}
+    // GET: api/User/TeamState/{id}
     /// <summary>
     /// Gets initial team state for the current user.
     /// </summary>
@@ -133,7 +133,7 @@ public class UserController : ControllerBase
     /// Gets initial scrum meeting state for the current user.
     /// </summary>
     /// <returns></returns>
-    [HttpGet(DataContracts.User.ScrumState.SUB_ROUTE + "/{id:guid}")]
+    [HttpGet(DataContracts.User.ScrumState.SUB_ROUTE + "/{" + DataContracts.User.ScrumState.PARAM_NAME + ":guid}")]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -177,21 +177,21 @@ public class UserController : ControllerBase
         {
             PlannedStartDate = planningMeeting.PlannedStartDate,
             PlannedEndDate = planningMeeting.PlannedEndDate,
-            Initiative = (planningMeeting.Initiative is null) ? null : new DataContracts.SprintGroupingResponse()
+            Initiative = (planningMeeting.Initiative is null) ? null : new DataContracts.User.InitiativeListItem()
             {
                 Title = planningMeeting.Initiative.Title,
                 Description = planningMeeting.Initiative.Description,
                 StartDate = planningMeeting.Initiative.StartDate,
                 PlannedEndDate = planningMeeting.Initiative.PlannedEndDate
             },
-            Epic = (planningMeeting.Epic is null) ? null : new  DataContracts.SprintGroupingResponse()
+            Epic = (planningMeeting.Epic is null) ? null : new DataContracts.User.EpicListItem()
             {
                 Title = planningMeeting.Epic.Title,
                 Description = planningMeeting.Epic.Description,
                 StartDate = planningMeeting.Epic.StartDate,
                 PlannedEndDate = planningMeeting.Epic.PlannedEndDate
             },
-            Milestone = (planningMeeting.Milestone is null) ? null : new  DataContracts.SprintGroupingResponse()
+            Milestone = (planningMeeting.Milestone is null) ? null : new  DataContracts.User.MilestoneListItem()
             {
                 Title = planningMeeting.Milestone.Title,
                 Description = planningMeeting.Milestone.Description,

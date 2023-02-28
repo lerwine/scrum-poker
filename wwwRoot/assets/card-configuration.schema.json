@@ -76,7 +76,7 @@
       "minLength": 5
     },
     "cardType": {
-      "enum": ["Ambiguous", "Points", "Unattainable", "Abstain" ],
+      "enum": [ "Ambiguous", "Points", "Unattainable", "Abstain" ],
       "description": "Defines card types."
     },
     "cardSymbol": {

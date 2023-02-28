@@ -60,7 +60,7 @@ namespace ScrumPoker.DataContracts.User
             set { _meetingDate = value.ToLocalDate(); }
         }
 
-        [DataMember(Name = "meetingDate", EmitDefaultValue = false)]
+        [DataMember(Name = "meetingDate", IsRequired = true)]
         #pragma warning disable IDE0051, IDE1006
         private string __MeetingDate
         #pragma warning restore IDE0051, IDE1006

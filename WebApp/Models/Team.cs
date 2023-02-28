@@ -47,25 +47,25 @@ public class Team
         set { _meetings = value ?? new Collection<PlanningMeeting>(); }
     }
 
-    private Collection<SprintEpic> _epics = new();
-    public Collection<SprintEpic> Epics
+    private Collection<Epic> _epics = new();
+    public Collection<Epic> Epics
     {
         get { return _epics; }
-        set { _epics = value ?? new Collection<SprintEpic>(); }
+        set { _epics = value ?? new Collection<Epic>(); }
     }
     
-    private Collection<SprintInitiative> _initiatives = new();
-    public Collection<SprintInitiative> Initiatives
+    private Collection<Initiative> _initiatives = new();
+    public Collection<Initiative> Initiatives
     {
         get { return _initiatives; }
-        set { _initiatives = value ?? new Collection<SprintInitiative>(); }
+        set { _initiatives = value ?? new Collection<Initiative>(); }
     }
     
-    private Collection<SprintMilestone> _milestones = new();
-    public Collection<SprintMilestone> Milestones
+    private Collection<Milestone> _milestones = new();
+    public Collection<Milestone> Milestones
     {
         get { return _milestones; }
-        set { _milestones = value ?? new Collection<SprintMilestone>(); }
+        set { _milestones = value ?? new Collection<Milestone>(); }
     }
     
     internal static void OnBuildEntity(EntityTypeBuilder<Team> builder)

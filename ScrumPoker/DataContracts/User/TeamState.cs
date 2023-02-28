@@ -74,18 +74,45 @@ namespace ScrumPoker.DataContracts.User
         private Collection<PlanningMeetingListItem> _meetings = new Collection<PlanningMeetingListItem>();
         [DataMember(Name = "meetings", IsRequired = true)]
         /// <summary>
-        /// Gets the teams that the current user belongs to.
+        /// Gets the planning meetings for the current team.
         /// </summary>
         public Collection<PlanningMeetingListItem> Meetings
         {
             get { return _meetings; }
             set { _meetings = value ?? new Collection<PlanningMeetingListItem>(); }
         }
+        
+        private Collection<EpicListItem> _epics = new Collection<EpicListItem>();
+        [DataMember(Name = "epics", IsRequired = true)]
+        /// <summary>
+        /// Gets the epics for the current team.
+        /// </summary>
+        public Collection<EpicListItem> Epics
+        {
+            get { return _epics; }
+            set { _epics = value ?? new Collection<EpicListItem>(); }
+        }
 
-        // TODO: Add Epics
+        private Collection<MilestoneListItem> _milestones = new Collection<MilestoneListItem>();
+        [DataMember(Name = "milestones", IsRequired = true)]
+        /// <summary>
+        /// Gets the milestones for the current team that do not belong to an epic.
+        /// </summary>
+        public Collection<MilestoneListItem> Milestones
+        {
+            get { return _milestones; }
+            set { _milestones = value ?? new Collection<MilestoneListItem>(); }
+        }
 
-        // TODO: Add Milestones without Epics
-
-        // TODO: Add Initiatives
+        private Collection<InitiativeListItem> _initiatives = new Collection<InitiativeListItem>();
+        [DataMember(Name = "initiatives", IsRequired = true)]
+        /// <summary>
+        /// Gets the initiatives for the current team.
+        /// </summary>
+        public Collection<InitiativeListItem> Initiatives
+        {
+            get { return _initiatives; }
+            set { _initiatives = value ?? new Collection<InitiativeListItem>(); }
+        }
     }
 }
