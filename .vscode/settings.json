@@ -1,3 +1,76 @@
 {
-    "svg.preview.background": "transparent"
+    "svg.preview.background": "transparent",
+    "todohighlight.keywords": [
+        {
+            "text": "TODO:",
+            "color": "white",
+            "backgroundColor": "SaddleBrown",
+            "overviewRulerColor": "rgba(240,98,146,0.8)",
+            "diagnosticSeverity": "warning"
+        },
+        {
+            "text": "@todo",
+            "color": "white",
+            "backgroundColor": "SaddleBrown",
+            "overviewRulerColor": "rgba(240,98,146,0.8)",
+            "diagnosticSeverity": "warning"
+        },
+        {
+            "text": "FIXME:",
+            "color": "white",
+            "backgroundColor": "FireBrick",
+            "overviewRulerColor": "rgba(255,189,42,0.8)",
+            "diagnosticSeverity": "error"
+        },
+        {
+            "text": "Deprecated",
+            "color": "Blue",
+            "backgroundColor": "Yellow",
+            "overviewRulerColor": "Yellow",
+            "diagnosticSeverity": "warning",
+            "regex": {
+                "pattern": "Deprecated(?=[\\(\\]])"
+            }
+        },
+        {
+            "text": "@deprecated",
+            "color": "Blue",
+            "backgroundColor": "Yellow",
+            "overviewRulerColor": "Yellow",
+            "diagnosticSeverity": "warning"
+        },
+        {
+            "text": "INFO:",
+            "color": "White",
+            "backgroundColor": "Green",
+            "border": "none",
+            "diagnosticSeverity": "information",
+            "isWholeLine": false
+        },
+        {
+            "text": "BUG:", 
+            "before": {
+				"contentText": "⚠️" // adds text before the highlight
+			}, 
+            "after": {
+				"contentText": "⚠️" // adds text after the highlight
+			},
+            "color": "red",
+            "border": "1px solid red",
+            "borderRadius": "2px",
+            "backgroundColor": "rgba(0,0,0,.2)",
+            "diagnosticSeverity": "error"
+        },
+        {
+            "text": "NOTE:",
+            "color": "white",
+            "backgroundColor": "DarkSlateGray",
+            "overviewRulerColor": "DarkSlateGray",
+            "regex": {
+                "pattern": "(?<=^|\"|\\s)NOTE[:]?(?!\\w)"
+            },
+            "isWholeLine": false,
+            "diagnosticSeverity": "information"
+        }
+    ]
 }
