@@ -13,11 +13,21 @@
         "StoryState": {
             "enum": [ "Draft", 0, "Ready", 1, "Cancelled", 2 ]
         },
+        "cardSymbol": {
+          "type": "string",
+          "pattern": "^(\\?|½|∞|!|0|[1-9]\\d*)$"
+        },
+        "pathDataString": {
+          "type": "string",
+          "pattern": "^M( \\S+)+ Z$",
+          "minLength": 4
+        },
         "SprintGroupingItem": {
             "type": "object",
             "properties": {
                 "title": {
-                    "$ref": "../CommonTypes.schema.json#/$defs/wsNormalizedString"
+                    "$ref": "../CommonTypes.schema.json#/$defs/wsNormalizedString",
+                    "minLength": 1
                 },
                 "description": {
                     "$ref": "../CommonTypes.schema.json#/$defs/string"

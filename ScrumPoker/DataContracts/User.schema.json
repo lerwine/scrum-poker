@@ -11,10 +11,12 @@
                     "$ref": "../CommonTypes.schema.json#/$defs/Guid"
                 },
                 "displayName": {
-                    "$ref": "../CommonTypes.schema.json#/$defs/wsNormalizedString"
+                    "$ref": "../CommonTypes.schema.json#/$defs/wsNormalizedString",
+                    "minLength": 1
                 },
                 "userName": {
-                    "$ref": "../CommonTypes.schema.json#/$defs/wsNormalizedString"
+                    "$ref": "../CommonTypes.schema.json#/$defs/wsNormalizedString",
+                    "minLength": 1
                 }
             },
             "required": [ "userId", "displayName", "userName" ]
@@ -29,7 +31,8 @@
                     "$ref": "../CommonTypes.schema.json#/$defs/Guid"
                 },
                 "title": {
-                    "$ref": "../CommonTypes.schema.json#/$defs/wsNormalizedString"
+                    "$ref": "../CommonTypes.schema.json#/$defs/wsNormalizedString",
+                    "minLength": 1
                 },
                 "description": {
                     "$ref": "../CommonTypes.schema.json#/$defs/nonEmptyString"
@@ -37,14 +40,15 @@
             },
             "required": [ "teamId", "facilitatorId", "title" ]
         },
-        "ColorSchemeListItem": {
+        "CardColorListItem": {
             "type": "object",
             "properties": {
-                "schemeId": {
+                "colorId": {
                     "$ref": "../CommonTypes.schema.json#/$defs/Guid"
                 },
                 "name": {
-                    "$ref": "../CommonTypes.schema.json#/$defs/wsNormalizedString"
+                    "$ref": "../CommonTypes.schema.json#/$defs/wsNormalizedString",
+                    "minLength": 1
                 },
                 "fill": {
                     "$ref": "../ColorModel/CssColor.schema.json"
@@ -56,7 +60,124 @@
                     "$ref": "../ColorModel/CssColor.schema.json"
                 }
             },
-            "required": [ "schemeId", "name", "fill", "stroke", "text" ]
+            "required": [ "colorId", "name", "fill", "stroke", "text" ]
+        },
+        "ColorScheme": {
+            "type": "object",
+            "properties": {
+                "schemeId": {
+                    "$ref": "../CommonTypes.schema.json#/$defs/Guid"
+                },
+                "name": {
+                    "$ref": "../CommonTypes.schema.json#/$defs/wsNormalizedString",
+                    "minLength": 1
+                },
+                "votingFill": {
+                    "$ref": "../ColorModel/CssColor.schema.json"
+                },
+                "votingStroke": {
+                    "$ref": "../ColorModel/CssColor.schema.json"
+                },
+                "votingText": {
+                    "$ref": "../ColorModel/CssColor.schema.json"
+                },
+                "cardColors": {
+                    "type": "array",
+                    "items": [
+                        { "$ref": "#/$defs/CardColorListItem" }
+                    ]
+                }
+            },
+            "required": [ "schemeId", "name", "votingFill", "votingStroke", "votingText", "cardColors" ]
+        },
+        "DeckListItem": {
+            "type": "object",
+            "properties": {
+                "deckId": {
+                    "$ref": "../CommonTypes.schema.json#/$defs/Guid"
+                },
+                "title": {
+                    "$ref": "../CommonTypes.schema.json#/$defs/wsNormalizedString",
+                    "minLength": 1
+                },
+                "description": {
+                    "$ref": "../CommonTypes.schema.json#/$defs/nonEmptyString"
+                }
+            },
+            "required": [ "deckId", "title" ]
+        },
+        "CardListItem": {
+            "type": "object",
+            "properties": {
+                "cardId": {
+                    "$ref": "../CommonTypes.schema.json#/$defs/Guid"
+                },
+                "order": {
+                    "$ref": "../CommonTypes.schema.json#/$defs/nonNegativeInteger"
+                },
+                "title": {
+                    "$ref": "../CommonTypes.schema.json#/$defs/wsNormalizedString",
+                    "minLength": 1
+                },
+                "symbolText": {
+                    "$ref": "../CommonTypes.schema.json#/$defs/wsNormalizedString",
+                    "minLength": 1
+                },
+                "type": {
+                    "$ref": "DataContractTypes.schema.json#/$defs/CardType",
+                    "minLength": 1
+                },
+                "description": {
+                    "$ref": "../CommonTypes.schema.json#/$defs/nonEmptyString"
+                },
+                "truncatedDescription": {
+                    "$ref": "../CommonTypes.schema.json#/$defs/nonEmptyString"
+                }
+            },
+            "required": [ "cardId", "title", "symbolText", "type" ]
+        },
+        "SimpleCard": {
+            "allOf": [
+                { "$ref": "#/$defs/CardListItem" },
+                {
+                    "type": "object",
+                    "properties": {
+                        "value": {
+                            "$ref": "../CommonTypes.schema.json#/$defs/nonNegativeInteger"
+                        },
+                        "middleSymbolTop": {
+                          "type": "number",
+                          "minimum": 0.0
+                        },
+                        "symbolFont": {
+                            "$ref": "../CommonTypes.schema.json#/$defs/wsNormalizedString",
+                            "minLength": 1
+                        },
+                        "smallSymbolFontSize": {
+                          "type": "integer",
+                          "minimum": 8
+                        },
+                        "largeSymbolFontSize": {
+                          "type": "integer",
+                          "minimum": 8
+                        }
+                    }
+                }
+            ]
+        },
+        "PathCard": {
+            "allOf": [
+                { "$ref": "#/$defs/CardListItem" },
+                {
+                    "type": "object",
+                    "properties": {
+                        "upperSymbolPath": { "$ref": "DataContractTypes.schema.json#/$defs/pathDataString" },
+                        "middleSymbolPath": { "$ref": "DataContractTypes.schema.json#/$defs/pathDataString" },
+                        "lowerSymbolPath": { "$ref": "DataContractTypes.schema.json#/$defs/pathDataString" }
+                    },
+                    "required": [ "upperSymbolPath", "middleSymbolPath", "lowerSymbolPath" ]
+                }
+            ]
         },
         "AppState": {
             "description": "Response data contract for GET: /api/User/AppState",
@@ -157,7 +278,8 @@
                     "$ref": "../CommonTypes.schema.json#/$defs/Guid"
                 },
                 "title": {
-                    "$ref": "../CommonTypes.schema.json#/$defs/wsNormalizedString"
+                    "$ref": "../CommonTypes.schema.json#/$defs/wsNormalizedString",
+                    "minLength": 1
                 },
                 "description": {
                     "$ref": "../CommonTypes.schema.json#/$defs/nonEmptyString"
@@ -211,14 +333,25 @@
                                 { "$ref": "#/$defs/ParticipantListItem" }
                             ]
                         },
-                        "colorSchemes": {
+                        "colorScheme": {
+                            "$ref": "#/$defs/ColorScheme"
+                        },
+                        "deck": {
+                            "$ref": "#/$defs/DeckListItem"
+                        },
+                        "cards": {
                             "type": "array",
                             "items": [
-                                { "$ref": "#/$defs/ColorSchemeListItem" }
+                                {
+                                    "oneOf": [
+                                        { "$ref": "#/$defs/PathCard" },
+                                        { "$ref": "#/$defs/SimpleCard" }
+                                    ]
+                                }
                             ]
                         }
                     },
-                    "required": [ "currentScopePoints", "team", "facilitator", "participants", "colorSchemes" ]
+                    "required": [ "currentScopePoints", "team", "facilitator", "participants", "colorScheme", "deck", "cards" ]
                 }
             ]
         },
@@ -236,7 +369,8 @@
                             "$ref": "#/$defs/UserListItem"
                         },
                         "title": {
-                            "$ref": "../CommonTypes.schema.json#/$defs/wsNormalizedString"
+                            "$ref": "../CommonTypes.schema.json#/$defs/wsNormalizedString",
+                            "minLength": 1
                         },
                         "description": {
                             "$ref": "../CommonTypes.schema.json#/$defs/nonEmptyString"

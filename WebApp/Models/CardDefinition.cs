@@ -4,12 +4,13 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ScrumPoker.WebApp.Models;
 
-// TODO: CardDefinition needs to be in a many-to-many relationship with DeckType
 /// <summary>
 /// 
 /// </summary>
 public class CardDefinition
 {
+    public Guid Id { get; set; }
+
     private string _title = "";
     /// <summary>
     /// 
@@ -90,22 +91,15 @@ public class CardDefinition
         set { _truncatedDescription = value.TrimmedOrNullIfEmpty(); }
     }
 
+    private Collection<DeckCard> _decks = new();
     /// <summary>
-    /// The unique identifier of the deck type definition that uses this card definition.
+    /// 
     /// </summary>
-    public Guid DeckTypeId { get; set; }
-
-    /// <summary>
-    /// The deck type definition that uses this card definition.
-    /// </summary>
-#pragma warning disable CS8618
-    public DeckType DeckType { get; set; }
-#pragma warning restore CS8618
-
-    /// <summary>
-    /// The deck order for the card.
-    /// </summary>
-    public int Order { get; set; }
+    public Collection<DeckCard> Decks
+    {
+        get { return _decks; }
+        set { _decks = value ?? new Collection<DeckCard>(); }
+    }
 
     /// <summary>
     /// The points value for the card.
@@ -144,7 +138,8 @@ public class CardDefinition
     
     internal static void OnBuildEntity(EntityTypeBuilder<CardDefinition> builder)
     {
-        _ = builder.HasKey(nameof(DeckTypeId), nameof(Order));
-        _ = builder.HasOne(i => i.DeckType).WithMany(t => t.Cards).HasForeignKey(nameof (DeckTypeId)).IsRequired().OnDelete(DeleteBehavior.Restrict);
+        _ = builder.HasKey(nameof(Id));
+        _ = builder.Property(c => c.Title).UseCollation("SQL_Latin1_General_CP1_CI_AS");
+        _ = builder.Property(c => c.SymbolText).UseCollation("SQL_Latin1_General_CP1_CI_AS");
     }
 }

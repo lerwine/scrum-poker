@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ScrumPoker.WebApp.Models;
@@ -6,7 +7,7 @@ namespace ScrumPoker.WebApp.Models;
 /// <summary>
 /// 
 /// </summary>
-public class DeckType
+public class CardDeck
 {
     /// <summary>
     /// 
@@ -53,14 +54,15 @@ public class DeckType
     /// </summary>
     public int Height { get; set; }
     
-    private Collection<CardDefinition> _cards = new();
+    // FIXME: CardDeck needs to be in a many-to-many relationship with CardDefinition
+    private Collection<DeckCard> _cards = new();
     /// <summary>
     /// 
     /// </summary>
-    public Collection<CardDefinition> Cards
+    public Collection<DeckCard> Cards
     {
         get { return _cards; }
-        set { _cards = value ?? new Collection<CardDefinition>(); }
+        set { _cards = value ?? new Collection<DeckCard>(); }
     }
 
     private Collection<SheetDefinition> _sheets = new();
@@ -83,10 +85,9 @@ public class DeckType
         set { _meetings = value ?? new Collection<PlanningMeeting>(); }
     }
 
-    internal static void OnBuildEntity(EntityTypeBuilder<DeckType> builder)
+    internal static void OnBuildEntity(EntityTypeBuilder<CardDeck> builder)
     {
         _ = builder.HasKey(nameof(Id));
-        // _ = builder.HasOne(i => i.Team).WithMany(t => t.Milestones).HasForeignKey(nameof (TeamId)).IsRequired().OnDelete(DeleteBehavior.Restrict);
-        // _ = builder.HasOne(i => i.Epic).WithMany(t => t.Milestones).HasForeignKey(nameof (TeamId)).OnDelete(DeleteBehavior.Restrict);
+        _ = builder.Property(c => c.Name).UseCollation("SQL_Latin1_General_CP1_CI_AS");
     }
 }

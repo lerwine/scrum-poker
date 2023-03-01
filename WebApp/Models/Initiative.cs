@@ -55,17 +55,24 @@ public class Initiative
         set { _plannedEndDate = value.ToLocalDate(); }
     }
 
+    private readonly FKNavProperty<Team> _team = new(e => e.Id);
     /// <summary>
-    /// 
+    /// The unique identifier for the initiative's team.
     /// </summary>
-    public Guid TeamId { get; set; }
+    public Guid TeamId
+    {
+        get => _team.ForeignKey;
+        set => _team.ForeignKey = value;
+    }
 
     /// <summary>
-    /// 
+    /// The initiative's team.
     /// </summary>
-#pragma warning disable CS8618
-    public Team Team { get; set; }
-#pragma warning restore CS8618
+    public Team? Team
+    {
+        get => _team.Model;
+        set => _team.Model = value;
+    }
 
     private Collection<PlanningMeeting> _meetings = new();
     /// <summary>
@@ -81,5 +88,6 @@ public class Initiative
     {
         _ = builder.HasKey(nameof(Id));
         _ = builder.HasOne(i => i.Team).WithMany(t => t.Initiatives).HasForeignKey(nameof (TeamId)).IsRequired().OnDelete(DeleteBehavior.Restrict);
+        _ = builder.Property(c => c.Title).UseCollation("SQL_Latin1_General_CP1_CI_AS");
     }
 }

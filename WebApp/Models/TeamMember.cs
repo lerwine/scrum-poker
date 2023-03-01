@@ -8,34 +8,41 @@ namespace ScrumPoker.WebApp.Models;
 /// </summary>
 public class TeamMember
 {
+    private readonly FKNavProperty<Team> _team = new(e => e.Id);
     /// <summary>
-    /// 
+    /// The unique identifier for the planning meeting's team.
     /// </summary>
-    public Guid TeamId { get; set; }
-
-    /// <summary>
-    /// 
-    /// </summary>
-#pragma warning disable CS8618
-    public Team Team { get; set; }
-#pragma warning restore CS8618
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public Guid UserId { get; set; }
-
-    /// <summary>
-    /// 
-    /// </summary>
-#pragma warning disable CS8618
-    public UserProfile User { get; set; }
-#pragma warning restore CS8618
-    
-    internal static void OnBuildEntity(EntityTypeBuilder<TeamMember> builder)
+    public Guid TeamId
     {
-        _ = builder.HasOne(p => p.Team).WithMany(d => d.Members).HasForeignKey(nameof(TeamId)).IsRequired().OnDelete(DeleteBehavior.Restrict);
-        _ = builder.HasOne(p => p.User).WithMany(d => d.Memberships).HasForeignKey(nameof(UserId)).IsRequired().OnDelete(DeleteBehavior.Restrict);
-        _ = builder.HasKey(nameof(TeamId), nameof(UserId));
+        get => _team.ForeignKey;
+        set => _team.ForeignKey = value;
+    }
+
+    /// <summary>
+    /// The planning meeting's team.
+    /// </summary>
+    public Team? Team
+    {
+        get => _team.Model;
+        set => _team.Model = value;
+    }
+    
+    private readonly FKNavProperty<UserProfile> _user = new(e => e.Id);
+    /// <summary>
+    /// 
+    /// </summary>
+    public Guid UserId
+    {
+        get => _user.ForeignKey;
+        set => _user.ForeignKey = value;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public UserProfile? User
+    {
+        get => _user.Model;
+        set => _user.Model = value;
     }
 }

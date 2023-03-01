@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ScrumPoker.WebApp.Models;
@@ -48,6 +49,16 @@ public class UserProfile
         set { _facilitated = value ?? new Collection<Team>(); }
     }
 
+    private Collection<Team> _teams = new();
+    /// <summary>
+    /// Gets the teams that the current user belongs to.
+    /// </summary>
+    public Collection<Team> Teams
+    {
+        get { return _teams; }
+        set { _teams = value ?? new Collection<Team>(); }
+    }
+
     private Collection<TeamMember> _memberships = new();
     /// <summary>
     /// Gets the teams that the current user belongs to.
@@ -71,5 +82,7 @@ public class UserProfile
     internal static void OnBuildEntity(EntityTypeBuilder<UserProfile> builder)
     {
         _ = builder.HasKey(nameof(Id));
+        _ = builder.Property(c => c.UserName).UseCollation("SQL_Latin1_General_CP1_CI_AS");
+        _ = builder.Property(c => c.DisplayName).UseCollation("SQL_Latin1_General_CP1_CI_AS");
     }
 }

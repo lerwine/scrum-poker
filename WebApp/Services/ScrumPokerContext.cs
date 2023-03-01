@@ -20,8 +20,6 @@ public class ScrumPokerContext : DbContext
     
     public DbSet<Team> Teams { get; set; } = null!;
     
-    public DbSet<TeamMember> TeamMembers { get; set; } = null!;
-    
     public DbSet<PlanningMeeting> Meetings { get; set; } = null!;
     
     public DbSet<Participant> Participants { get; set; } = null!;
@@ -32,8 +30,10 @@ public class ScrumPokerContext : DbContext
     
     public DbSet<Milestone> Milestones { get; set; } = null!;
     
-    public DbSet<DeckType> DeckTypes { get; set; } = null!;
+    // FIXME: Rename to Decks
+    public DbSet<CardDeck> DeckTypes { get; set; } = null!;
 
+    // FIXME: Add entity for many-to-many relationship with CardDeck
     public DbSet<CardDefinition> Cards { get; set; } = null!;
     
     public DbSet<ColorSchema> ColorSchemas { get; set; } = null!;
@@ -52,44 +52,79 @@ public class ScrumPokerContext : DbContext
 
     private UserProfile? _userProfile;
 
-    public async Task<UserProfile?> GetUserProfileAsync(CancellationToken cancellationToken)
+    public bool TryGetCurrentIdentityName([MaybeNullWhen(false)] out string result)
     {
         IIdentity? identity = ClaimsPrincipal.Current?.Identity;
         if (identity is not null && identity.IsAuthenticated)
         {
-            string? userName = identity.Name.NullIfEmpty();
-            if (userName is not null)
+            if ((result = identity.Name.NullIfEmpty()) is not null)
             {
-                userName = userName.ToLower();
-                return await Profles.FirstOrDefaultAsync(p => p.UserName == userName, cancellationToken);
+                result = result.ToLower();
+                return true;
             }
         }
-        return null;
+        else
+            result = null;
+        return false;   
+    }
+
+    public bool TryFindUserProfile(IEnumerable<UserProfile> source, [MaybeNullWhen(false)] out UserProfile userProfile)
+    {
+        if (TryGetCurrentIdentityName(out string? userName))
+            return (userProfile = source.FirstOrDefault(p => p.UserName == userName)) is not null;
+        userProfile = null;
+        return false;
+    }
+
+    public bool TryFindUserProfile(UserProfile? userProfile, IEnumerable<UserProfile> source, [MaybeNullWhen(false)] out UserProfile result)
+    {
+        if (TryGetCurrentIdentityName(out string? userName))
+        {
+            if (userProfile is not null && userProfile.UserName == userName)
+            {
+                result = userProfile;
+                return true;
+            }
+            return (result = source.FirstOrDefault(p => p.UserName == userName)) is not null;
+        }
+        result = null;
+        return false;
+    }
+
+    public async Task<UserProfile?> GetUserProfileAsync(CancellationToken cancellationToken)
+    {
+        if (TryGetCurrentIdentityName(out string? userName))
+        {
+            if (_userProfile is null || _userProfile.UserName != userName)
+                _userProfile = await Profles.FirstOrDefaultAsync(p => p.UserName == userName, cancellationToken);
+        }
+        else
+            _userProfile = null;
+        return _userProfile;
+    }
+
+    public async Task<UserProfile?> GetUserProfileAsync(Func<IQueryable<UserProfile>, IQueryable<UserProfile>> onQuery, CancellationToken cancellationToken)
+    {
+        if (TryGetCurrentIdentityName(out string? userName))
+            _userProfile = await onQuery(Profles).FirstOrDefaultAsync(p => p.UserName == userName, cancellationToken);
+        else
+            _userProfile = null;
+        return _userProfile;
     }
     
     public bool TryGetUserProfile([MaybeNullWhen(false)] out UserProfile result)
     {
-        IIdentity? identity = ClaimsPrincipal.Current?.Identity;
-        if (identity is not null && identity.IsAuthenticated)
+        if (TryGetCurrentIdentityName(out string? userName))
         {
-            string? userName = identity.Name.NullIfEmpty();
-            if (userName is not null)
+            if ((_userProfile is not null && _userProfile.UserName == userName) || (_userProfile = Profles.FirstOrDefault(u => u.UserName == userName)) is not null)
             {
-                StringComparer comparer = StringComparer.InvariantCultureIgnoreCase;
-                if (_userProfile is not null && comparer.Equals(_userProfile.UserName, userName))
-                {
-                    result = _userProfile;
-                    return true;
-                }
-                foreach (UserProfile u in Profles)
-                    if (comparer.Equals(u.UserName, userName))
-                    {
-                        _userProfile = result = u;
-                        return true;
-                    }
+                result = _userProfile;
+                return true;
             }
         }
-        _userProfile = result = null;
+        else
+            _userProfile = null;
+        result = null;
         return false;
     }
     
@@ -102,14 +137,14 @@ public class ScrumPokerContext : DbContext
         modelBuilder
             .Entity<UserProfile>(UserProfile.OnBuildEntity)
             .Entity<Team>(Team.OnBuildEntity)
-            .Entity<TeamMember>(TeamMember.OnBuildEntity)
             .Entity<PlanningMeeting>(PlanningMeeting.OnBuildEntity)
             .Entity<Participant>(Participant.OnBuildEntity)
             .Entity<Initiative>(Initiative.OnBuildEntity)
             .Entity<Epic>(Epic.OnBuildEntity)
             .Entity<Milestone>(Milestone.OnBuildEntity)
-            .Entity<DeckType>(DeckType.OnBuildEntity)
+            .Entity<CardDeck>(CardDeck.OnBuildEntity)
             .Entity<CardDefinition>(CardDefinition.OnBuildEntity)
+            .Entity<DeckCard>(DeckCard.OnBuildEntity)
             .Entity<ColorSchema>(ColorSchema.OnBuildEntity)
             .Entity<CardColor>(CardColor.OnBuildEntity)
             .Entity<SheetDefinition>(SheetDefinition.OnBuildEntity);

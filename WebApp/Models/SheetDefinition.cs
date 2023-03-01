@@ -23,21 +23,29 @@ public class SheetDefinition
     /// </summary>
     public int MaxValue { get; set; }
 
+    private readonly FKNavProperty<CardDeck> _deck = new(e => e.Id);
     /// <summary>
     /// 
     /// </summary>
-    public Guid DeckTypeId { get; set; }
-
+    public Guid DeckId
+    {
+        get => _deck.ForeignKey;
+        set => _deck.ForeignKey = value;
+    }
+    
     /// <summary>
     /// 
     /// </summary>
-#pragma warning disable CS8618
-    public DeckType DeckType { get; set; }
-#pragma warning restore CS8618
+    public CardDeck? Deck
+    {
+        get => _deck.Model;
+        set => _deck.Model = value;
+    }
 
     internal static void OnBuildEntity(EntityTypeBuilder<SheetDefinition> builder)
     {
-        _ = builder.HasKey(nameof(SheetNumber), nameof(DeckTypeId));
-        _ = builder.HasOne(i => i.DeckType).WithMany(t => t.Sheets).HasForeignKey(nameof (DeckTypeId)).IsRequired().OnDelete(DeleteBehavior.Restrict);
+        _ = builder.HasKey(nameof(SheetNumber), nameof(DeckId));
+        _ = builder.HasOne(i => i.Deck).WithMany(t => t.Sheets).HasForeignKey(nameof (DeckId)).IsRequired().OnDelete(DeleteBehavior.Restrict);
+        _ = builder.Property(c => c.URL).UseCollation("SQL_Latin1_General_CP1_CI_AS");
     }
 }

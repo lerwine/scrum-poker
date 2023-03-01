@@ -25,7 +25,7 @@
     },
     "deckTypes": {
       "type": "array",
-      "description": "Defines card deck types.",
+      "description": "Defines card deck types. @todo Rename to decks",
       "uniqueItems": true,
       "items": { "$ref": "#/$defs/deckTypeEntity" },
       "minContains": 2

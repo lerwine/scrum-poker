@@ -44,7 +44,7 @@ namespace ScrumPoker.DataContracts.User
         /// <summary>
         /// The fill color for the "voting" card.
         /// </summary>
-        [DataMember(Name = "fill", IsRequired = true)]
+        [DataMember(Name = "votingFill", IsRequired = true)]
         public string VotingFill
         {
             get { return _votingFill; }
@@ -55,7 +55,7 @@ namespace ScrumPoker.DataContracts.User
         /// <summary>
         /// The stroke color for the "voting" card.
         /// </summary>
-        [DataMember(Name = "stroke", IsRequired = true)]
+        [DataMember(Name = "votingStroke", IsRequired = true)]
         public string VotingStroke
         {
             get { return _votingStroke; }
@@ -66,7 +66,7 @@ namespace ScrumPoker.DataContracts.User
         /// <summary>
         /// The color for the text for the "voting" card.
         /// </summary>
-        [DataMember(Name = "text", IsRequired = true)]
+        [DataMember(Name = "votingText", IsRequired = true)]
         public string VotingText
         {
             get { return _votingText; }

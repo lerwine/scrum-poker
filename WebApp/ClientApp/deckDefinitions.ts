@@ -1,4 +1,7 @@
 namespace deckDefinitions {
+    /**
+     * @todo Rename to ICardDeckListItem
+     */
     export interface IDeckTypeListItem extends INameAndDescription {
         id: number;
         previewUrl: string;
@@ -117,6 +120,9 @@ namespace deckDefinitions {
         return typeof (<dataEntities.IPathCardEntity>card).middleSymbolPath === 'string';
     }
 
+    /**
+     * @todo Rename to 'toCardDeckListItem'
+     */
     function toDeckTypeListItem(item: dataEntities.IDeckTypeEntity, id: number): IDeckTypeListItem {
         return {
             id: id, name: item.name, description: item.description, previewUrl: 'assets/' + item.previewImage.fileName,
@@ -192,6 +198,9 @@ namespace deckDefinitions {
         return result;
     }
 
+    /**
+     * @todo Rename to CardDecksService
+     */
     export class DeckTypesService {
         private _promise: angular.IPromise<void>;
         private _deckDefinitions?: dataEntities.IDeckDefinitions;

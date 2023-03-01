@@ -32,7 +32,6 @@ namespace ScrumPoker.DataContracts
             set { _description = value.TrimmedOrNullIfEmpty(); }
         }
 
-
         private DateTime? _startDate;
         /// <summary>
         /// The optional planned start date.

@@ -109,74 +109,122 @@ public class PlanningMeeting
         set { _lastActivity = value.ToLocalDate(); }
     }
 
+    private readonly FKNavProperty<CardDeck> _deck = new(e => e.Id);
     /// <summary>
     /// 
     /// </summary>
-    public Guid DeckTypeId { get; set; }
+    public Guid DeckId
+    {
+        get => _deck.ForeignKey;
+        set => _deck.ForeignKey = value;
+    }
     
     /// <summary>
     /// 
     /// </summary>
-#pragma warning disable CS8618
-    public DeckType DeckType { get; set; }
-#pragma warning restore CS8618
+    public CardDeck? Deck
+    {
+        get => _deck.Model;
+        set => _deck.Model = value;
+    }
 
+    private readonly FKNavProperty<ColorSchema> _colorScheme = new(e => e.Id);
     /// <summary>
     /// 
     /// </summary>
-    public Guid ColorSchemeId { get; set; }
+    public Guid ColorSchemeId
+    {
+        get => _colorScheme.ForeignKey;
+        set => _colorScheme.ForeignKey = value;
+    }
     
     /// <summary>
     /// 
     /// </summary>
-#pragma warning disable CS8618
-    public ColorSchema ColorScheme { get; set; }
-#pragma warning restore CS8618
+    public ColorSchema? ColorScheme
+    {
+        get => _colorScheme.Model;
+        set => _colorScheme.Model = value;
+    }
     
+    private readonly FKNavProperty<Team> _team = new(e => e.Id);
     /// <summary>
-    /// 
+    /// The unique identifier for the planning meeting's team.
     /// </summary>
-    public Guid TeamId { get; set; }
+    public Guid TeamId
+    {
+        get => _team.ForeignKey;
+        set => _team.ForeignKey = value;
+    }
 
     /// <summary>
-    /// 
+    /// The planning meeting's team.
     /// </summary>
-#pragma warning disable CS8618
-    public Team Team { get; set; }
-#pragma warning restore CS8618
+    public Team? Team
+    {
+        get => _team.Model;
+        set => _team.Model = value;
+    }
 
+    private readonly FKOptionalNavProperty<Initiative> _initiative = new(e => e.Id);
     // TODO: Need to validate that the Initiative belongs to the same team as the current PlanningMeeting before being saved to DB
     /// <summary>
     /// 
     /// </summary>
-    public Guid? InitiativeId { get; set; }
+    public Guid? InitiativeId
+    {
+        get => _initiative.ForeignKey;
+        set => _initiative.ForeignKey = value;
+    }
 
     /// <summary>
     /// 
     /// </summary>
-    public Initiative? Initiative { get; set; }
+    public Initiative? Initiative
+    {
+        get => _initiative.Model;
+        set => _initiative.Model = value;
+    }
 
+    private readonly FKOptionalNavProperty<Epic> _epic = new(e => e.Id);
     // TODO: Need to validate that the Epic belongs to the same team as the current PlanningMeeting before being saved to DB
     /// <summary>
     /// 
     /// </summary>
-    public Guid? EpicId { get; set; }
+    public Guid? EpicId
+    {
+        get => _epic.ForeignKey;
+        set => _epic.ForeignKey = value;
+    }
 
     /// <summary>
     /// 
     /// </summary>
-    public Epic? Epic { get; set; }
+    public Epic? Epic
+    {
+        get => _epic.Model;
+        set => _epic.Model = value;
+    }
 
+    private readonly FKOptionalNavProperty<Milestone> _milestone = new(e => e.Id);
     // TODO: Need to validate that the Milestone belongs to the same team as the current PlanningMeeting before being saved to DB
     /// <summary>
     /// 
     /// </summary>
-    public Guid? MilestoneId { get; set; }
+    public Guid? MilestoneId
+    {
+        get => _milestone.ForeignKey;
+        set => _milestone.ForeignKey = value;
+    }
 
     /// <summary>
     /// 
     /// </summary>
-    public Milestone? Milestone { get; set; }
+    public Milestone? Milestone
+    {
+        get => _milestone.Model;
+        set => _milestone.Model = value;
+    }
 
     private Collection<Participant> _participants = new();
     /// <summary>
@@ -194,8 +242,9 @@ public class PlanningMeeting
         _ = builder.HasOne(p => p.Epic).WithMany(d => d.Meetings).HasForeignKey(nameof(EpicId)).OnDelete(DeleteBehavior.Restrict);
         _ = builder.HasOne(p => p.Milestone).WithMany(d => d.Meetings).HasForeignKey(nameof(MilestoneId)).OnDelete(DeleteBehavior.Restrict);
         _ = builder.HasOne(p => p.Team).WithMany(d => d.Meetings).HasForeignKey(nameof(TeamId)).IsRequired().OnDelete(DeleteBehavior.Restrict);
-        _ = builder.HasOne(p => p.DeckType).WithMany(d => d.Meetings).HasForeignKey(nameof(DeckTypeId)).IsRequired().OnDelete(DeleteBehavior.Restrict);
+        _ = builder.HasOne(p => p.Deck).WithMany(d => d.Meetings).HasForeignKey(nameof(DeckId)).IsRequired().OnDelete(DeleteBehavior.Restrict);
         _ = builder.HasOne(p => p.ColorScheme).WithMany(d => d.Meetings).HasForeignKey(nameof(ColorSchemeId)).IsRequired().OnDelete(DeleteBehavior.Restrict);
         _ = builder.HasKey(nameof(Id));
+        _ = builder.Property(c => c.Title).UseCollation("SQL_Latin1_General_CP1_CI_AS");
     }
 }

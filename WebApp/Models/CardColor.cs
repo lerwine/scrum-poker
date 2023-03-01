@@ -54,17 +54,24 @@ public class CardColor
         set { _text = value; }
     }
 
+    private readonly FKNavProperty<ColorSchema> _schema = new(e => e.Id);
     /// <summary>
     /// The unique identifier of the schema containing this color definition.
     /// </summary>
-    public Guid SchemaId { get; set; }
+    public Guid SchemaId
+    {
+        get => _schema.ForeignKey;
+        set => _schema.ForeignKey = value;
+    }
 
     /// <summary>
     /// The schema containing this color definition.
     /// </summary>
-#pragma warning disable CS8618
-    public ColorSchema Schema { get; set; }
-#pragma warning restore CS8618
+    public ColorSchema? Schema
+    {
+        get => _schema.Model;
+        set => _schema.Model = value;
+    }
 
     private Collection<Participant> _participants = new();
     /// <summary>
@@ -80,5 +87,6 @@ public class CardColor
     {
         _ = builder.HasKey(nameof(Id));
         _ = builder.HasOne(i => i.Schema).WithMany(t => t.CardColors).HasForeignKey(nameof (SchemaId)).IsRequired().OnDelete(DeleteBehavior.Restrict);
+        _ = builder.Property(c => c.Name).UseCollation("SQL_Latin1_General_CP1_CI_AS");
     }
 }

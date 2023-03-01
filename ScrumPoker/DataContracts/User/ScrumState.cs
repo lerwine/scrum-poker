@@ -158,6 +158,27 @@ namespace ScrumPoker.DataContracts.User
             }
         }
 
+        private DeckListItem _deck = null;
+        [DataMember(Name = "deck", IsRequired = true)]
+        public DeckListItem Deck
+        {
+            get { return _deck; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException("value");
+                _deck = value;
+            }
+        }
+
+        private Collection<Card> _cards = new Collection<Card>();
+        [DataMember(Name = "cards", IsRequired = true)]
+        public Collection<Card> Cards
+        {
+            get { return _cards; }
+            set { _cards = value ?? new Collection<Card>(); }
+        }
+
         private Collection<ParticipantListItem> _participants = new Collection<ParticipantListItem>();
         /// <summary>
         /// Participants in the sprint planning meeting.

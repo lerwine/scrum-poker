@@ -32,6 +32,9 @@ declare interface IHomeControllerScope extends ng.IScope {
     teams: webServices.ITeamListItem[];
 }
 
+/**
+ * @todo Rename to ICardDeckControllerScope
+ */
 declare interface IDeckTypeControllerScope extends ng.IScope {
     deckTypes: deckDefinitions.IDeckTypeListItem[];
 }

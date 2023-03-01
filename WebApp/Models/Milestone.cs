@@ -55,27 +55,43 @@ public class Milestone
     }
 
     // TODO: Need to validate that the Epic belongs to the same team as the current Milestone before being saved to DB
+    private readonly FKOptionalNavProperty<Epic> _epic = new(e => e.Id);
     /// <summary>
     /// 
     /// </summary>
-    public Guid? EpicId { get; set; }
+    public Guid? EpicId
+    {
+        get => _epic.ForeignKey;
+        set => _epic.ForeignKey = value;
+    }
 
     /// <summary>
     /// 
     /// </summary>
-    public Epic? Epic { get; set; }
+    public Epic? Epic
+    {
+        get => _epic.Model;
+        set => _epic.Model = value;
+    }
+
+    private readonly FKNavProperty<Team> _team = new(e => e.Id);
+    /// <summary>
+    /// The unique identifier for the milestone's team.
+    /// </summary>
+    public Guid TeamId
+    {
+        get => _team.ForeignKey;
+        set => _team.ForeignKey = value;
+    }
 
     /// <summary>
-    /// 
+    /// The milestone's team.
     /// </summary>
-    public Guid TeamId { get; set; }
-
-    /// <summary>
-    /// 
-    /// </summary>
-#pragma warning disable CS8618
-    public Team Team { get; set; }
-#pragma warning restore CS8618
+    public Team? Team
+    {
+        get => _team.Model;
+        set => _team.Model = value;
+    }
 
     private Collection<PlanningMeeting> _meetings = new();
     /// <summary>
@@ -92,5 +108,6 @@ public class Milestone
         _ = builder.HasKey(nameof(Id));
         _ = builder.HasOne(i => i.Team).WithMany(t => t.Milestones).HasForeignKey(nameof (TeamId)).IsRequired().OnDelete(DeleteBehavior.Restrict);
         _ = builder.HasOne(i => i.Epic).WithMany(t => t.Milestones).HasForeignKey(nameof (TeamId)).OnDelete(DeleteBehavior.Restrict);
+        _ = builder.Property(c => c.Title).UseCollation("SQL_Latin1_General_CP1_CI_AS");
     }
 }

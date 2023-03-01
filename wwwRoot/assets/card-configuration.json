@@ -198,7 +198,7 @@
     "deckTypes": [
         {
             "name": "Minimal Fibonacci",
-            "description": "Fibonacci sequence values up to 34.",
+            "description": "Fibonacci sequence values up to 34. @todo Rename to decks",
             "previewImage": {
                 "fileName": "MinimalFibonacci-Preview.svg",
                 "width": 210,

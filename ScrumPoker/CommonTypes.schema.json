@@ -10,7 +10,7 @@
         },
         "wsNormalizedString": {
             "type": "string",
-            "pattern": "^\\S+( \\S+)$"
+            "pattern": "^(\\S+( \\S+)*)?$"
         },
         "Guid": {
             "type": "string",

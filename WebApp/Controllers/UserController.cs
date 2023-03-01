@@ -32,13 +32,12 @@ public class UserController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<DataContracts.User.AppState>> GetAppState(CancellationToken token = default)
     {
-        UserProfile? userProfile = await _context.GetUserProfileAsync(token);
+        UserProfile? userProfile = await _context.GetUserProfileAsync(profiles => profiles.Include(p => p.Teams).ThenInclude(t => t.Facilitator), token);
         if (userProfile is null)
              return Unauthorized();
         Guid id = userProfile.Id;
-        List<Team> teams = await _context.TeamMembers.Where(m => m.UserId == id).Include(m => m.Team).Select(m => m.Team).Include(t => t.Facilitator).ToListAsync(token);
         Collection<DataContracts.User.TeamListItem> resultTeams = new();
-        foreach (Team t in teams)
+        foreach (Team t in userProfile.Teams)
             resultTeams.Add(new DataContracts.User.TeamListItem
             {
                 TeamId = t.Id,
@@ -47,10 +46,10 @@ public class UserController : ControllerBase
                 Title = t.Title
             });
         Collection<DataContracts.User.UserListItem> facilitators = new();
-        foreach (UserProfile u in teams.Select(t => t.Facilitator).GroupBy(f => f.Id).Select(g => g.First()))
+        foreach (UserProfile u in userProfile.Teams.Select(t => t.Facilitator).GroupBy(f => f!.Id).Select(g => g.First()!))
             facilitators.Add(new DataContracts.User.UserListItem
             {
-                UserId = u.Id,
+                UserId = u!.Id,
                 DisplayName = u.DisplayName,
                 UserName = u.UserName
             });
@@ -76,38 +75,31 @@ public class UserController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<DataContracts.User.TeamState>> GetTeamState(Guid id, CancellationToken token = default)
     {
-        UserProfile? userProfile = await _context.GetUserProfileAsync(token);
-        if (userProfile is null)
-             return Unauthorized();
-        Team? team = await _context.Teams.Include(t => t.Facilitator).FirstOrDefaultAsync(t => t.Id == id, token);
+        Team? team = await _context.Teams.Where(t => t.Id == id).Include(t => t.Facilitator).Include(t => t.Members).FirstOrDefaultAsync(token);
         if (team is null)
-            return NotFound();
-        Guid userId = userProfile.Id;
-        if (!userProfile.IsAdmin && team.FacilitatorId != userId)
         {
-#if NET462
-            TeamMember tm = await _context.TeamMembers.Where(m => m.TeamId == id && m.UserId == userId).FirstOrDefaultAsync(token);
-#else
-            TeamMember? tm = await _context.TeamMembers.Where(m => m.TeamId == id && m.UserId == userId).FirstOrDefaultAsync(token);
-#endif
-            if (tm is null)
+            if (await _context.GetUserProfileAsync(token) is null)
                 return Unauthorized();
+            return NotFound();
         }
+
+        if (!_context.TryFindUserProfile(team.Facilitator, team.Members, out UserProfile? userProfile) && ((userProfile = await _context.GetUserProfileAsync(profiles => profiles.Include(p => p.Memberships), token)) is null || !userProfile.IsAdmin))
+            return Unauthorized();
+        Guid userId = userProfile.Id;
         DataContracts.User.TeamState response = new()
         {
             TeamId = team.Id,
             Facilitator = new DataContracts.User.UserListItem
             {
-                UserId = team.Facilitator.Id,
+                UserId = team.Facilitator!.Id,
                 DisplayName = team.Facilitator.DisplayName,
                 UserName = team.Facilitator.UserName
             },
             Title = team.Title,
             Description = team.Description
         };
-        List<PlanningMeeting> meetings = await _context.Meetings.Where(m => m.TeamId == id).Include(m => m.Participants).ToListAsync(token);
         if (userProfile.IsAdmin)
-            foreach (PlanningMeeting pm in meetings)
+            foreach (PlanningMeeting pm in team.Meetings)
                 response.Meetings.Add(new DataContracts.User.PlanningMeetingListItem
                 {
                     MeetingId = pm.Id,
@@ -116,18 +108,56 @@ public class UserController : ControllerBase
                     MeetingDate = pm.MeetingDate
                 });
         else
-            foreach (PlanningMeeting pm in meetings)
-                if (pm.Participants.Any(p => p.UserId == userId))
-                    response.Meetings.Add(new DataContracts.User.PlanningMeetingListItem
-                    {
-                        MeetingId = pm.Id,
-                        Title = pm.Title,
-                        Description = pm.Description,
-                        MeetingDate = pm.MeetingDate
-                    });
+            foreach (PlanningMeeting pm in team.Meetings.Where(m => m.Participants.Any(p => p.UserId == userId)))
+                response.Meetings.Add(new DataContracts.User.PlanningMeetingListItem
+                {
+                    MeetingId = pm.Id,
+                    Title = pm.Title,
+                    Description = pm.Description,
+                    MeetingDate = pm.MeetingDate
+                });
         return Ok(response);
     }
 
+    private static DataContracts.User.InitiativeListItem? ToInitiativeListItem(Initiative? source)
+    {
+        if (source is null)
+            return null;
+        return new DataContracts.User.InitiativeListItem()
+        {
+            Title = source.Title,
+            Description = source.Description,
+            StartDate = source.StartDate,
+            PlannedEndDate = source.PlannedEndDate
+        };
+    }
+
+    private static DataContracts.User.EpicListItem? ToEpicListItem(Epic? source)
+    {
+        if (source is null)
+            return null;
+        return new DataContracts.User.EpicListItem()
+        {
+            Title = source.Title,
+            Description = source.Description,
+            StartDate = source.StartDate,
+            PlannedEndDate = source.PlannedEndDate
+        };
+    }
+    
+    private static DataContracts.User.MilestoneListItem? ToMilestoneListItem(Milestone? source)
+    {
+        if (source is null)
+            return null;
+        return new DataContracts.User.MilestoneListItem()
+        {
+            Title = source.Title,
+            Description = source.Description,
+            StartDate = source.StartDate,
+            PlannedEndDate = source.PlannedEndDate
+        };
+    }
+    
     // GET: api/User/ScrumMeeting/{id}
     /// <summary>
     /// Gets initial scrum meeting state for the current user.
@@ -139,65 +169,29 @@ public class UserController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<DataContracts.User.ScrumState>> GetScrumState(Guid id, CancellationToken token = default)
     {
-        UserProfile? userProfile = await _context.GetUserProfileAsync(token);
-        if (userProfile is null)
-             return Unauthorized();
-        Guid userId = userProfile.Id;
-            
-        PlanningMeeting? planningMeeting = await _context.Meetings.Where(m => m.Id == id).Include(m => m.Team).Include(m => m.Initiative).Include(m => m.Epic).Include(m => m.Milestone).Include(m => m.Participants).FirstOrDefaultAsync(token);
+        PlanningMeeting? planningMeeting = await _context.Meetings.Where(m => m.Id == id).Include(m => m.Initiative).Include(m => m.Epic).Include(m => m.Milestone)
+            .Include(m => m.Team).ThenInclude(t => t!.Facilitator)
+            .Include(m => m.Participants).ThenInclude(p => p.User)
+            .Include(p => p.Deck).ThenInclude(d => d!.Cards).FirstOrDefaultAsync(token);
         if (planningMeeting is null)
-            return NotFound();
-        List<Participant> participants = await _context.Participants.Where(p => p.MeetingId == id).Include(p => p.User).ToListAsync(token);
-        Team team = planningMeeting.Team;
-        if (!(userProfile.IsAdmin || team.FacilitatorId == userId || participants.Any(p => p.UserId == userId)))
-            return Unauthorized();
-        UserProfile facilitator;
-        Dictionary<Guid, DataContracts.User.UserListItem> usersLookedUp = new()
         {
-            {
-                userId,
-                new()
-                {
-                    UserId = userProfile.Id,
-                    DisplayName = userProfile.DisplayName,
-                    UserName = userProfile.UserName
-                }
-            }
-        };
-        if (userId == team.FacilitatorId)
-            facilitator = userProfile;
-        else
-            try { facilitator = await _context.Profles.FirstAsync(p => p.Id == team.FacilitatorId, token); }
-            catch (InvalidOperationException)
-            {
-                throw new InvalidOperationException($"Possible database corruption: Unable to find UserProfile {{ Id = \"{team.FacilitatorId}\"}}, which is associated with Team {{ Id = \"{team.Id}\"}}.");
-            }
-        facilitator = (userId == team.FacilitatorId) ? userProfile : await _context.Profles.FirstAsync(p => p.Id == team.FacilitatorId, token);
+            if (await _context.GetUserProfileAsync(token) is null)
+                return Unauthorized();
+            return NotFound();
+        }
+        UserProfile facilitator = planningMeeting.Team!.Facilitator!;
+        if (!_context.TryFindUserProfile(facilitator, planningMeeting.Participants.Select(p => p.User!), out UserProfile? userProfile) &&
+                ((userProfile = await _context.GetUserProfileAsync(profiles => profiles.Include(p => p.Memberships), token)) is null || !userProfile.IsAdmin))
+            return Unauthorized();
+        Team team = planningMeeting!.Team!;
+        CardDeck deck = planningMeeting.Deck!;
         DataContracts.User.ScrumState response = new()
         {
             PlannedStartDate = planningMeeting.PlannedStartDate,
             PlannedEndDate = planningMeeting.PlannedEndDate,
-            Initiative = (planningMeeting.Initiative is null) ? null : new DataContracts.User.InitiativeListItem()
-            {
-                Title = planningMeeting.Initiative.Title,
-                Description = planningMeeting.Initiative.Description,
-                StartDate = planningMeeting.Initiative.StartDate,
-                PlannedEndDate = planningMeeting.Initiative.PlannedEndDate
-            },
-            Epic = (planningMeeting.Epic is null) ? null : new DataContracts.User.EpicListItem()
-            {
-                Title = planningMeeting.Epic.Title,
-                Description = planningMeeting.Epic.Description,
-                StartDate = planningMeeting.Epic.StartDate,
-                PlannedEndDate = planningMeeting.Epic.PlannedEndDate
-            },
-            Milestone = (planningMeeting.Milestone is null) ? null : new  DataContracts.User.MilestoneListItem()
-            {
-                Title = planningMeeting.Milestone.Title,
-                Description = planningMeeting.Milestone.Description,
-                StartDate = planningMeeting.Milestone.StartDate,
-                PlannedEndDate = planningMeeting.Milestone.PlannedEndDate
-            },
+            Initiative = ToInitiativeListItem(planningMeeting.Initiative),
+            Epic = ToEpicListItem(planningMeeting.Epic),
+            Milestone = ToMilestoneListItem(planningMeeting.Milestone),
             CurrentScopePoints = planningMeeting.CurrentScopePoints,
             Team = new DataContracts.User.TeamListItem()
             {
@@ -211,14 +205,47 @@ public class UserController : ControllerBase
                 UserId = facilitator.Id,
                 DisplayName = facilitator.DisplayName,
                 UserName = facilitator.UserName
+            },
+            Description = planningMeeting.Description,
+            ColorScheme = null,
+            MeetingDate = planningMeeting.MeetingDate,
+            MeetingId = planningMeeting.Id,
+            SprintCapacity = planningMeeting.SprintCapacity,
+            Title = planningMeeting.Title,
+            Deck = new()
+            {
+                DeckId = deck.Id,
+                Name = deck.Name,
+                Description = deck.Description
             }
         };
-        // TODO: Add Deck Information
+        foreach (DeckCard dc in deck.Cards)
+        {
+            CardDefinition card = dc.Definition!;
+            response.Cards.Add(new()
+            {
+                CardId = dc.CardId,
+                Order = dc.Order,
+                Title = card.Title,
+                Description = card.Description,
+                TruncatedDescription = card.TruncatedDescription,
+                SymbolText = card.SymbolText,
+                SymbolFont = card.SymbolFont,
+                UpperSymbolPath = card.UpperSymbolPath,
+                MiddleSymbolPath = card.MiddleSymbolPath,
+                LowerSymbolPath = card.LowerSymbolPath,
+                Value = card.Value,
+                MiddleSymbolTop = card.MiddleSymbolTop,
+                SmallSymbolFontSize = card.SmallSymbolFontSize,
+                LargeSymbolFontSize = card.LargeSymbolFontSize,
+                Type = card.Type
+            });
+        }
         foreach (Participant participant in planningMeeting.Participants)
             response.Participants.Add(new()
             {
                 UserId = participant.UserId,
-                DisplayName = participant.User.DisplayName,
+                DisplayName = participant.User!.DisplayName,
                 UserName = participant.User.UserName,
                 SelectedCardId = participant.DrawnCardId,
                 CardColorId = participant.CardColorId,

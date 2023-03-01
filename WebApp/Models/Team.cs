@@ -34,28 +34,42 @@ public class Team
         set { _description = value.TrimmedOrNullIfEmpty(); }
     }
 
+    private readonly FKNavProperty<UserProfile> _facilitator = new(e => e.Id);
     /// <summary>
     /// 
     /// </summary>
-    public Guid FacilitatorId { get; set; }
+    public Guid FacilitatorId
+    {
+        get => _facilitator.ForeignKey;
+        set => _facilitator.ForeignKey = value;
+    }
 
     /// <summary>
     /// 
     /// </summary>
-#pragma warning disable CS8618
-    public UserProfile Facilitator { get; set; }
-#pragma warning restore CS8618
+    public UserProfile? Facilitator
+    {
+        get => _facilitator.Model;
+        set => _facilitator.Model = value;
+    }
 
-    private Collection<TeamMember> _members = new();
+    private Collection<UserProfile> _members = new();
     /// <summary>
     /// 
     /// </summary>
-    public Collection<TeamMember> Members
+    public Collection<UserProfile> Members
     {
         get { return _members; }
-        set { _members = value ?? new Collection<TeamMember>(); }
+        set { _members = value ?? new Collection<UserProfile>(); }
     }
     
+    private Collection<TeamMember> _memberships = new();
+    public Collection<TeamMember> Memberships
+    {
+        get { return _memberships; }
+        set { _memberships = value ?? new Collection<TeamMember>(); }
+    }
+
     private Collection<PlanningMeeting> _meetings = new();
     /// <summary>
     /// 
@@ -98,7 +112,11 @@ public class Team
     
     internal static void OnBuildEntity(EntityTypeBuilder<Team> builder)
     {
-        _ = builder.HasOne(ss => ss.Facilitator).WithMany(d => d.Facilitated).HasForeignKey(nameof(FacilitatorId)).IsRequired().OnDelete(DeleteBehavior.Restrict);
         _ = builder.HasKey(nameof(Id));
+        _ = builder.HasOne(ss => ss.Facilitator).WithMany(d => d.Facilitated).HasForeignKey(nameof(FacilitatorId)).IsRequired().OnDelete(DeleteBehavior.Restrict);
+        _ = builder.HasMany(t => t.Members).WithMany(u => u.Teams).UsingEntity<TeamMember>(b => b.HasOne(m => m.User).WithMany(u => u.Memberships).HasForeignKey(m => m.UserId),
+            b => b.HasOne(m => m.Team).WithMany(t => t.Memberships).HasForeignKey(m => m.TeamId),
+            b => b.HasKey(m => new { m.TeamId, m.UserId }));
+        _ = builder.Property(c => c.Title).UseCollation("SQL_Latin1_General_CP1_CI_AS");
     }
 }
