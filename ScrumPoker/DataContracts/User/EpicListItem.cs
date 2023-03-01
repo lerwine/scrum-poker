@@ -3,12 +3,15 @@ using System.Runtime.Serialization;
 
 namespace ScrumPoker.DataContracts.User
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [DataContract]
-    public class EpicListItem : SprintGroupingResponse
+    public class EpicListItem : SprintGroupingItem
     {
         private Guid _epicId;
         /// <summary>
-        /// Gets the team's unique identifier.
+        /// The epic's unique identifier.
         /// </summary>
         public Guid EpicId
         {

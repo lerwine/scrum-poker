@@ -3,16 +3,34 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ScrumPoker.WebApp.Models;
 
+/// <summary>
+/// 
+/// </summary>
 public class SheetDefinition
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public int SheetNumber { get; set; }
     
+    /// <summary>
+    /// 
+    /// </summary>
     public string URL { get; set; } = "";
 
+    /// <summary>
+    /// 
+    /// </summary>
     public int MaxValue { get; set; }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public Guid DeckTypeId { get; set; }
 
+    /// <summary>
+    /// 
+    /// </summary>
 #pragma warning disable CS8618
     public DeckType DeckType { get; set; }
 #pragma warning restore CS8618

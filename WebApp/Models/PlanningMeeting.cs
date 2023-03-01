@@ -4,31 +4,55 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ScrumPoker.WebApp.Models;
 
+/// <summary>
+/// 
+/// </summary>
 public class PlanningMeeting
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public Guid Id { get; set; }
 
     private string _title = "";
+    /// <summary>
+    /// 
+    /// </summary>
     public string Title
     {
         get { return _title; }
-        set { _title = value.EmptyIfNullOrTrimmed(); }
+        set { _title = value.WsNormalized(); }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public DataContracts.SessionStage Stage { get; set; }
 
     private string? _description = null;
+    /// <summary>
+    /// 
+    /// </summary>
     public string? Description
     {
         get { return _description; }
         set { _description = value.TrimmedOrNullIfEmpty(); }
     }
     
+    /// <summary>
+    /// 
+    /// </summary>
     public bool NoHalfPoint { get; set; }
     
+    /// <summary>
+    /// 
+    /// </summary>
     public bool NoZeroPoint { get; set; }
     
     private DateTime _meetingDate;
+    /// <summary>
+    /// 
+    /// </summary>
     public DateTime MeetingDate
     {
         get { return _meetingDate; }
@@ -36,6 +60,9 @@ public class PlanningMeeting
     }
     
     private DateTime? _plannedStartDate;
+    /// <summary>
+    /// 
+    /// </summary>
     public DateTime? PlannedStartDate
     {
         get { return _plannedStartDate; }
@@ -43,6 +70,9 @@ public class PlanningMeeting
     }
 
     private DateTime? _plannedEndDate;
+    /// <summary>
+    /// 
+    /// </summary>
     public DateTime? PlannedEndDate
     {
         get { return _plannedEndDate; }
@@ -50,6 +80,9 @@ public class PlanningMeeting
     }
 
     private int _currentScopePoints = 0;
+    /// <summary>
+    /// 
+    /// </summary>
     public int CurrentScopePoints
     {
         get { return _currentScopePoints; }
@@ -57,6 +90,9 @@ public class PlanningMeeting
     }
 
     private int? _sprintCapacity;
+    /// <summary>
+    /// 
+    /// </summary>
     public int? SprintCapacity
     {
         get { return _sprintCapacity; }
@@ -64,46 +100,88 @@ public class PlanningMeeting
     }
 
     private DateTime _lastActivity;
+    /// <summary>
+    /// 
+    /// </summary>
     public DateTime LastActivity
     {
         get { return _lastActivity; }
         set { _lastActivity = value.ToLocalDate(); }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public Guid DeckTypeId { get; set; }
     
+    /// <summary>
+    /// 
+    /// </summary>
 #pragma warning disable CS8618
     public DeckType DeckType { get; set; }
 #pragma warning restore CS8618
 
+    /// <summary>
+    /// 
+    /// </summary>
     public Guid ColorSchemeId { get; set; }
     
+    /// <summary>
+    /// 
+    /// </summary>
 #pragma warning disable CS8618
     public ColorSchema ColorScheme { get; set; }
 #pragma warning restore CS8618
     
+    /// <summary>
+    /// 
+    /// </summary>
     public Guid TeamId { get; set; }
 
+    /// <summary>
+    /// 
+    /// </summary>
 #pragma warning disable CS8618
     public Team Team { get; set; }
 #pragma warning restore CS8618
 
     // TODO: Need to validate that the Initiative belongs to the same team as the current PlanningMeeting before being saved to DB
+    /// <summary>
+    /// 
+    /// </summary>
     public Guid? InitiativeId { get; set; }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public Initiative? Initiative { get; set; }
 
     // TODO: Need to validate that the Epic belongs to the same team as the current PlanningMeeting before being saved to DB
+    /// <summary>
+    /// 
+    /// </summary>
     public Guid? EpicId { get; set; }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public Epic? Epic { get; set; }
 
     // TODO: Need to validate that the Milestone belongs to the same team as the current PlanningMeeting before being saved to DB
+    /// <summary>
+    /// 
+    /// </summary>
     public Guid? MilestoneId { get; set; }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public Milestone? Milestone { get; set; }
 
     private Collection<Participant> _participants = new();
+    /// <summary>
+    /// 
+    /// </summary>
     public Collection<Participant> Participants
     {
         get { return _participants; }

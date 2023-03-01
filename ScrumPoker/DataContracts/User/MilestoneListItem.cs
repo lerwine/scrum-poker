@@ -3,12 +3,15 @@ using System.Runtime.Serialization;
 
 namespace ScrumPoker.DataContracts.User
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [DataContract]
-    public class MilestoneListItem : SprintGroupingResponse
+    public class MilestoneListItem : SprintGroupingItem
     {
         private Guid _milestoneId;
         /// <summary>
-        /// Gets the team's unique identifier.
+        /// The milestone's unique identifier.
         /// </summary>
         public Guid MilestoneId
         {

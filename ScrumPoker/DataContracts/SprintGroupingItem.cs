@@ -4,18 +4,27 @@ using System.Runtime.Serialization;
 
 namespace ScrumPoker.DataContracts
 {
+    /// <summary>
+    /// Base type representing an initiative, epic or milestone.
+    /// </summary>
     [DataContract]
-    public class SprintGroupingResponse
+    public class SprintGroupingItem
     {
         private string _title = "";
+        /// <summary>
+        /// The title of the grouping item.
+        /// </summary>
         [DataMember(Name = "title", IsRequired = true)]
         public string Title
         {
             get { return _title; }
-            set { _title = value.EmptyIfNullOrTrimmed(); }
+            set { _title = value.WsNormalized(); }
         }
 
         private string _description;
+        /// <summary>
+        /// The optional description.
+        /// </summary>
         [DataMember(Name = "description", EmitDefaultValue = false)]
         public string Description
         {
@@ -25,6 +34,9 @@ namespace ScrumPoker.DataContracts
 
 
         private DateTime? _startDate;
+        /// <summary>
+        /// The optional planned start date.
+        /// </summary>
         public DateTime? StartDate
         {
             get { return _startDate; }
@@ -41,6 +53,9 @@ namespace ScrumPoker.DataContracts
         }
 
         private DateTime? _plannedEndDate;
+        /// <summary>
+        /// The optional planned end date.
+        /// </summary>
         public DateTime? PlannedEndDate
         {
             get { return _plannedEndDate; }
@@ -56,6 +71,6 @@ namespace ScrumPoker.DataContracts
             set { _plannedEndDate = value.JsonStringToDate().ToLocalDate(); }
         }
 
-        public override string ToString() { return this.ToJSON<SprintGroupingResponse>(); }
+        public override string ToString() { return this.ToJSON<SprintGroupingItem>(); }
     }
 }

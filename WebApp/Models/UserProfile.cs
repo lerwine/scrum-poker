@@ -3,8 +3,14 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ScrumPoker.WebApp.Models;
 
+/// <summary>
+/// 
+/// </summary>
 public class UserProfile
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public Guid Id { get; set; }
 
     private string _displayName = "";
@@ -14,7 +20,7 @@ public class UserProfile
     public string DisplayName
     {
         get { return _displayName; }
-        set { _displayName = value.EmptyIfNullOrTrimmed(); }
+        set { _displayName = value.WsNormalized(); }
     }
 
     private string _userName = "";
@@ -24,9 +30,12 @@ public class UserProfile
     public string UserName
     {
         get { return _userName; }
-        set { _userName = value.EmptyIfNullOrTrimmed(); }
+        set { _userName = value.WsNormalized(); }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public bool IsAdmin { get; set; }
 
     private Collection<Team> _facilitated = new();

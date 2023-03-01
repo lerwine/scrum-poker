@@ -1,0 +1,278 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://raw.githubusercontent.com/lerwine/scrum-poker/main/ScrumPoker/DataContracts/User.schema.json",
+    "title": "Common Data Contract Types",
+    "description": "Schema types under route /api/User",
+    "$defs": {
+        "UserListItem": {
+            "type": "object",
+            "properties": {
+                "userId": {
+                    "$ref": "../CommonTypes.schema.json#/$defs/Guid"
+                },
+                "displayName": {
+                    "$ref": "../CommonTypes.schema.json#/$defs/wsNormalizedString"
+                },
+                "userName": {
+                    "$ref": "../CommonTypes.schema.json#/$defs/wsNormalizedString"
+                }
+            },
+            "required": [ "userId", "displayName", "userName" ]
+        },
+        "TeamListItem": {
+            "type": "object",
+            "properties": {
+                "teamId": {
+                    "$ref": "../CommonTypes.schema.json#/$defs/Guid"
+                },
+                "facilitatorId": {
+                    "$ref": "../CommonTypes.schema.json#/$defs/Guid"
+                },
+                "title": {
+                    "$ref": "../CommonTypes.schema.json#/$defs/wsNormalizedString"
+                },
+                "description": {
+                    "$ref": "../CommonTypes.schema.json#/$defs/nonEmptyString"
+                }
+            },
+            "required": [ "teamId", "facilitatorId", "title" ]
+        },
+        "ColorSchemeListItem": {
+            "type": "object",
+            "properties": {
+                "schemeId": {
+                    "$ref": "../CommonTypes.schema.json#/$defs/Guid"
+                },
+                "name": {
+                    "$ref": "../CommonTypes.schema.json#/$defs/wsNormalizedString"
+                },
+                "fill": {
+                    "$ref": "../ColorModel/CssColor.schema.json"
+                },
+                "stroke": {
+                    "$ref": "../ColorModel/CssColor.schema.json"
+                },
+                "text": {
+                    "$ref": "../ColorModel/CssColor.schema.json"
+                }
+            },
+            "required": [ "schemeId", "name", "fill", "stroke", "text" ]
+        },
+        "AppState": {
+            "description": "Response data contract for GET: /api/User/AppState",
+            "allOf": [
+                { "$ref": "#/$defs/UserListItem" },
+                {
+                    "type": "object",
+                    "properties": {
+                        "isAdmin": {
+                            "type": "boolean"
+                        },
+                        "teams": {
+                            "type": "array",
+                            "items": [
+                                { "$ref": "#/$defs/TeamListItem" }
+                            ]
+                        },
+                        "facilitators": {
+                            "type": "array",
+                            "items": [
+                                { "$ref": "#/$defs/UserListItem" }
+                            ]
+                        }
+                    },
+                    "required": [ "isAdmin", "teams", "facilitators" ]
+                }
+            ]
+        },
+        "EpicListItem": {
+            "allOf": [
+                { "$ref": "DataContractTypes.schema.json#/$defs/SprintGroupingItem" },
+                {
+                    "type": "object",
+                    "properties": {
+                        "epicId": {
+                            "$ref": "../CommonTypes.schema.json#/$defs/Guid"
+                        }
+                    },
+                    "required": [ "epicId" ]
+                }
+            ]
+        },
+        "InitiativeListItem": {
+            "allOf": [
+                { "$ref": "DataContractTypes.schema.json#/$defs/SprintGroupingItem" },
+                {
+                    "type": "object",
+                    "properties": {
+                        "initiativeId": {
+                            "$ref": "../CommonTypes.schema.json#/$defs/Guid"
+                        }
+                    },
+                    "required": [ "initiativeId" ]
+                }
+            ]
+        },
+        "MilestoneListItem": {
+            "allOf": [
+                { "$ref": "DataContractTypes.schema.json#/$defs/SprintGroupingItem" },
+                {
+                    "type": "object",
+                    "properties": {
+                        "milestoneId": {
+                            "$ref": "../CommonTypes.schema.json#/$defs/Guid"
+                        }
+                    },
+                    "required": [ "milestoneId" ]
+                }
+            ]
+        },
+        "ParticipantListItem": {
+            "allOf": [
+                { "$ref": "#/$defs/UserListItem" },
+                {
+                    "type": "object",
+                    "properties": {
+                        "selectedCardId": {
+                            "$ref": "../CommonTypes.schema.json#/$defs/Guid"
+                        },
+                        "cardColorId": {
+                            "$ref": "../CommonTypes.schema.json#/$defs/Guid"
+                        },
+                        "assignedPoints": {
+                            "$ref": "../CommonTypes.schema.json#/$defs/nonNegativeInteger"
+                        },
+                        "sprintCapacity": {
+                            "$ref": "../CommonTypes.schema.json#/$defs/positiveInteger"
+                        }
+                    },
+                    "required": [ "cardColorId", "assignedPoints" ]
+                }
+            ]
+        },
+        "PlanningMeetingListItem": {
+            "type": "object",
+            "properties": {
+                "meetingId": {
+                    "$ref": "../CommonTypes.schema.json#/$defs/Guid"
+                },
+                "title": {
+                    "$ref": "../CommonTypes.schema.json#/$defs/wsNormalizedString"
+                },
+                "description": {
+                    "$ref": "../CommonTypes.schema.json#/$defs/nonEmptyString"
+                },
+                "meetingDate": {
+                    "type": "string",
+                    "format": "date"
+                }
+            },
+            "required": [ "meetingId", "title", "meetingDate" ]
+        },
+        "ScrumState": {
+            "description": "Response data contract for GET: /api/User/ScrumMeeting/{id}",
+            "allOf": [
+                { "$ref": "#/$defs/PlanningMeetingListItem" },
+                {
+                    "type": "object",
+                    "properties": {
+                        "plannedStartDate": {
+                            "type": "string",
+                            "format": "date"
+                        },
+                        "plannedEndDate": {
+                            "type": "string",
+                            "format": "date"
+                        },
+                        "initiative": {
+                            "$ref": "#/$defs/InitiativeListItem"
+                        },
+                        "epic": {
+                            "$ref": "#/$defs/EpicListItem"
+                        },
+                        "milestone": {
+                            "$ref": "#/$defs/MilestoneListItem"
+                        },
+                        "currentScopePoints": {
+                            "$ref": "../CommonTypes.schema.json#/$defs/nonNegativeInteger"
+                        },
+                        "sprintCapacity": {
+                            "$ref": "../CommonTypes.schema.json#/$defs/positiveInteger"
+                        },
+                        "team": {
+                            "$ref": "#/$defs/TeamListItem"
+                        },
+                        "facilitator": {
+                            "$ref": "#/$defs/UserListItem"
+                        },
+                        "participants": {
+                            "type": "array",
+                            "items": [
+                                { "$ref": "#/$defs/ParticipantListItem" }
+                            ]
+                        },
+                        "colorSchemes": {
+                            "type": "array",
+                            "items": [
+                                { "$ref": "#/$defs/ColorSchemeListItem" }
+                            ]
+                        }
+                    },
+                    "required": [ "currentScopePoints", "team", "facilitator", "participants", "colorSchemes" ]
+                }
+            ]
+        },
+        "TeamState": {
+            "description": "Response data contract for GET: /api/User/Team/{id}",
+            "allOf": [
+                { "$ref": "#/$defs/PlanningMeetingListItem" },
+                {
+                    "type": "object",
+                    "properties": {
+                        "teamId": {
+                            "$ref": "../CommonTypes.schema.json#/$defs/Guid"
+                        },
+                        "facilitator": {
+                            "$ref": "#/$defs/UserListItem"
+                        },
+                        "title": {
+                            "$ref": "../CommonTypes.schema.json#/$defs/wsNormalizedString"
+                        },
+                        "description": {
+                            "$ref": "../CommonTypes.schema.json#/$defs/nonEmptyString"
+                        },
+                        "plannedStartDate": {
+                            "type": "string",
+                            "format": "date"
+                        },
+                        "meetings": {
+                            "type": "array",
+                            "items": [
+                                { "$ref": "#/$defs/PlanningMeetingListItem" }
+                            ]
+                        },
+                        "epics": {
+                            "type": "array",
+                            "items": [
+                                { "$ref": "#/$defs/EpicListItem" }
+                            ]
+                        },
+                        "milestones": {
+                            "type": "array",
+                            "items": [
+                                { "$ref": "#/$defs/MilestoneListItem" }
+                            ]
+                        },
+                        "initiatives": {
+                            "type": "array",
+                            "items": [
+                                { "$ref": "#/$defs/InitiativeListItem" }
+                            ]
+                        }
+                    },
+                    "required": [ "teamId", "facilitator", "title", "meetings", "epics", "milestones", "initiatives" ]
+                }
+            ]
+        }
+    }
+}

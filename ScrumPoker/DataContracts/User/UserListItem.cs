@@ -3,10 +3,10 @@ using System.Runtime.Serialization;
 
 namespace ScrumPoker.DataContracts.User
 {
-    [DataContract]
     /// <summary>
     /// Response contract representing a user.
     /// </summary>
+    [DataContract]
     public class UserListItem
     {
         [DataMember(Name = "userId", IsRequired = true)]
@@ -20,7 +20,7 @@ namespace ScrumPoker.DataContracts.User
 
         private Guid _userId;
         /// <summary>
-        /// Gets or sets the user's unique identifier.
+        /// The user's unique identifier.
         /// </summary>
         public Guid UserId
         {
@@ -36,7 +36,7 @@ namespace ScrumPoker.DataContracts.User
         public string DisplayName
         {
             get { return _displayName; }
-            set { _displayName = value.EmptyIfNullOrTrimmed(); }
+            set { _displayName = value.WsNormalized(); }
         }
 
         private string _userName = "";
@@ -47,7 +47,7 @@ namespace ScrumPoker.DataContracts.User
         public string UserName
         {
             get { return _userName; }
-            set { _userName = value.EmptyIfNullOrTrimmed(); }
+            set { _userName = value.WsNormalized(); }
         }
     }
 }

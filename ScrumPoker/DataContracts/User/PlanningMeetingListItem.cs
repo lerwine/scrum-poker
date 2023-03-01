@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace ScrumPoker.DataContracts.User
 {
-    [DataContract]
     /// <summary>
     /// Response contract representing a scrum meeting.
     /// </summary>
+    [DataContract]
     public class PlanningMeetingListItem
     {
         private Guid _meetingId;
         /// <summary>
-        /// Gets the team's unique identifier.
+        /// The planning meeting's unique identifier.
         /// </summary>
         public Guid MeetingId
         {
@@ -39,7 +39,7 @@ namespace ScrumPoker.DataContracts.User
         public string Title
         {
             get { return _title; }
-            set { _title = value.EmptyIfNullOrTrimmed(); }
+            set { _title = value.WsNormalized(); }
         }
 
         private string _description = null;
@@ -54,6 +54,9 @@ namespace ScrumPoker.DataContracts.User
         }
 
         private DateTime _meetingDate;
+        /// <summary>
+        /// The date for the sprint planning meeting.
+        /// </summary>
         public DateTime MeetingDate
         {
             get { return _meetingDate; }

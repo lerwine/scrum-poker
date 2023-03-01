@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace ScrumPoker.DataContracts.User
 {
-    [DataContract]
     /// <summary>
-    /// Response data contract for GET: /api/User/Team/{teamId}
+    /// Response data contract for GET: /api/User/Team/{id}
     /// </summary>
+    [DataContract]
     public class TeamState
     {
         public const string SUB_ROUTE = "TeamState";
@@ -19,7 +19,7 @@ namespace ScrumPoker.DataContracts.User
         
         private Guid _teamId;
         /// <summary>
-        /// Gets the team's unique identifier.
+        /// The team's unique identifier.
         /// </summary>
         public Guid TeamId
         {
@@ -38,6 +38,9 @@ namespace ScrumPoker.DataContracts.User
 
         private UserListItem _facilitator = null;
         [DataMember(Name = "facilitator", IsRequired = true)]
+        /// <summary>
+        /// The team's facilitator.
+        /// </summary>
         public UserListItem Facilitator
         {
             get { return _facilitator; }
@@ -57,7 +60,7 @@ namespace ScrumPoker.DataContracts.User
         public string Title
         {
             get { return _title; }
-            set { _title = value.EmptyIfNullOrTrimmed(); }
+            set { _title = value.WsNormalized(); }
         }
 
         private string _description = null;
@@ -74,7 +77,7 @@ namespace ScrumPoker.DataContracts.User
         private Collection<PlanningMeetingListItem> _meetings = new Collection<PlanningMeetingListItem>();
         [DataMember(Name = "meetings", IsRequired = true)]
         /// <summary>
-        /// Gets the planning meetings for the current team.
+        /// The planning meetings for the current team.
         /// </summary>
         public Collection<PlanningMeetingListItem> Meetings
         {
@@ -85,7 +88,7 @@ namespace ScrumPoker.DataContracts.User
         private Collection<EpicListItem> _epics = new Collection<EpicListItem>();
         [DataMember(Name = "epics", IsRequired = true)]
         /// <summary>
-        /// Gets the epics for the current team.
+        /// The epics for the current team.
         /// </summary>
         public Collection<EpicListItem> Epics
         {
@@ -96,7 +99,7 @@ namespace ScrumPoker.DataContracts.User
         private Collection<MilestoneListItem> _milestones = new Collection<MilestoneListItem>();
         [DataMember(Name = "milestones", IsRequired = true)]
         /// <summary>
-        /// Gets the milestones for the current team that do not belong to an epic.
+        /// The milestones for the current team that do not belong to an epic.
         /// </summary>
         public Collection<MilestoneListItem> Milestones
         {
@@ -107,7 +110,7 @@ namespace ScrumPoker.DataContracts.User
         private Collection<InitiativeListItem> _initiatives = new Collection<InitiativeListItem>();
         [DataMember(Name = "initiatives", IsRequired = true)]
         /// <summary>
-        /// Gets the initiatives for the current team.
+        /// The initiatives for the current team.
         /// </summary>
         public Collection<InitiativeListItem> Initiatives
         {

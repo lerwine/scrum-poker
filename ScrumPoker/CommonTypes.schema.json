@@ -1,0 +1,28 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://raw.githubusercontent.com/lerwine/scrum-poker/main/ScrumPoker/DataContracts/DataContractTypes.schema.json",
+    "title": "Common Data Contract Types",
+    "description": "Common cata contract Typetdefinitions",
+    "$defs": {
+        "nonEmptyString": {
+            "type": "string",
+            "pattern": "^\\s*\\S"
+        },
+        "wsNormalizedString": {
+            "type": "string",
+            "pattern": "^\\S+( \\S+)$"
+        },
+        "Guid": {
+            "type": "string",
+            "pattern": "^[a-z\\d]{32}$"
+        },
+        "nonNegativeInteger": {
+            "type": "integer",
+            "minimum": 0
+        },
+        "positiveInteger": {
+            "type": "integer",
+            "minimum": 1
+        }
+    }
+}

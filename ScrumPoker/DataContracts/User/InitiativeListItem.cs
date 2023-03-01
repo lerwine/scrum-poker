@@ -3,12 +3,15 @@ using System.Runtime.Serialization;
 
 namespace ScrumPoker.DataContracts.User
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [DataContract]
-    public class InitiativeListItem : SprintGroupingResponse
+    public class InitiativeListItem : SprintGroupingItem
     {
         private Guid _initiativeId;
         /// <summary>
-        /// Gets the team's unique identifier.
+        /// The initiative's unique identifier.
         /// </summary>
         public Guid InitiativeId
         {

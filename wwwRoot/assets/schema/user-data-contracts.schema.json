@@ -3,10 +3,7 @@
     "id": "https://raw.githubusercontent.com/lerwine/scrum-poker/main/wwwRoot/assets/schema/user-data-contracts.schema.json",
     "title": "User data contracts",
     "description": "User data contracts",
-    "type": "object",
-    "properties": {
-        "c": { "$ref": "#/$defs/colorString" }
-    },
+    "$ref": "#/$defs/appState",
     "$defs": {
         "guid": {
             "type": "string",

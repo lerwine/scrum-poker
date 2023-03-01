@@ -7,13 +7,14 @@ using System.Threading.Tasks;
 
 namespace ScrumPoker.DataContracts.User
 {
-    [DataContract]
     /// <summary>
-    /// Response data contract for GET: /api/User
+    /// Response data contract for GET: /api/User/AppState
     /// </summary>
+    [DataContract]
     public class AppState : UserListItem
     {
-        // public const string FULL_ROUTE = Routings.User_Route;
+        public const string SUB_ROUTE = "AppState";
+        public const string FULL_ROUTE = Routings.User_Route + "/" + SUB_ROUTE;
 
         private bool _isAdmin = false;
         [DataMember(Name = "isAdmin", IsRequired = true)]
@@ -29,7 +30,7 @@ namespace ScrumPoker.DataContracts.User
         private Collection<TeamListItem> _teams = new Collection<TeamListItem>();
         [DataMember(Name = "teams", IsRequired = true)]
         /// <summary>
-        /// Gets the teams that the current user belongs to.
+        /// The teams that the current user belongs to.
         /// </summary>
         public Collection<TeamListItem> Teams
         {
@@ -40,7 +41,7 @@ namespace ScrumPoker.DataContracts.User
         private Collection<UserListItem> _facilitators = new Collection<UserListItem>();
         [DataMember(Name = "facilitators", IsRequired = true)]
         /// <summary>
-        /// Gets the team facilitators that are referenced in one more more <see cref="Teams" />.
+        /// The team facilitators that are referenced in one more more <see cref="Teams" />.
         /// </summary>
         public Collection<UserListItem> Facilitators
         {

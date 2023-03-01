@@ -3,10 +3,16 @@ using System.Runtime.Serialization;
 
 namespace ScrumPoker.DataContracts.User
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [DataContract]
     public class ParticipantListItem : UserListItem
     {
         private Guid? _selectedCardId;
+        /// <summary>
+        /// The optional unique identifier of the card that the participant has selected.
+        /// </summary>
         public Guid? SelectedCardId
         {
             get { return _selectedCardId; }
@@ -22,6 +28,9 @@ namespace ScrumPoker.DataContracts.User
             set { _selectedCardId = value.JsonStringToGuidNotEmpty().NullIfEmpty(); }
         }
         
+        /// <summary>
+        /// The unique identifier of the card color ofor the participant's deck.
+        /// </summary>
         public Guid CardColorId { get; set; }
 
         [DataMember(Name = "cardColorId", IsRequired = true)]
@@ -34,7 +43,9 @@ namespace ScrumPoker.DataContracts.User
         }
         
         private int _assignedPoints = 0;
-
+        /// <summary>
+        /// The number of points assigned to the participant.
+        /// </summary>
         [DataMember(Name = "assignedPoints", IsRequired = true)]
         public int AssignedPoints
         {
@@ -43,13 +54,14 @@ namespace ScrumPoker.DataContracts.User
         }
 
         private int? _sprintCapacity;
+        /// <summary>
+        /// The optional limit for the points that can be assigned to the participant for the sprint.
+        /// </summary>
         [DataMember(Name = "sprintCapacity", EmitDefaultValue = false)]
         public int? SprintCapacity
         {
             get { return _sprintCapacity; }
             set { _sprintCapacity = (value.HasValue && value.Value < 1) ? null : value; }
         }
-
-        // TODO: Add Card Color ID
     }
 }

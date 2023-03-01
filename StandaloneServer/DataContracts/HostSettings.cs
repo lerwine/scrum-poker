@@ -24,7 +24,7 @@ namespace ScrumPoker.StandaloneServer.DataContracts
             get { return _webRootPath; }
             set
             {
-                if (value.ToEmptyIfNullOrTrimmed(SyncRoot, ref _webRootPath))
+                if (value.ToWsNormalized(SyncRoot, ref _webRootPath))
                     RaisePropertyChanged(_pdWebRootPath);
             }
         }

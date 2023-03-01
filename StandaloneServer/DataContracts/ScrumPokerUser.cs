@@ -16,7 +16,7 @@ namespace ScrumPoker.StandaloneServer.DataContracts
             get { return _displayName; }
             set
             {
-                if (value.ToEmptyIfNullOrTrimmed(SyncRoot, ref _displayName))
+                if (value.ToWsNormalized(SyncRoot, ref _displayName))
                     RaisePropertyChanged(_pdDisplayName);
             }
         }
@@ -111,13 +111,13 @@ namespace ScrumPoker.StandaloneServer.DataContracts
         
         public ScrumPokerUser(string login, string displayName)
         {
-            _displayName = displayName.EmptyIfNullOrTrimmed();
+            _displayName = displayName.WsNormalized();
             _userName = login.TrimmedOrNullIfEmpty();
         }
         
         public ScrumPokerUser(string login, string password, string displayName)
         {
-            _displayName = displayName.EmptyIfNullOrTrimmed();
+            _displayName = displayName.WsNormalized();
             _userName = login.TrimmedOrNullIfEmpty();
         }
         

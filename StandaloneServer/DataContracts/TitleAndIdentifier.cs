@@ -17,7 +17,7 @@ namespace ScrumPoker.StandaloneServer.DataContracts
             get { return _title; }
             set
             {
-                if (value.ToEmptyIfNullOrTrimmed(SyncRoot, ref _title))
+                if (value.ToWsNormalized(SyncRoot, ref _title))
                     RaisePropertyChanged(_pdTitle);
             }
         }

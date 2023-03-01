@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace ScrumPoker.DataContracts.User
 {
-    [DataContract]
     /// <summary>
     /// Response data contract for GET: /api/User/ScrumMeeting/{id}
     /// </summary>
+    [DataContract]
     public class ScrumState : PlanningMeetingListItem
     {
         public const string SUB_ROUTE = "ScrumMeeting";
@@ -18,6 +18,9 @@ namespace ScrumPoker.DataContracts.User
         public const string PARAM_NAME = "id";
 
         private DateTime? _plannedStartDate;
+        /// <summary>
+        /// The sprint's planned start date.
+        /// </summary>
         public DateTime? PlannedStartDate
         {
             get { return _plannedStartDate; }
@@ -34,6 +37,9 @@ namespace ScrumPoker.DataContracts.User
         }
 
         private DateTime? _plannedEndDate;
+        /// <summary>
+        /// The sprint's planned end date.
+        /// </summary>
         public DateTime? PlannedEndDate
         {
             get { return _plannedEndDate; }
@@ -50,6 +56,9 @@ namespace ScrumPoker.DataContracts.User
         }
 
         private InitiativeListItem _initiative;
+        /// <summary>
+        /// The optional initiative for the sprint.
+        /// </summary>
         [DataMember(Name = "initiative", EmitDefaultValue = false)]
         public InitiativeListItem Initiative
         {
@@ -58,6 +67,9 @@ namespace ScrumPoker.DataContracts.User
         }
 
         private EpicListItem _epic;
+        /// <summary>
+        /// The optional epic of the sprint.
+        /// </summary>
         [DataMember(Name = "epic", EmitDefaultValue = false)]
         public EpicListItem Epic
         {
@@ -66,6 +78,9 @@ namespace ScrumPoker.DataContracts.User
         }
 
         private MilestoneListItem _milestone;
+        /// <summary>
+        /// The optional milestone for the sprint.
+        /// </summary>
         [DataMember(Name = "milestone", EmitDefaultValue = false)]
         public MilestoneListItem Milestone
         {
@@ -74,6 +89,9 @@ namespace ScrumPoker.DataContracts.User
         }
 
         private int _currentScopePoints = 0;
+        /// <summary>
+        /// The number of points assigned to the sprint.
+        /// </summary>
         [DataMember(Name = "currentScopePoints", IsRequired = true)]
         public int CurrentScopePoints
         {
@@ -82,6 +100,9 @@ namespace ScrumPoker.DataContracts.User
         }
 
         private int? _sprintCapacity;
+        /// <summary>
+        /// The optional limit in points for the entire sprint.
+        /// </summary>
         [DataMember(Name = "sprintCapacity", EmitDefaultValue = false)]
         public int? SprintCapacity
         {
@@ -90,6 +111,9 @@ namespace ScrumPoker.DataContracts.User
         }
 
         private TeamListItem _team = null;
+        /// <summary>
+        /// The team conducting the sprint planning meeting.
+        /// </summary>
         [DataMember(Name = "team", IsRequired = true)]
         public TeamListItem Team
         {
@@ -103,6 +127,9 @@ namespace ScrumPoker.DataContracts.User
         }
 
         private UserListItem _facilitator = null;
+        /// <summary>
+        /// The team facilitator.
+        /// </summary>
         [DataMember(Name = "facilitator", IsRequired = true)]
         public UserListItem Facilitator
         {
@@ -115,20 +142,31 @@ namespace ScrumPoker.DataContracts.User
             }
         }
 
+        private ColorScheme _colorScheme = null;
+        /// <summary>
+        /// The team facilitator.
+        /// </summary>
+        [DataMember(Name = "colorScheme", IsRequired = true)]
+        public ColorScheme ColorScheme
+        {
+            get { return _colorScheme; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException("value");
+                _colorScheme = value;
+            }
+        }
+
         private Collection<ParticipantListItem> _participants = new Collection<ParticipantListItem>();
+        /// <summary>
+        /// Participants in the sprint planning meeting.
+        /// </summary>
         [DataMember(Name = "participants", IsRequired = true)]
         public Collection<ParticipantListItem> Participants
         {
             get { return _participants; }
             set { _participants = value ?? new Collection<ParticipantListItem>(); }
-        }
-
-        private Collection<ColorSchemeListItem> _colorSchemes = new Collection<ColorSchemeListItem>();
-        [DataMember(Name = "colorSchemes", IsRequired = true)]
-        public Collection<ColorSchemeListItem> ColorSchemes
-        {
-            get { return _colorSchemes; }
-            set { _colorSchemes = value ?? new Collection<ColorSchemeListItem>(); }
         }
 
         // TODO: Add Deck Information

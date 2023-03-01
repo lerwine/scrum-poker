@@ -4,18 +4,30 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ScrumPoker.WebApp.Models;
 
+/// <summary>
+/// 
+/// </summary>
 public class Milestone
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public Guid Id { get; set; }
 
     private string _title = "";
+    /// <summary>
+    /// 
+    /// </summary>
     public string Title
     {
         get { return _title; }
-        set { _title = value.EmptyIfNullOrTrimmed(); }
+        set { _title = value.WsNormalized(); }
     }
 
     private string? _description;
+    /// <summary>
+    /// 
+    /// </summary>
     public string? Description
     {
         get { return _description; }
@@ -23,6 +35,9 @@ public class Milestone
     }
 
     private DateTime? _startDate;
+    /// <summary>
+    /// 
+    /// </summary>
     public DateTime? StartDate
     {
         get { return _startDate; }
@@ -30,6 +45,9 @@ public class Milestone
     }
 
     private DateTime? _plannedEndDate;
+    /// <summary>
+    /// 
+    /// </summary>
     public DateTime? PlannedEndDate
     {
         get { return _plannedEndDate; }
@@ -37,17 +55,32 @@ public class Milestone
     }
 
     // TODO: Need to validate that the Epic belongs to the same team as the current Milestone before being saved to DB
+    /// <summary>
+    /// 
+    /// </summary>
     public Guid? EpicId { get; set; }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public Epic? Epic { get; set; }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public Guid TeamId { get; set; }
 
+    /// <summary>
+    /// 
+    /// </summary>
 #pragma warning disable CS8618
     public Team Team { get; set; }
 #pragma warning restore CS8618
 
     private Collection<PlanningMeeting> _meetings = new();
+    /// <summary>
+    /// 
+    /// </summary>
     public Collection<PlanningMeeting> Meetings
     {
         get { return _meetings; }

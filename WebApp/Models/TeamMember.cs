@@ -3,16 +3,31 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ScrumPoker.WebApp.Models;
 
+/// <summary>
+/// 
+/// </summary>
 public class TeamMember
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public Guid TeamId { get; set; }
 
+    /// <summary>
+    /// 
+    /// </summary>
 #pragma warning disable CS8618
     public Team Team { get; set; }
 #pragma warning restore CS8618
 
+    /// <summary>
+    /// 
+    /// </summary>
     public Guid UserId { get; set; }
 
+    /// <summary>
+    /// 
+    /// </summary>
 #pragma warning disable CS8618
     public UserProfile User { get; set; }
 #pragma warning restore CS8618

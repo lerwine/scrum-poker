@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 
 namespace ScrumPoker
@@ -107,6 +108,10 @@ namespace ScrumPoker
             return true;
         }
 
+        public static readonly Regex NonNormalizedWhiteSpaceRegex = new Regex(@"( |(?! ))[\r\n\s]+", RegexOptions.Compiled);
+
+        public static string WsNormalized(this string value) { return (value != null && (value = value.Trim()).Length > 0) ? NonNormalizedWhiteSpaceRegex.Replace(value, " ") : ""; }
+
         public static string EmptyIfNullOrTrimmed(this string value) { return (value == null) ? "" : value.Trim(); }
 
         public static bool ToEmptyIfNullOrTrimmed(this string value, object syncRoot, ref string target)
@@ -115,6 +120,19 @@ namespace ScrumPoker
             try
             {
                 if ((value = EmptyIfNullOrTrimmed(value)) == target)
+                    return false;
+                target = value;
+            }
+            finally { Monitor.Exit(syncRoot); }
+            return true;
+        }
+
+        public static bool ToWsNormalized(this string value, object syncRoot, ref string target)
+        {
+            Monitor.Enter(syncRoot);
+            try
+            {
+                if ((value = WsNormalized(value)) == target)
                     return false;
                 target = value;
             }

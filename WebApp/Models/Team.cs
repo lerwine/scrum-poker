@@ -3,8 +3,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ScrumPoker.WebApp.Models;
+
+/// <summary>
+/// 
+/// </summary>
 public class Team
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public Guid Id { get; set; }
 
     private string _title = "";
@@ -14,7 +21,7 @@ public class Team
     public string Title
     {
         get { return _title; }
-        set { _title = value.EmptyIfNullOrTrimmed(); }
+        set { _title = value.WsNormalized(); }
     }
 
     private string? _description;
@@ -27,13 +34,22 @@ public class Team
         set { _description = value.TrimmedOrNullIfEmpty(); }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public Guid FacilitatorId { get; set; }
 
+    /// <summary>
+    /// 
+    /// </summary>
 #pragma warning disable CS8618
     public UserProfile Facilitator { get; set; }
 #pragma warning restore CS8618
 
     private Collection<TeamMember> _members = new();
+    /// <summary>
+    /// 
+    /// </summary>
     public Collection<TeamMember> Members
     {
         get { return _members; }
@@ -41,6 +57,9 @@ public class Team
     }
     
     private Collection<PlanningMeeting> _meetings = new();
+    /// <summary>
+    /// 
+    /// </summary>
     public Collection<PlanningMeeting> Meetings
     {
         get { return _meetings; }
@@ -48,6 +67,9 @@ public class Team
     }
 
     private Collection<Epic> _epics = new();
+    /// <summary>
+    /// 
+    /// </summary>
     public Collection<Epic> Epics
     {
         get { return _epics; }
@@ -55,6 +77,9 @@ public class Team
     }
     
     private Collection<Initiative> _initiatives = new();
+    /// <summary>
+    /// 
+    /// </summary>
     public Collection<Initiative> Initiatives
     {
         get { return _initiatives; }
@@ -62,6 +87,9 @@ public class Team
     }
     
     private Collection<Milestone> _milestones = new();
+    /// <summary>
+    /// 
+    /// </summary>
     public Collection<Milestone> Milestones
     {
         get { return _milestones; }

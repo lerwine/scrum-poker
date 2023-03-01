@@ -22,12 +22,12 @@ public class UserController : ControllerBase
         // _logger = logger;
     }
 
-    // GET: api/User
+    // GET: api/User/AppState
     /// <summary>
     /// Gets initial application state for the current user.
     /// </summary>
     /// <returns>A <see cref="DataContracts.User.AppState" /> object getting the current user's application state.</returns>
-    [HttpGet]
+    [HttpGet(DataContracts.User.AppState.SUB_ROUTE)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<DataContracts.User.AppState>> GetAppState(CancellationToken token = default)

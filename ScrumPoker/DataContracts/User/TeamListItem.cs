@@ -3,15 +3,15 @@ using System.Runtime.Serialization;
 
 namespace ScrumPoker.DataContracts.User
 {
-    [DataContract]
     /// <summary>
     /// Response contract representing a team.
     /// </summary>
+    [DataContract]
     public class TeamListItem
     {
         private Guid _teamId;
         /// <summary>
-        /// Gets the team's unique identifier.
+        /// The team's unique identifier.
         /// </summary>
         public Guid TeamId
         {
@@ -30,7 +30,7 @@ namespace ScrumPoker.DataContracts.User
 
         private Guid _facilitatorId;
         /// <summary>
-        /// Gets the facilitator's unique identifier.
+        /// The facilitator's unique identifier.
         /// </summary>
         public Guid FacilitatorId
         {
@@ -55,7 +55,7 @@ namespace ScrumPoker.DataContracts.User
         public string Title
         {
             get { return _title; }
-            set { _title = value.EmptyIfNullOrTrimmed(); }
+            set { _title = value.WsNormalized(); }
         }
 
         private string _description = null;

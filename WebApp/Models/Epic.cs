@@ -4,18 +4,30 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ScrumPoker.WebApp.Models;
 
+/// <summary>
+/// 
+/// </summary>
 public class Epic
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public Guid Id { get; set; }
 
     private string _title = "";
+    /// <summary>
+    /// 
+    /// </summary>
     public string Title
     {
         get { return _title; }
-        set { _title = value.EmptyIfNullOrTrimmed(); }
+        set { _title = value.WsNormalized(); }
     }
 
     private string? _description;
+    /// <summary>
+    /// 
+    /// </summary>
     public string? Description
     {
         get { return _description; }
@@ -24,6 +36,9 @@ public class Epic
 
 
     private DateTime? _startDate;
+    /// <summary>
+    /// 
+    /// </summary>
     public DateTime? StartDate
     {
         get { return _startDate; }
@@ -31,19 +46,31 @@ public class Epic
     }
 
     private DateTime? _plannedEndDate;
+    /// <summary>
+    /// 
+    /// </summary>
     public DateTime? PlannedEndDate
     {
         get { return _plannedEndDate; }
         set { _plannedEndDate = value.ToLocalDate(); }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public Guid TeamId { get; set; }
 
+    /// <summary>
+    /// 
+    /// </summary>
 #pragma warning disable CS8618
     public Team Team { get; set; }
 #pragma warning restore CS8618
 
     private Collection<PlanningMeeting> _meetings = new();
+    /// <summary>
+    /// 
+    /// </summary>
     public Collection<PlanningMeeting> Meetings
     {
         get { return _meetings; }
@@ -51,6 +78,9 @@ public class Epic
     }
 
     private Collection<Milestone> _milestones = new();
+    /// <summary>
+    /// 
+    /// </summary>
     public Collection<Milestone> Milestones
     {
         get { return _milestones; }

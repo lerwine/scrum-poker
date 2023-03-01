@@ -3,18 +3,30 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ScrumPoker.WebApp.Models;
 
+/// <summary>
+/// 
+/// </summary>
 public class DeckType
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public Guid Id { get; set; }
 
     private string _name = "";
+    /// <summary>
+    /// 
+    /// </summary>
     public string Name
     {
         get { return _name; }
-        set { _name = value.EmptyIfNullOrTrimmed(); }
+        set { _name = value.WsNormalized(); }
     }
 
     private string? _description;
+    /// <summary>
+    /// 
+    /// </summary>
     public string? Description
     {
         get { return _description; }
@@ -22,17 +34,29 @@ public class DeckType
     }
 
     private string _previewUrl = "";
+    /// <summary>
+    /// 
+    /// </summary>
     public string PreviewUrl
     {
         get { return _previewUrl; }
         set { _previewUrl = value.EmptyIfNullOrTrimmed(); }
     }
     
+    /// <summary>
+    /// 
+    /// </summary>
     public int Width { get; set; }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public int Height { get; set; }
     
     private Collection<CardDefinition> _cards = new();
+    /// <summary>
+    /// 
+    /// </summary>
     public Collection<CardDefinition> Cards
     {
         get { return _cards; }
@@ -40,6 +64,9 @@ public class DeckType
     }
 
     private Collection<SheetDefinition> _sheets = new();
+    /// <summary>
+    /// 
+    /// </summary>
     public Collection<SheetDefinition> Sheets
     {
         get { return _sheets; }
@@ -47,6 +74,9 @@ public class DeckType
     }
     
     private Collection<PlanningMeeting> _meetings = new();
+    /// <summary>
+    /// 
+    /// </summary>
     public Collection<PlanningMeeting> Meetings
     {
         get { return _meetings; }
