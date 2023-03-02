@@ -23,13 +23,13 @@
             "diagnosticSeverity": "error"
         },
         {
-            "text": "Deprecated",
+            "text": "Obsolete",
             "color": "Blue",
             "backgroundColor": "Yellow",
             "overviewRulerColor": "Yellow",
             "diagnosticSeverity": "warning",
             "regex": {
-                "pattern": "Deprecated(?=[\\(\\]])"
+                "pattern": "Obsolete(?=[\\(\\]])"
             }
         },
         {

@@ -1,32 +1,25 @@
 using System;
-using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
 
-namespace ScrumPoker.DataContracts.User
+namespace ScrumPoker.DataContracts.ColorScheme
 {
-    /// <summary>
-    /// Defines a color scheme.
-    /// </summary>
     [DataContract]
-    public class ColorScheme
+    public class RecordEntry
     {
-        [DataMember(Name = "schemeId", IsRequired = true)]
-        #pragma warning disable IDE0051, IDE1006
-        private string __SchemeId
-        #pragma warning restore IDE0051, IDE1006
+        private Guid _id;
+        public Guid Id
         {
-            get { return _schemeId.ToJsonString(); }
-            set { _schemeId = value.JsonStringToGuid() ?? Guid.Empty; }
+            get { return _id; }
+            set { _id = value; }
         }
 
-        private Guid _schemeId;
-        /// <summary>
-        /// The unique identifier of the color scheme.
-        /// </summary>
-        public Guid SchemeId
+        [DataMember(Name = "id", IsRequired = true)]
+#pragma warning disable IDE0051, IDE1006
+        private string __Id
+#pragma warning restore IDE0051, IDE1006
         {
-            get { return _schemeId; }
-            set { _schemeId = value; }
+            get { return _id.ToJsonString(); }
+            set { _id = value.JsonStringToGuid() ?? Guid.Empty; }
         }
 
         private string _name = "";
@@ -71,19 +64,6 @@ namespace ScrumPoker.DataContracts.User
         {
             get { return _votingText; }
             set { _votingText = value.EmptyIfNullOrTrimmed(); }
-        }
-
-        private Collection<CardColorListItem> _cardColors = new Collection<CardColorListItem>();
-        /// <summary>
-        /// Card deck colors.
-        /// </summary>
-        [DataMember(Name = "cardColors", IsRequired = true)]
-        public Collection<CardColorListItem> CardColors
-        {
-            get { return _cardColors
-            ; }
-            set { _cardColors
-             = value ?? new Collection<CardColorListItem>(); }
         }
     }
 }

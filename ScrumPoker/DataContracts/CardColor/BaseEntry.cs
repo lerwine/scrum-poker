@@ -1,35 +1,25 @@
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Threading.Tasks;
 
-namespace ScrumPoker.DataContracts.User
+namespace ScrumPoker.DataContracts.CardColor
 {
-    /// <summary>
-    /// Represents a card color.
-    /// </summary>
     [DataContract]
-    public class CardColorListItem
+    public class BaseEntry
     {
-        [DataMember(Name = "colorId", IsRequired = true)]
-        #pragma warning disable IDE0051, IDE1006
-        private string __ColorId
-        #pragma warning restore IDE0051, IDE1006
+        private Guid _id;
+        public Guid Id
         {
-            get { return _colorId.ToJsonString(); }
-            set { _colorId = value.JsonStringToGuid() ?? Guid.Empty; }
+            get { return _id; }
+            set { _id = value; }
         }
 
-        private Guid _colorId;
-        /// <summary>
-        /// The unique identifier of the card color.
-        /// </summary>
-        public Guid ColorId
+        [DataMember(Name = "id", IsRequired = true)]
+#pragma warning disable IDE0051, IDE1006
+        private string __Id
+#pragma warning restore IDE0051, IDE1006
         {
-            get { return _colorId; }
-            set { _colorId = value; }
+            get { return _id.ToJsonString(); }
+            set { _id = value.JsonStringToGuid() ?? Guid.Empty; }
         }
 
         private string _name = "";

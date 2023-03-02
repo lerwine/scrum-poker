@@ -4,9 +4,9 @@ using ScrumPoker.WebApp.Services;
 
 internal class Program
 {
-    #pragma warning disable CS8618
+#pragma warning disable CS8618
     public static IServiceProvider Services { get; private set; }
-    #pragma warning restore CS8618
+#pragma warning restore CS8618
 
     private static void Main(string[] args)
     {

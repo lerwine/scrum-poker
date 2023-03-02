@@ -4,9 +4,10 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
 
-namespace ScrumPoker.DataContracts.Milestone
+namespace ScrumPoker.DataContracts.Epic
 {
-    public class NewMilestoneRequest : SprintGroupingItem
+    [DataContract]
+    public class BaseEntry : SprintGroupingItem
     {
         private Guid _id;
         public Guid Id
@@ -16,21 +17,12 @@ namespace ScrumPoker.DataContracts.Milestone
         }
 
         [DataMember(Name = "id", IsRequired = true)]
-        #pragma warning disable IDE0051, IDE1006
+#pragma warning disable IDE0051, IDE1006
         private string __Id
-        #pragma warning restore IDE0051, IDE1006
+#pragma warning restore IDE0051, IDE1006
         {
             get { return _id.ToJsonString(); }
             set { _id = value.JsonStringToGuid() ?? Guid.Empty; }
-        }
-
-        private bool _isTeamMilestone;
-
-        [DataMember(Name = "isTeamMilestone", EmitDefaultValue = false)]
-        public bool IsTeamMilestone
-        {
-            get { return _isTeamMilestone; }
-            set { _isTeamMilestone = value; }
         }
     }
 }

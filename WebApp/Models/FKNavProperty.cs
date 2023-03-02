@@ -81,7 +81,7 @@ class FKNavProperty<TNav>
     {
         _getKey = getKey ?? throw new ArgumentNullException(nameof(getKey));
         if ((_model = model) is not null)
-            _foreignKey = getKey(model);
+            _foreignKey = getKey(model!);
     }
 #pragma warning restore CS8618
 }

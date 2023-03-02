@@ -30,25 +30,27 @@ public class EpicsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<string>> AddNewEpic(DataContracts.Epic.NewEpicRequest request, CancellationToken token = default)
+    public async Task<ActionResult<string>> AddNewEpic(DataContracts.Epic.NewItemRequest request, CancellationToken token = default)
     {
         string title = request.Title;
-        if (title.Length == 0 || (request.StartDate.HasValue && request.PlannedEndDate.HasValue && request.StartDate.Value > request.PlannedEndDate.Value))
-            return BadRequest();
+        if (title.Length == 0)
+            return BadRequest("Title cannot be empty.");
+        if (request.StartDate.HasValue && request.PlannedEndDate.HasValue && request.StartDate.Value > request.PlannedEndDate.Value)
+            return BadRequest("startDate cannot be later than plannedEndDate.");
         if (!_context.TryGetCurrentIdentityName(out string? userName))
             return Unauthorized();
-        Guid teamid = request.TeamId;
-        Team? team = await _context.Teams.Where(t => t.Id == teamid).Include(t => t.Facilitator).FirstOrDefaultAsync(token);
+        Guid teamId = request.TeamId;
+        Team? team = await _context.Teams.Where(t => t.Id == teamId).Include(t => t.Facilitator).FirstOrDefaultAsync(token);
         if (team is null)
-            return NotFound();
+            return NotFound($"A team with the id '{teamId:n}' was not found.");
         if (!team.Facilitator!.UserName.Equals(userName, StringComparison.CurrentCultureIgnoreCase))
         {
             UserProfile? userProfile = await _context.GetUserProfileAsync(token);
             if (userProfile is null || !userProfile.IsAdmin)
                 return Unauthorized();
         }
-        if (await _context.Epics.CountAsync(e => e.TeamId == teamid && e.Title == title, token) > 0)
-            return Conflict();
+        if (await _context.Epics.CountAsync(e => e.TeamId == teamId && e.Title == title, token) > 0)
+            return Conflict("An epic with that title already exists.");
         Guid id = Guid.NewGuid();
         _ = await _context.Epics.AddAsync(new()
         {
@@ -57,9 +59,9 @@ public class EpicsController : ControllerBase
             Description = request.Description,
             StartDate = request.StartDate,
             PlannedEndDate = request.PlannedEndDate,
-            TeamId = teamid
+            TeamId = teamId
         }, token);
         _ = await _context.SaveChangesAsync(token);
-        return id.ToJsonString();
+        return Ok(id.ToJsonString());
     }
 }

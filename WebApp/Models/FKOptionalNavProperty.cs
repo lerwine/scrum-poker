@@ -92,7 +92,7 @@ namespace ScrumPoker.WebApp.Models
         {
             _getKey = getKey ?? throw new ArgumentNullException(nameof(getKey));
             if ((_model = model) is not null)
-                _foreignKey = getKey(model);
+                _foreignKey = getKey(model!);
         }
     }
 }

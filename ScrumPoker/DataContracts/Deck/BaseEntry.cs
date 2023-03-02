@@ -1,26 +1,16 @@
 using System;
-using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
 
-namespace ScrumPoker.DataContracts.User
+namespace ScrumPoker.DataContracts.Deck
 {
     [DataContract]
-    public class DeckListItem
+    public class BaseEntry
     {
-        [DataMember(Name = "deckId", IsRequired = true)]
-        #pragma warning disable IDE0051, IDE1006
-        private string __DeckId
-        #pragma warning restore IDE0051, IDE1006
+        private Guid _id;
+        public Guid Id
         {
-            get { return _deckId.ToJsonString(); }
-            set { _deckId = value.JsonStringToGuid() ?? Guid.Empty; }
-        }
-
-        private Guid _deckId;
-        public Guid DeckId
-        {
-            get { return _deckId; }
-            set { _deckId = value; }
+            get { return _id; }
+            set { _id = value; }
         }
 
         private string _name = "";

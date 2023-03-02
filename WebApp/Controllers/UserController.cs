@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 // using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using ScrumPoker.WebApp.Models;
 using ScrumPoker.WebApp.Services;
 
@@ -22,6 +23,71 @@ public class UserController : ControllerBase
         // _logger = logger;
     }
 
+    // GET: api/User/New
+    [HttpGet("New")]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<string>> AddNewUser(DataContracts.User.NewItemRequest request, CancellationToken token = default)
+    {
+        string newUserName = request.UserName;
+        string displayName = request.DisplayName;
+        if (newUserName.Length == 0)
+            return BadRequest("userName cannot be empty.");
+        if (displayName.Length == 0)
+            return BadRequest("displayName cannot be empty.");
+        if (!_context.TryGetUserProfile(out UserProfile? profile))
+            return Unauthorized();
+        Guid[] teamIds = request.TeamIds?.Distinct().ToArray() ?? Array.Empty<Guid>();
+        Guid userId;
+        if (!profile.IsAdmin)
+        {
+            if (request.IsAdmin)
+                return Unauthorized("Admin role required to add other admin users.");
+            userId = profile.Id;
+            if (teamIds.Length == 0)
+                return Unauthorized("Admin role required to add new users without team membership.");
+            foreach (Guid id in teamIds)
+                if (await _context.Teams.CountAsync(t => t.Id == id && t.FacilitatorId == userId, token) == 0)
+                    return Unauthorized("Only admins may add users to other teams.");
+        }
+        if (await _context.Profles.CountAsync(p => p.UserName == newUserName, token) > 0)
+            return Conflict("Another profile with that user name already exists.");
+        if (await _context.Profles.CountAsync(p => p.DisplayName == displayName, token) > 0)
+            return Conflict("Another profile with that display name already exists.");
+        Collection<Team> teams = new();
+        foreach (Guid id in teamIds)
+        {
+            Team? item = await _context.Teams.Include(t => t.Members).FirstOrDefaultAsync(t => t.Id == id, token);
+            if (item is null)
+                return NotFound($"A team with the id {id:n} does not exist.");
+            teams.Add(item);
+        }
+        userId = Guid.NewGuid();
+        EntityEntry<UserProfile> userEntry = await _context.Profles.AddAsync(new()
+        {
+            Id = userId,
+            DisplayName = displayName,
+            IsAdmin = request.IsAdmin,
+            UserName = newUserName
+        }, token);
+        _ = await _context.SaveChangesAsync(token);
+        if (teams.Count > 0)
+        {
+            profile = userEntry.Entity;
+
+            foreach (Team item in teams)
+            {
+                item.Members.Add(profile);
+                _context.Update(item);
+            }
+            _ = await _context.SaveChangesAsync(token);
+        }
+        return Ok(userId.ToJsonString());
+    }
+
     // GET: api/User/AppState
     /// <summary>
     /// Gets initial application state for the current user.
@@ -36,18 +102,18 @@ public class UserController : ControllerBase
         if (userProfile is null)
              return Unauthorized();
         Guid id = userProfile.Id;
-        Collection<DataContracts.User.TeamListItem> resultTeams = new();
+        Collection<DataContracts.Team.RecordEntry> resultTeams = new();
         foreach (Team t in userProfile.Teams)
-            resultTeams.Add(new DataContracts.User.TeamListItem
+            resultTeams.Add(new DataContracts.Team.RecordEntry
             {
-                TeamId = t.Id,
+                Id = t.Id,
                 Description = t.Description,
                 FacilitatorId = t.FacilitatorId,
                 Title = t.Title
             });
-        Collection<DataContracts.User.UserListItem> facilitators = new();
+        Collection<DataContracts.User.BaseEntry> facilitators = new();
         foreach (UserProfile u in userProfile.Teams.Select(t => t.Facilitator).GroupBy(f => f!.Id).Select(g => g.First()!))
-            facilitators.Add(new DataContracts.User.UserListItem
+            facilitators.Add(new DataContracts.User.BaseEntry
             {
                 UserId = u!.Id,
                 DisplayName = u.DisplayName,
@@ -89,7 +155,7 @@ public class UserController : ControllerBase
         DataContracts.User.TeamState response = new()
         {
             TeamId = team.Id,
-            Facilitator = new DataContracts.User.UserListItem
+            Facilitator = new DataContracts.User.BaseEntry
             {
                 UserId = team.Facilitator!.Id,
                 DisplayName = team.Facilitator.DisplayName,
@@ -100,18 +166,18 @@ public class UserController : ControllerBase
         };
         if (userProfile.IsAdmin)
             foreach (PlanningMeeting pm in team.Meetings)
-                response.Meetings.Add(new DataContracts.User.PlanningMeetingListItem
+                response.Meetings.Add(new DataContracts.PlanningMeeting.RecordEntry
                 {
-                    MeetingId = pm.Id,
+                    Id = pm.Id,
                     Title = pm.Title,
                     Description = pm.Description,
                     MeetingDate = pm.MeetingDate
                 });
         else
             foreach (PlanningMeeting pm in team.Meetings.Where(m => m.Participants.Any(p => p.UserId == userId)))
-                response.Meetings.Add(new DataContracts.User.PlanningMeetingListItem
+                response.Meetings.Add(new DataContracts.PlanningMeeting.RecordEntry
                 {
-                    MeetingId = pm.Id,
+                    Id = pm.Id,
                     Title = pm.Title,
                     Description = pm.Description,
                     MeetingDate = pm.MeetingDate
@@ -119,11 +185,11 @@ public class UserController : ControllerBase
         return Ok(response);
     }
 
-    private static DataContracts.User.InitiativeListItem? ToInitiativeListItem(Initiative? source)
+    private static DataContracts.Initiative.RecordEntry? ToInitiativeListItem(Initiative? source)
     {
         if (source is null)
             return null;
-        return new DataContracts.User.InitiativeListItem()
+        return new DataContracts.Initiative.RecordEntry()
         {
             Title = source.Title,
             Description = source.Description,
@@ -132,11 +198,11 @@ public class UserController : ControllerBase
         };
     }
 
-    private static DataContracts.User.EpicListItem? ToEpicListItem(Epic? source)
+    private static DataContracts.Epic.RecordEntry? ToEpicListItem(Epic? source)
     {
         if (source is null)
             return null;
-        return new DataContracts.User.EpicListItem()
+        return new DataContracts.Epic.RecordEntry()
         {
             Title = source.Title,
             Description = source.Description,
@@ -145,11 +211,11 @@ public class UserController : ControllerBase
         };
     }
     
-    private static DataContracts.User.MilestoneListItem? ToMilestoneListItem(Milestone? source)
+    private static DataContracts.Milestone.RecordEntry? ToMilestoneListItem(Milestone? source)
     {
         if (source is null)
             return null;
-        return new DataContracts.User.MilestoneListItem()
+        return new DataContracts.Milestone.RecordEntry()
         {
             Title = source.Title,
             Description = source.Description,
@@ -193,9 +259,9 @@ public class UserController : ControllerBase
             Epic = ToEpicListItem(planningMeeting.Epic),
             Milestone = ToMilestoneListItem(planningMeeting.Milestone),
             CurrentScopePoints = planningMeeting.CurrentScopePoints,
-            Team = new DataContracts.User.TeamListItem()
+            Team = new DataContracts.Team.RecordEntry()
             {
-                TeamId = team.Id,
+                Id = team.Id,
                 Description = team.Description,
                 FacilitatorId = team.FacilitatorId,
                 Title = team.Title
@@ -209,12 +275,12 @@ public class UserController : ControllerBase
             Description = planningMeeting.Description,
             ColorScheme = null,
             MeetingDate = planningMeeting.MeetingDate,
-            MeetingId = planningMeeting.Id,
+            Id = planningMeeting.Id,
             SprintCapacity = planningMeeting.SprintCapacity,
             Title = planningMeeting.Title,
             Deck = new()
             {
-                DeckId = deck.Id,
+                Id = deck.Id,
                 Name = deck.Name,
                 Description = deck.Description
             }
@@ -224,7 +290,7 @@ public class UserController : ControllerBase
             CardDefinition card = dc.Definition!;
             response.Cards.Add(new()
             {
-                CardId = dc.CardId,
+                Id = dc.CardId,
                 Order = dc.Order,
                 Title = card.Title,
                 Description = card.Description,

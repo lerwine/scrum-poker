@@ -11,42 +11,31 @@ namespace ScrumPoker.DataContracts.User
     /// Response data contract for GET: /api/User/AppState
     /// </summary>
     [DataContract]
-    public class AppState : UserListItem
+    public class AppState : BaseEntry
     {
         public const string SUB_ROUTE = "AppState";
         public const string FULL_ROUTE = Routings.User_Route + "/" + SUB_ROUTE;
 
-        private bool _isAdmin = false;
-        [DataMember(Name = "isAdmin", IsRequired = true)]
-        /// <summary>
-        /// Indicates whether the user is registered as an administrative user.
-        /// </summary>
-        public bool IsAdmin
-        {
-            get { return _isAdmin; }
-            set { _isAdmin = value; }
-        }
-
-        private Collection<TeamListItem> _teams = new Collection<TeamListItem>();
+        private Collection<Team.RecordEntry> _teams = new Collection<Team.RecordEntry>();
         [DataMember(Name = "teams", IsRequired = true)]
         /// <summary>
         /// The teams that the current user belongs to.
         /// </summary>
-        public Collection<TeamListItem> Teams
+        public Collection<Team.RecordEntry> Teams
         {
             get { return _teams; }
-            set { _teams = value ?? new Collection<TeamListItem>(); }
+            set { _teams = value ?? new Collection<Team.RecordEntry>(); }
         }
 
-        private Collection<UserListItem> _facilitators = new Collection<UserListItem>();
+        private Collection<BaseEntry> _facilitators = new Collection<BaseEntry>();
         [DataMember(Name = "facilitators", IsRequired = true)]
         /// <summary>
         /// The team facilitators that are referenced in one more more <see cref="Teams" />.
         /// </summary>
-        public Collection<UserListItem> Facilitators
+        public Collection<BaseEntry> Facilitators
         {
             get { return _facilitators; }
-            set { _facilitators = value ?? new Collection<UserListItem>(); }
+            set { _facilitators = value ?? new Collection<BaseEntry>(); }
         }
     }
 }

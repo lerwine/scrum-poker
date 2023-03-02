@@ -1,12 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Threading.Tasks;
 
 namespace ScrumPoker.DataContracts.Team
 {
-    public class NewTeamRequest
+    [DataContract]
+    public class NewItemRequest
     {
         private string _title = "";
         [DataMember(Name = "title", IsRequired = true)]
@@ -32,9 +30,9 @@ namespace ScrumPoker.DataContracts.Team
         }
 
         [DataMember(Name = "facilitatorId", IsRequired = true)]
-        #pragma warning disable IDE0051, IDE1006
+#pragma warning disable IDE0051, IDE1006
         private string __FacilitatorId
-        #pragma warning restore IDE0051, IDE1006
+#pragma warning restore IDE0051, IDE1006
         {
             get { return _facilitatorId.ToJsonString(); }
             set { _facilitatorId = value.JsonStringToGuid(); }

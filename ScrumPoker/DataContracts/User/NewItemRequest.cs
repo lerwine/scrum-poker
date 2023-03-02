@@ -1,33 +1,12 @@
 using System;
+using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
 
 namespace ScrumPoker.DataContracts.User
 {
-    /// <summary>
-    /// Response contract representing a user.
-    /// </summary>
     [DataContract]
-    public class UserListItem
+    public class NewItemRequest
     {
-        [DataMember(Name = "userId", IsRequired = true)]
-        #pragma warning disable IDE0051, IDE1006
-        private string __UserId
-        #pragma warning restore IDE0051, IDE1006
-        {
-            get { return _userId.ToJsonString(); }
-            set { _userId = value.JsonStringToGuid() ?? Guid.Empty; }
-        }
-
-        private Guid _userId;
-        /// <summary>
-        /// The user's unique identifier.
-        /// </summary>
-        public Guid UserId
-        {
-            get { return _userId; }
-            set { _userId = value; }
-        }
-
         private string _displayName = "";
         [DataMember(Name = "displayName", IsRequired = true)]
         /// <summary>
@@ -48,6 +27,25 @@ namespace ScrumPoker.DataContracts.User
         {
             get { return _userName; }
             set { _userName = value.WsNormalized(); }
+        }
+
+        private bool _isAdmin = false;
+        [DataMember(Name = "isAdmin", IsRequired = true)]
+        /// <summary>
+        /// Indicates whether the user is registered as an administrative user.
+        /// </summary>
+        public bool IsAdmin
+        {
+            get { return _isAdmin; }
+            set { _isAdmin = value; }
+        }
+        
+        private Collection<Guid> _teamIds;
+        [DataMember(Name = "teamIds", EmitDefaultValue = false)]
+        public Collection<Guid> TeamIds
+        {
+            get { return _teamIds; }
+            set { _teamIds = value; }
         }
     }
 }

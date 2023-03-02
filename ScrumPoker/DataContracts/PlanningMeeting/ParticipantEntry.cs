@@ -1,13 +1,10 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace ScrumPoker.DataContracts.User
+namespace ScrumPoker.DataContracts.PlanningMeeting
 {
-    /// <summary>
-    /// 
-    /// </summary>
     [DataContract]
-    public class ParticipantListItem : UserListItem
+    public class ParticipantEntry : User.BaseEntry
     {
         private Guid? _selectedCardId;
         /// <summary>
@@ -20,9 +17,9 @@ namespace ScrumPoker.DataContracts.User
         }
 
         [DataMember(Name = "selectedCardId", EmitDefaultValue = false)]
-        #pragma warning disable IDE0051, IDE1006
+#pragma warning disable IDE0051, IDE1006
         private string __SelectedCardId
-        #pragma warning restore IDE0051, IDE1006
+#pragma warning restore IDE0051, IDE1006
         {
             get { return _selectedCardId.ToJsonString(); }
             set { _selectedCardId = value.JsonStringToGuidNotEmpty().NullIfEmpty(); }
@@ -34,9 +31,9 @@ namespace ScrumPoker.DataContracts.User
         public Guid CardColorId { get; set; }
 
         [DataMember(Name = "cardColorId", IsRequired = true)]
-        #pragma warning disable IDE0051, IDE1006
+#pragma warning disable IDE0051, IDE1006
         private string __ColorSchemeId
-        #pragma warning restore IDE0051, IDE1006
+#pragma warning restore IDE0051, IDE1006
         {
             get { return CardColorId.ToJsonString(); }
             set { CardColorId = value.JsonStringToGuid() ?? Guid.Empty; }

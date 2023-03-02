@@ -28,20 +28,20 @@ namespace ScrumPoker.DataContracts.User
         }
 
         [DataMember(Name = "teamId", IsRequired = true)]
-        #pragma warning disable IDE0051, IDE1006
+#pragma warning disable IDE0051, IDE1006
         private string __TeamId
-        #pragma warning restore IDE0051, IDE1006
+#pragma warning restore IDE0051, IDE1006
         {
             get { return _teamId.ToJsonString(); }
             set { _teamId = value.JsonStringToGuid() ?? Guid.Empty; }
         }
 
-        private UserListItem _facilitator = null;
+        private BaseEntry _facilitator = null;
         [DataMember(Name = "facilitator", IsRequired = true)]
         /// <summary>
         /// The team's facilitator.
         /// </summary>
-        public UserListItem Facilitator
+        public BaseEntry Facilitator
         {
             get { return _facilitator; }
             set
@@ -74,48 +74,48 @@ namespace ScrumPoker.DataContracts.User
             set { _description = value.TrimmedOrNullIfEmpty(); }
         }
         
-        private Collection<PlanningMeetingListItem> _meetings = new Collection<PlanningMeetingListItem>();
+        private Collection<PlanningMeeting.RecordEntry> _meetings = new Collection<PlanningMeeting.RecordEntry>();
         [DataMember(Name = "meetings", IsRequired = true)]
         /// <summary>
         /// The planning meetings for the current team.
         /// </summary>
-        public Collection<PlanningMeetingListItem> Meetings
+        public Collection<PlanningMeeting.RecordEntry> Meetings
         {
             get { return _meetings; }
-            set { _meetings = value ?? new Collection<PlanningMeetingListItem>(); }
+            set { _meetings = value ?? new Collection<PlanningMeeting.RecordEntry>(); }
         }
         
-        private Collection<EpicListItem> _epics = new Collection<EpicListItem>();
+        private Collection<Epic.RecordEntry> _epics = new Collection<Epic.RecordEntry>();
         [DataMember(Name = "epics", IsRequired = true)]
         /// <summary>
         /// The epics for the current team.
         /// </summary>
-        public Collection<EpicListItem> Epics
+        public Collection<Epic.RecordEntry> Epics
         {
             get { return _epics; }
-            set { _epics = value ?? new Collection<EpicListItem>(); }
+            set { _epics = value ?? new Collection<Epic.RecordEntry>(); }
         }
 
-        private Collection<MilestoneListItem> _milestones = new Collection<MilestoneListItem>();
+        private Collection<Milestone.RecordEntry> _milestones = new Collection<Milestone.RecordEntry>();
         [DataMember(Name = "milestones", IsRequired = true)]
         /// <summary>
         /// The milestones for the current team that do not belong to an epic.
         /// </summary>
-        public Collection<MilestoneListItem> Milestones
+        public Collection<Milestone.RecordEntry> Milestones
         {
             get { return _milestones; }
-            set { _milestones = value ?? new Collection<MilestoneListItem>(); }
+            set { _milestones = value ?? new Collection<Milestone.RecordEntry>(); }
         }
 
-        private Collection<InitiativeListItem> _initiatives = new Collection<InitiativeListItem>();
+        private Collection<Initiative.RecordEntry> _initiatives = new Collection<Initiative.RecordEntry>();
         [DataMember(Name = "initiatives", IsRequired = true)]
         /// <summary>
         /// The initiatives for the current team.
         /// </summary>
-        public Collection<InitiativeListItem> Initiatives
+        public Collection<Initiative.RecordEntry> Initiatives
         {
             get { return _initiatives; }
-            set { _initiatives = value ?? new Collection<InitiativeListItem>(); }
+            set { _initiatives = value ?? new Collection<Initiative.RecordEntry>(); }
         }
     }
 }

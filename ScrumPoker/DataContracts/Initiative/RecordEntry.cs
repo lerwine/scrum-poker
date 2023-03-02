@@ -1,12 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Threading.Tasks;
 
-namespace ScrumPoker.DataContracts.Epic
+namespace ScrumPoker.DataContracts.Initiative
 {
-    public class NewEpicRequest : SprintGroupingItem
+    [DataContract]
+    public class RecordEntry : BaseEntry
     {
         private Guid _teamId;
         public Guid TeamId
@@ -16,9 +14,9 @@ namespace ScrumPoker.DataContracts.Epic
         }
 
         [DataMember(Name = "teamId", IsRequired = true)]
-        #pragma warning disable IDE0051, IDE1006
+#pragma warning disable IDE0051, IDE1006
         private string __TeamId
-        #pragma warning restore IDE0051, IDE1006
+#pragma warning restore IDE0051, IDE1006
         {
             get { return _teamId.ToJsonString(); }
             set { _teamId = value.JsonStringToGuid() ?? Guid.Empty; }

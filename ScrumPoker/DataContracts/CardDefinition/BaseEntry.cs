@@ -1,36 +1,25 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace ScrumPoker.DataContracts.User
+namespace ScrumPoker.DataContracts.CardDefinition
 {
     [DataContract]
-    public class Card
+    public class BaseEntry
     {
-        private int _order;
-        [DataMember(Name = "order", IsRequired = true)]
-        public int Order
+        private Guid _id;
+        public Guid Id
         {
-            get { return _order; }
-            set { _order = (value < 0) ? 0 : value; }
-        }
-        
-        [DataMember(Name = "cardId", IsRequired = true)]
-        #pragma warning disable IDE0051, IDE1006
-        private string __CardId
-        #pragma warning restore IDE0051, IDE1006
-        {
-            get { return _cardId.ToJsonString(); }
-            set { _cardId = value.JsonStringToGuid() ?? Guid.Empty; }
+            get { return _id; }
+            set { _id = value; }
         }
 
-        private Guid _cardId;
-        /// <summary>
-        /// The card's unique identifier.
-        /// </summary>
-        public Guid CardId
+        [DataMember(Name = "id", IsRequired = true)]
+#pragma warning disable IDE0051, IDE1006
+        private string __Id
+#pragma warning restore IDE0051, IDE1006
         {
-            get { return _cardId; }
-            set { _cardId = value; }
+            get { return _id.ToJsonString(); }
+            set { _id = value.JsonStringToGuid() ?? Guid.Empty; }
         }
 
         private string _title = "";

@@ -7,9 +7,9 @@ namespace ScrumPoker
     {
         public event EventHandler<PropertyChangedWithDescriptorEventArgs> PropertyChanged;
 
-        #pragma warning disable IDE1006
+#pragma warning disable IDE1006
         private event PropertyChangedEventHandler _propertyChanged;
-        #pragma warning restore IDE1006
+#pragma warning restore IDE1006
         event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
         {
             add { _propertyChanged += value; }

@@ -11,67 +11,53 @@ namespace ScrumPoker.WebApp.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class MilestonesController : ControllerBase
+public class InitiativesController : ControllerBase
 {
     private readonly ScrumPokerContext _context;
-    // private readonly ILogger<MilestonesController> _logger;
+    // private readonly ILogger<InitiativesController> _logger;
 
-    // public MilestonesController(ScrumPokerContext context, ILogger<MilestonesController> logger)
-    public MilestonesController(ScrumPokerContext context)
+    // public InitiativesController(ScrumPokerContext context, ILogger<InitiativesController> logger)
+    public InitiativesController(ScrumPokerContext context)
     {
         _context = context;
         // _logger = logger;
     }
 
-    // GET: api/Milestones/New
+    // GET: api/Initiatives/New
     [HttpGet("New")]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<string>> AddNewMilestone(DataContracts.Milestone.NewItemRequest request, CancellationToken token = default)
+    public async Task<ActionResult<string>> AddNewInitiative(DataContracts.Initiative.NewItemRequest request, CancellationToken token = default)
     {
         string title = request.Title;
         if (title.Length == 0 || (request.StartDate.HasValue && request.PlannedEndDate.HasValue && request.StartDate.Value > request.PlannedEndDate.Value))
             return BadRequest();
         if (!_context.TryGetCurrentIdentityName(out string? userName))
             return Unauthorized();
-        Guid teamId = request.Id;
-        Team? team;
-        Guid? epicId;
-        if (request.IsTeamMilestone)
-        {
-            epicId = null;
-            if ((team = await _context.Teams.Where(t => t.Id == teamId).Include(t => t.Facilitator).FirstOrDefaultAsync(token)) is null)
-                return NotFound($"A team with the id '{teamId:n}' was not found.");
-        }
-        else
-        {
-            epicId = teamId;
-            Epic? epic = await _context.Epics.Where(e => e.Id == teamId).Include(e => e.Team).ThenInclude(t => t!.Facilitator).FirstOrDefaultAsync(token);
-            if (epic is null)
-                return NotFound($"An epic with the id '{epicId:n}' was not found.");
-            teamId = (team = epic.Team!).Id;
-        }
-        if (await _context.Milestones.CountAsync(e => e.TeamId == teamId && e.Title == title, token) > 0)
-            return Conflict("An milestone with that title already exists.");
+        Guid teamId = request.TeamId;
+        Team? team = await _context.Teams.Where(t => t.Id == teamId).Include(t => t.Facilitator).FirstOrDefaultAsync(token);
+        if (team is null)
+            return NotFound($"A team with the id '{teamId:n}' was not found.");
         if (!team.Facilitator!.UserName.Equals(userName, StringComparison.CurrentCultureIgnoreCase))
         {
             UserProfile? userProfile = await _context.GetUserProfileAsync(token);
             if (userProfile is null || !userProfile.IsAdmin)
                 return Unauthorized();
         }
+        if (await _context.Initiatives.CountAsync(e => e.TeamId == teamId && e.Title == title, token) > 0)
+            return Conflict("An initiative with that title already exists.");
         Guid id = Guid.NewGuid();
-        _ = await _context.Milestones.AddAsync(new()
+        _ = await _context.Initiatives.AddAsync(new()
         {
             Id = id,
             Title = title,
             Description = request.Description,
             StartDate = request.StartDate,
             PlannedEndDate = request.PlannedEndDate,
-            TeamId = teamId,
-            EpicId = epicId
+            TeamId = teamId
         }, token);
         _ = await _context.SaveChangesAsync(token);
         return Ok(id.ToJsonString());

@@ -30,7 +30,7 @@ public class TeamsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<string>> AddNewTeam(DataContracts.Team.NewTeamRequest request, CancellationToken token = default)
+    public async Task<ActionResult<string>> AddNewTeam(DataContracts.Team.NewItemRequest request, CancellationToken token = default)
     {
         UserProfile? userProfile = await _context.GetUserProfileAsync(token);
         if (userProfile is null || !userProfile.IsAdmin)
@@ -39,15 +39,15 @@ public class TeamsController : ControllerBase
         if (request.FacilitatorId.HasValue && !userProfile.Id.Equals(facilitatorId = request.FacilitatorId.Value))
         {
             if ((userProfile = await _context.Profles.FirstOrDefaultAsync(p => p.Id == facilitatorId, token)) is null)
-                return NotFound();
+                return NotFound($"A user with the id '{facilitatorId:n}' was not found.");
         }
         else
             facilitatorId = userProfile.Id;
         string title = request.Title;
         if (title.Length == 0)
-            return BadRequest();
+            return BadRequest("Title cannot be empty.");
         if (await _context.Teams.CountAsync(t => t.Title == title, token) > 0)
-            return Conflict();
+            return Conflict("A team with that title already exists.");
         Guid id = Guid.NewGuid();
         _ = await _context.Teams.AddAsync(new()
         {
@@ -57,6 +57,6 @@ public class TeamsController : ControllerBase
             FacilitatorId = facilitatorId
         }, token);
         _ = await _context.SaveChangesAsync(token);
-        return id.ToJsonString();
+        return Ok(id.ToJsonString());
     }
 }
