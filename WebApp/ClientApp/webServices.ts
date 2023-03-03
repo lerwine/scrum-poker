@@ -1,19 +1,19 @@
 namespace webServices {
     export interface IUserResponseItem {
-      userId: string;
-      displayName?: string;
+      id: string;
+      displayName: string;
       userName: string;
+      isAdmin: boolean;
     }
 
     interface IAppStateTeamItem {
-      teamId: string;
+      id: string;
       facilitatorId: string;
       title: string;
       description?: string;
     }
 
     interface IAppStateResponse extends IUserResponseItem {
-      isAdmin: boolean;
       teams: IAppStateTeamItem[];
       facilitators: IUserResponseItem[];
     }
@@ -141,7 +141,7 @@ namespace webServices {
 
       get isAdmin(): boolean { return (<IAppStateResponse>this._response).isAdmin; }
       
-      get userId(): string { return (<IAppStateResponse>this._response).userId; }
+      get userId(): string { return (<IAppStateResponse>this._response).id; }
       
       get displayName(): string | undefined { return (<IAppStateResponse>this._response).displayName; }
       
@@ -151,22 +151,24 @@ namespace webServices {
         return (<IAppStateResponse>this._response).teams.map<ITeamListItem>(
           function (this: IAppStateResponse, value: IAppStateTeamItem ): ITeamListItem {
             var id = value.facilitatorId;
-            var f: IUserResponseItem | undefined = this.facilitators.find(function (this: string, u: IUserResponseItem) { return u.userId == this; }, value.facilitatorId);
+            var f: IUserResponseItem | undefined = this.facilitators.find(function (this: string, u: IUserResponseItem) { return u.id == this; }, value.facilitatorId);
             if (typeof f === 'undefined')
               f = {
-                userId: value.facilitatorId,
+                id: value.facilitatorId,
                 userName: '(id:' + value.facilitatorId + ')',
+                displayName: value.facilitatorId,
+                isAdmin: false
               };
-            if (id == this.userId)
+            if (id == this.id)
               return {
                 isFacilitator: true,
-                teamId: value.teamId,
+                teamId: value.id,
                 teamName: value.title,
                 teamDescription: value.description,
               };
             return {
               isFacilitator: false,
-              teamId: value.teamId,
+              teamId: value.id,
               teamName: value.title,
               teamDescription: value.description,
               facilitatorName:
@@ -208,7 +210,7 @@ namespace webServices {
               milestone: fromSprintGroupingResponse(result.data.milestone),
               currentScopePoints: result.data.currentScopePoints,
               sprintCapacity: result.data.sprintCapacity,
-              teamId: result.data.team.teamId,
+              teamId: result.data.team.id,
               teamName: result.data.team.title,
               teamDescription: result.data.team.description,
               facilitator: result.data.facilitator,
