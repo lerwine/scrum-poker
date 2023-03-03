@@ -54,7 +54,6 @@ public class CardDeck
     /// </summary>
     public int Height { get; set; }
     
-    // FIXME: CardDeck needs to be in a many-to-many relationship with CardDefinition
     private Collection<DeckCard> _cards = new();
     /// <summary>
     /// 

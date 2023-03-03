@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
+using System.Linq;
 using System.Security.Principal;
 using Microsoft.EntityFrameworkCore;
 using ScrumPoker.WebApp.Models;
@@ -8,15 +9,135 @@ namespace ScrumPoker.WebApp.Services;
 
 public class ScrumPokerContext : DbContext
 {
+    private const string DEFAULT_ADMIN_LOGIN = "admin";
+
     private readonly ILogger<ScrumPokerContext> _logger;
+    
+    private bool EnsureColorSchemas(ScrumPokerAppSettings settings)
+    {
+        if (ColorSchemas.Any())
+            return true;
+        if (!settings.DefaultColorSchemes.HasValue)
+        {
+            _logger.LogCritical("Database contains no color schemas and no color schemas are defined in settings.");
+            return true;
+        }
+        var (n, f, s, t, cc) = settings.DefaultColorSchemes.Value;
+        if ((n = n.TrimmedOrNullIfEmpty()) is null)
+        {
+            _logger.LogCritical("Database contains no color schemas and color scheme name is empty.");
+            return true;
+        }
+        if (!(ColorModel.CssColor.TryParse(f, out ColorModel.CssColor fill) && ColorModel.CssColor.TryParse(s, out ColorModel.CssColor stroke) && ColorModel.CssColor.TryParse(t, out ColorModel.CssColor text)))
+        {
+            _logger.LogCritical("Database contains no color schemas and voting card color values couldn't be parsed.");
+            return true;
+        }
+        Guid id = Guid.NewGuid();
+        ColorSchemas.Add(new()
+        {
+            Id = id,
+            Name = n,
+            VotingFill = fill,
+            VotingStroke = stroke,
+            VotingText = text
+        });
+        return cc is not null && !cc.Any(c =>
+        {
+            (n, f, s, t) = c;
+            if ((n = n.TrimmedOrNullIfEmpty()) is null)
+            {
+                _logger.LogCritical("Database contains no color schemas and card color name is empty.");
+                return true;
+            }
+            if (ColorModel.CssColor.TryParse(f, out fill) && ColorModel.CssColor.TryParse(s, out stroke) && ColorModel.CssColor.TryParse(t, out ColorModel.CssColor text))
+            {
+                CardColors.Add(new()
+                {
+                    Id = Guid.NewGuid(),
+                    SchemaId = id,
+                    Name = n,
+                    Fill = fill,
+                    Stroke = stroke,
+                    Text = text
+                });
+                return false;
+            }
+            _logger.LogCritical("Database contains no color schemas and voting card color values couldn't be parsed.");
+            return true;
+        });
+    }
+
+    private bool EnsureDeckTypes(ScrumPokerAppSettings settings)
+    {
+        if (DeckTypes.Any())
+            return true;
+        
+        return false;
+    }
 
     public ScrumPokerContext(DbContextOptions<ScrumPokerContext> options)
         : base(options)
     {
-        _logger = Program.Services.GetRequiredService<ILogger<ScrumPokerContext>>();
+        _logger = Program.CurrentApp.Services.GetRequiredService<ILogger<ScrumPokerContext>>();
+        ScrumPokerAppSettings settings = Program.CurrentApp.Configuration.Get<ScrumPokerAppSettings>();
+        string? userName = settings.AdminUserName.TrimmedOrNullIfEmpty();
+        UserProfile? adminUser;
+        if (Profiles.Any(p => p.IsAdmin))
+        {
+            if (userName is null)
+                return;
+            if ((adminUser = Profiles.FirstOrDefault(p => p.UserName == userName)) is null)
+                _logger.LogWarning("Default administrative user not found.");
+        }
+        else
+        {
+            userName ??= DEFAULT_ADMIN_LOGIN;
+            if ((adminUser = Profiles.FirstOrDefault(p => p.UserName == userName)) is null && Profiles.Any())
+                _logger.LogWarning("No administrative user found.");
+        }
+        if ((adminUser = Profiles.FirstOrDefault(p => p.UserName == userName)) is null)
+        {
+            string displayName = settings.AdminDisplayName.TrimmedOrNullIfEmpty();
+            if (displayName is null)
+            {
+                int index = userName.IndexOfAny(new[] { '@', '/', '\\', ':' });
+                displayName = (index < 0) ? userName : userName[(index + 1)..].TrimmedOrNullIfEmpty() ?? userName;
+            }
+            Guid id = Guid.NewGuid();
+            _logger.LogInformation("Adding administrative user: {{ Id = '{Id}', UserName = '{UserName}', DisplayName = {DisplayName} }}", id, userName, displayName);
+            Profiles.Add(new()
+            {
+                Id = id,
+                UserName = userName,
+                DisplayName = displayName,
+                IsAdmin = true
+            });
+            EnsureColorSchemas(settings);
+            EnsureDeckTypes(settings);
+        }
+        else if (adminUser.IsAdmin)
+        {
+            if (EnsureColorSchemas(settings))
+            {
+                if (EnsureDeckTypes(settings))
+                    return;
+            }
+            else
+                EnsureDeckTypes(settings);
+        }
+        else
+        {
+            _logger.LogInformation("Changing UserProfile to administator: {{ Id = '{Id}', UserName = '{UserName}', DisplayName = {DisplayName} }}", adminUser.Id, adminUser.UserName, adminUser.DisplayName);
+            adminUser.IsAdmin = true;
+            Profiles.Update(adminUser);
+            EnsureColorSchemas(settings);
+            EnsureDeckTypes(settings);
+        }
+        SaveChanges(true);
     }
 
-    public DbSet<UserProfile> Profles { get; set; } = null!;
+    public DbSet<UserProfile> Profiles { get; set; } = null!;
     
     public DbSet<Team> Teams { get; set; } = null!;
     
@@ -96,7 +217,7 @@ public class ScrumPokerContext : DbContext
         if (TryGetCurrentIdentityName(out string? userName))
         {
             if (_userProfile is null || _userProfile.UserName != userName)
-                _userProfile = await Profles.FirstOrDefaultAsync(p => p.UserName == userName, cancellationToken);
+                _userProfile = await Profiles.FirstOrDefaultAsync(p => p.UserName == userName, cancellationToken);
         }
         else
             _userProfile = null;
@@ -106,7 +227,7 @@ public class ScrumPokerContext : DbContext
     public async Task<UserProfile?> GetUserProfileAsync(Func<IQueryable<UserProfile>, IQueryable<UserProfile>> onQuery, CancellationToken cancellationToken)
     {
         if (TryGetCurrentIdentityName(out string? userName))
-            _userProfile = await onQuery(Profles).FirstOrDefaultAsync(p => p.UserName == userName, cancellationToken);
+            _userProfile = await onQuery(Profiles).FirstOrDefaultAsync(p => p.UserName == userName, cancellationToken);
         else
             _userProfile = null;
         return _userProfile;
@@ -116,7 +237,7 @@ public class ScrumPokerContext : DbContext
     {
         if (TryGetCurrentIdentityName(out string? userName))
         {
-            if ((_userProfile is not null && _userProfile.UserName == userName) || (_userProfile = Profles.FirstOrDefault(u => u.UserName == userName)) is not null)
+            if ((_userProfile is not null && _userProfile.UserName == userName) || (_userProfile = Profiles.FirstOrDefault(u => u.UserName == userName)) is not null)
             {
                 result = _userProfile;
                 return true;

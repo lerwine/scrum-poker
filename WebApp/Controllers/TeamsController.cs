@@ -38,7 +38,7 @@ public class TeamsController : ControllerBase
         Guid facilitatorId;
         if (request.FacilitatorId.HasValue && !userProfile.Id.Equals(facilitatorId = request.FacilitatorId.Value))
         {
-            if ((userProfile = await _context.Profles.FirstOrDefaultAsync(p => p.Id == facilitatorId, token)) is null)
+            if ((userProfile = await _context.Profiles.FirstOrDefaultAsync(p => p.Id == facilitatorId, token)) is null)
                 return NotFound($"A user with the id '{facilitatorId:n}' was not found.");
         }
         else

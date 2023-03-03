@@ -4,13 +4,16 @@ using ScrumPoker.WebApp.Services;
 
 internal class Program
 {
+    private const string DEFAULT_DB_NAME = "ScrumPoker.db";
+
 #pragma warning disable CS8618
-    public static IServiceProvider Services { get; private set; }
+    internal static WebApplication CurrentApp { get; private set; }
+    
 #pragma warning restore CS8618
 
     private static void Main(string[] args)
     {
-        var builder = WebApplication.CreateBuilder(args);
+        WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
 
@@ -19,41 +22,40 @@ internal class Program
 
         // builder.Services.AddSingleton<SessionTokenService>();
 
-        var app = builder.Build();
+        CurrentApp = builder.Build();
 
-        ScrumPokerAppSettings settings = app.Configuration.Get<ScrumPokerAppSettings>();
+        ScrumPokerAppSettings settings = CurrentApp.Configuration.Get<ScrumPokerAppSettings>();
         string? databaseFilePath = settings.DbFile;
 
         if (string.IsNullOrWhiteSpace(databaseFilePath))
-            databaseFilePath = Path.Combine(builder.Environment.WebRootPath, "ScrumPoker.db");
+            databaseFilePath = Path.Combine(builder.Environment.WebRootPath, DEFAULT_DB_NAME);
         else
             databaseFilePath = Path.IsPathFullyQualified(databaseFilePath) ? Path.GetFullPath(databaseFilePath) : Path.Combine(builder.Environment.WebRootPath, databaseFilePath);
-        app.Logger.LogInformation("Using database {databaseFilePath}", databaseFilePath);
+        CurrentApp.Logger.LogInformation("Using database {databaseFilePath}", databaseFilePath);
         builder.Services.AddDbContext<ScrumPokerContext>(opt =>
             opt.UseSqlite(new SqliteConnectionStringBuilder
             {
-                DataSource = string.IsNullOrWhiteSpace(databaseFilePath) ? "ScrumPoker.db" : databaseFilePath,
+                DataSource = databaseFilePath,
                 ForeignKeys = true,
                 Mode = File.Exists(databaseFilePath) ? SqliteOpenMode.ReadWrite : SqliteOpenMode.ReadWriteCreate
             }.ConnectionString));
 
         // Configure the HTTP request pipeline.
-        if (!app.Environment.IsDevelopment())
+        if (!CurrentApp.Environment.IsDevelopment())
         {
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-            app.UseHsts();
+            CurrentApp.UseHsts();
         }
 
-        app.UseHttpsRedirection();
-        app.UseStaticFiles();
-        app.UseRouting();
-        app.MapControllerRoute(
+        CurrentApp.UseHttpsRedirection();
+        CurrentApp.UseStaticFiles();
+        CurrentApp.UseRouting();
+        CurrentApp.MapControllerRoute(
             name: "default",
             // 
             pattern: "{controller}/{action=Index}/{id?}");
 
-        app.MapFallbackToFile("index.html"); ;
-        Services = app.Services;
-        app.Run();
+        CurrentApp.MapFallbackToFile("index.html");
+        CurrentApp.Run();
     }
 }

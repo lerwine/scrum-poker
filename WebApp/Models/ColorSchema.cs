@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using ScrumPoker.WebApp.Services;
 
 namespace ScrumPoker.WebApp.Models;
 
@@ -9,6 +10,14 @@ namespace ScrumPoker.WebApp.Models;
 /// </summary>
 public class ColorSchema
 {
+    private static readonly (string Name, ColorModel.NamedColors Fill, ColorModel.NamedColors Stroke, ColorModel.NamedColors Text) DEFAULT_COLOR_SCHEMA = ("Default4", ColorModel.NamedColors.Gainsboro, ColorModel.NamedColors.Silver, ColorModel.NamedColors.Gray);
+    private static readonly (string Name, ColorModel.NamedColors Fill, ColorModel.NamedColors Stroke, ColorModel.NamedColors Text)[] DEFAULT_CARD_COLORS = {
+        ("Blue", ColorModel.NamedColors.LightCyan, ColorModel.NamedColors.Blue, ColorModel.NamedColors.Black),
+        ("Green", ColorModel.NamedColors.PaleGreen, ColorModel.NamedColors.Green, ColorModel.NamedColors.Black),
+        ("Red", ColorModel.NamedColors.MistyRose, ColorModel.NamedColors.DarkRed, ColorModel.NamedColors.Black),
+        ("Yellow", ColorModel.NamedColors.LemonChiffon, ColorModel.NamedColors.DarkGoldenRod, ColorModel.NamedColors.Black)
+    };
+    
     /// <summary>
     /// The unique identifier of the color scheme.
     /// </summary>

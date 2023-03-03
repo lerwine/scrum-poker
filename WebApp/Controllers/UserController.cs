@@ -53,9 +53,9 @@ public class UserController : ControllerBase
                 if (await _context.Teams.CountAsync(t => t.Id == id && t.FacilitatorId == userId, token) == 0)
                     return Unauthorized("Only admins may add users to other teams.");
         }
-        if (await _context.Profles.CountAsync(p => p.UserName == newUserName, token) > 0)
+        if (await _context.Profiles.CountAsync(p => p.UserName == newUserName, token) > 0)
             return Conflict("Another profile with that user name already exists.");
-        if (await _context.Profles.CountAsync(p => p.DisplayName == displayName, token) > 0)
+        if (await _context.Profiles.CountAsync(p => p.DisplayName == displayName, token) > 0)
             return Conflict("Another profile with that display name already exists.");
         Collection<Team> teams = new();
         foreach (Guid id in teamIds)
@@ -66,7 +66,7 @@ public class UserController : ControllerBase
             teams.Add(item);
         }
         userId = Guid.NewGuid();
-        EntityEntry<UserProfile> userEntry = await _context.Profles.AddAsync(new()
+        EntityEntry<UserProfile> userEntry = await _context.Profiles.AddAsync(new()
         {
             Id = userId,
             DisplayName = displayName,
