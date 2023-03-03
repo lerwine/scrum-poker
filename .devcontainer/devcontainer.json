@@ -1,7 +1,10 @@
 {
     "image":"mcr.microsoft.com/devcontainers/universal:2",
     "features": {
-	"ghcr.io/warrenbuckley/codespace-features/sqlite:1": {}
+	    "ghcr.io/warrenbuckley/codespace-features/sqlite:1": {}
     },
-    "postCreateCommand": "dotnet restore"
+    "postCreateCommand": [
+        "dotnet restore",
+        "cd WebApp; npm install"
+    ]
 }
