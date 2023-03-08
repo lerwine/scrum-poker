@@ -5,63 +5,63 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace ScrumPoker.WebApp.Models;
 
 /// <summary>
-/// 
+///
 /// </summary>
 public class PlanningMeeting
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public Guid Id { get; set; }
 
     private string _title = "";
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public string Title
     {
         get { return _title; }
-        set { _title = value.WsNormalized(); }
+        set { _title = value.WsNormalizedOrEmptyIfNull(); }
     }
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public DataContracts.SessionStage Stage { get; set; }
 
     private string? _description = null;
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public string? Description
     {
         get { return _description; }
         set { _description = value.TrimmedOrNullIfEmpty(); }
     }
-    
+
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public bool NoHalfPoint { get; set; }
-    
+
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public bool NoZeroPoint { get; set; }
-    
+
     private DateTime _meetingDate;
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public DateTime MeetingDate
     {
         get { return _meetingDate; }
         set { _meetingDate = value.ToLocalDate(); }
     }
-    
+
     private DateTime? _plannedStartDate;
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public DateTime? PlannedStartDate
     {
@@ -71,7 +71,7 @@ public class PlanningMeeting
 
     private DateTime? _plannedEndDate;
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public DateTime? PlannedEndDate
     {
@@ -81,7 +81,7 @@ public class PlanningMeeting
 
     private int _currentScopePoints = 0;
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public int CurrentScopePoints
     {
@@ -91,7 +91,7 @@ public class PlanningMeeting
 
     private int? _sprintCapacity;
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public int? SprintCapacity
     {
@@ -101,7 +101,7 @@ public class PlanningMeeting
 
     private DateTime _lastActivity;
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public DateTime LastActivity
     {
@@ -111,16 +111,16 @@ public class PlanningMeeting
 
     private readonly FKNavProperty<CardDeck> _deck = new(e => e.Id);
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public Guid DeckId
     {
         get => _deck.ForeignKey;
         set => _deck.ForeignKey = value;
     }
-    
+
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public CardDeck? Deck
     {
@@ -130,23 +130,23 @@ public class PlanningMeeting
 
     private readonly FKNavProperty<ColorSchema> _colorScheme = new(e => e.Id);
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public Guid ColorSchemeId
     {
         get => _colorScheme.ForeignKey;
         set => _colorScheme.ForeignKey = value;
     }
-    
+
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public ColorSchema? ColorScheme
     {
         get => _colorScheme.Model;
         set => _colorScheme.Model = value;
     }
-    
+
     private readonly FKNavProperty<Team> _team = new(e => e.Id);
     /// <summary>
     /// The unique identifier for the planning meeting's team.
@@ -169,7 +169,7 @@ public class PlanningMeeting
     private readonly FKOptionalNavProperty<Initiative> _initiative = new(e => e.Id);
     // TODO: Need to validate that the Initiative belongs to the same team as the current PlanningMeeting before being saved to DB
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public Guid? InitiativeId
     {
@@ -178,7 +178,7 @@ public class PlanningMeeting
     }
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public Initiative? Initiative
     {
@@ -189,7 +189,7 @@ public class PlanningMeeting
     private readonly FKOptionalNavProperty<Epic> _epic = new(e => e.Id);
     // TODO: Need to validate that the Epic belongs to the same team as the current PlanningMeeting before being saved to DB
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public Guid? EpicId
     {
@@ -198,7 +198,7 @@ public class PlanningMeeting
     }
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public Epic? Epic
     {
@@ -209,7 +209,7 @@ public class PlanningMeeting
     private readonly FKOptionalNavProperty<Milestone> _milestone = new(e => e.Id);
     // TODO: Need to validate that the Milestone belongs to the same team as the current PlanningMeeting before being saved to DB
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public Guid? MilestoneId
     {
@@ -218,7 +218,7 @@ public class PlanningMeeting
     }
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public Milestone? Milestone
     {
@@ -228,14 +228,14 @@ public class PlanningMeeting
 
     private Collection<Participant> _participants = new();
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public Collection<Participant> Participants
     {
         get { return _participants; }
         set { _participants = value ?? new Collection<Participant>(); }
     }
-    
+
     internal static void OnBuildEntity(EntityTypeBuilder<PlanningMeeting> builder)
     {
         _ = builder.HasOne(p => p.Initiative).WithMany(d => d.Meetings).HasForeignKey(nameof(InitiativeId)).OnDelete(DeleteBehavior.Restrict);

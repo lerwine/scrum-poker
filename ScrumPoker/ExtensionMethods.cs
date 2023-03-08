@@ -110,7 +110,11 @@ namespace ScrumPoker
 
         public static readonly Regex NonNormalizedWhiteSpaceRegex = new Regex(@"( |(?! ))[\r\n\s]+", RegexOptions.Compiled);
 
-        public static string WsNormalized(this string value) { return (value != null && (value = value.Trim()).Length > 0) ? NonNormalizedWhiteSpaceRegex.Replace(value, " ") : ""; }
+        public static string WsNormalizedOrEmptyIfNull(this string value) { return (value != null && (value = value.Trim()).Length > 0) ? NonNormalizedWhiteSpaceRegex.Replace(value, " ") : ""; }
+
+        public static string WsNormalizedOrNullIfEmpty(this string value) { return (value != null && (value = value.Trim()).Length > 0) ? NonNormalizedWhiteSpaceRegex.Replace(value, " ") : null; }
+
+        public static string WsNormalizedOrDefaultIfEmpty(this string value, Func<string> getDefaultValue) { return (value != null && (value = value.Trim()).Length > 0) ? NonNormalizedWhiteSpaceRegex.Replace(value, " ") : getDefaultValue(); }
 
         public static string EmptyIfNullOrTrimmed(this string value) { return (value == null) ? "" : value.Trim(); }
 
@@ -132,7 +136,7 @@ namespace ScrumPoker
             Monitor.Enter(syncRoot);
             try
             {
-                if ((value = WsNormalized(value)) == target)
+                if ((value = WsNormalizedOrEmptyIfNull(value)) == target)
                     return false;
                 target = value;
             }
@@ -310,13 +314,13 @@ namespace ScrumPoker
         }
 
         public static string ToJsonDateString(this DateTime value) { return value.ToString("yyyy-MM-dd"); }
-        
+
         public static string ToJsonDateString(this DateTime? value) { return value.HasValue ? ToJsonDateString(value.Value) : null; }
-        
+
         public static string ToJsonString(this Guid value) { return value.ToString("n"); }
-        
+
         public static string ToJsonString(this Guid? value) { return value.HasValue ? ToJsonString(value.Value) : null; }
-        
+
         public static Guid? JsonStringToGuid(this string value)
         {
             Guid result;
@@ -324,7 +328,7 @@ namespace ScrumPoker
                 return result;
             return null;
         }
-        
+
         public static Guid? JsonStringToGuidNotEmpty(this string value)
         {
             Guid result;
@@ -332,7 +336,7 @@ namespace ScrumPoker
                 return result;
             return null;
         }
-        
+
         public static DateTime? JsonStringToDate(this string value)
         {
             DateTime result;
@@ -340,7 +344,7 @@ namespace ScrumPoker
                 return result;
             return null;
         }
-        
+
         public static T FromJSON<T>(this string jsonText) where T : class, new()
         {
             using (MemoryStream stream = new MemoryStream(DefaultEncoding.GetBytes(jsonText)))

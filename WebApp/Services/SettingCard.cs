@@ -2,29 +2,29 @@ namespace ScrumPoker.WebApp.Services;
 
 public class SettingCard
 {
-    public string? Title { get; set; }
-    
-    public string? Description { get; set; }
-    
-    public string? TruncatedDescription { get; set; }
-    
-    public string? SymbolText { get; set; }
-    
-    public string? SymbolFont { get; set; }
-    
-    public string? UpperSymbolPath { get; set; }
-    
-    public string? MiddleSymbolPath { get; set; }
-    
-    public string? LowerSymbolPath { get; set; }
-    
-    public int? Value { get; set; }
-    
-    public int? MiddleSymbolTop { get; set; }
+    public string? title;
 
-    public int? SmallSymbolFontSize { get; set; }
+    public string? description;
 
-    public int? LargeSymbolFontSize { get; set; }
+    public string? truncatedDescription;
 
-    public DataContracts.CardType Type { get; set; }
+    public string? symbolText;
+
+    public string? symbolFont;
+
+    public string? upperSymbolPath;
+
+    public string? middleSymbolPath;
+
+    public string? lowerSymbolPath;
+
+    public int? value;
+
+    public int? middleSymbolTop;
+
+    public int? smallSymbolFontSize;
+
+    public int? largeSymbolFontSize;
+
+    public DataContracts.CardType type;
 }

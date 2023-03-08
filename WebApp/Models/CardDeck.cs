@@ -5,28 +5,28 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace ScrumPoker.WebApp.Models;
 
 /// <summary>
-/// 
+///
 /// </summary>
 public class CardDeck
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public Guid Id { get; set; }
 
     private string _name = "";
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public string Name
     {
         get { return _name; }
-        set { _name = value.WsNormalized(); }
+        set { _name = value.WsNormalizedOrEmptyIfNull(); }
     }
 
     private string? _description;
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public string? Description
     {
@@ -36,27 +36,27 @@ public class CardDeck
 
     private string _previewUrl = "";
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public string PreviewUrl
     {
         get { return _previewUrl; }
         set { _previewUrl = value.EmptyIfNullOrTrimmed(); }
     }
-    
+
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public int Width { get; set; }
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public int Height { get; set; }
-    
+
     private Collection<DeckCard> _cards = new();
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public Collection<DeckCard> Cards
     {
@@ -66,17 +66,17 @@ public class CardDeck
 
     private Collection<SheetDefinition> _sheets = new();
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public Collection<SheetDefinition> Sheets
     {
         get { return _sheets; }
         set { _sheets = value ?? new Collection<SheetDefinition>(); }
     }
-    
+
     private Collection<PlanningMeeting> _meetings = new();
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public Collection<PlanningMeeting> Meetings
     {

@@ -1,19 +1,15 @@
-using System.Collections.ObjectModel;
-using ScrumPoker.WebApp.Models;
-
 namespace ScrumPoker.WebApp.Services;
 
 public class ScrumPokerAppSettings
 {
-    public string? DbFile { get; set; }
+    public string? dbFile;
+    public string? adminUserName;
 
-    public string? AdminUserName { get; set; }
+    public string? adminDisplayName;
 
-    public string? AdminDisplayName { get; set; }
+    public ColorSchemeSetting[] defaultColorSchemes = null!;
 
-    public (string Name, string VotingFill, string VotingStroke, string VotingText, (string Name, string Fill, string Stroke, string Text)[] CardColors)[]? DefaultColorSchemes { get; set; }
+    public SettingDeck[] defaultDecks = null!;
 
-    public SettingDeck[]? DefaultDecks { get; set; }
-
-    public SettingCard[]? DefaultCards { get; set; }
+    public SettingCard[] defaultCards = null!;
 }

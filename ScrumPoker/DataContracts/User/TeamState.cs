@@ -16,7 +16,7 @@ namespace ScrumPoker.DataContracts.User
         public const string SUB_ROUTE = "TeamState";
         public const string FULL_ROUTE = Routings.User_Route + "/" + SUB_ROUTE;
         public const string PARAM_NAME = "id";
-        
+
         private Guid _teamId;
         /// <summary>
         /// The team's unique identifier.
@@ -60,7 +60,7 @@ namespace ScrumPoker.DataContracts.User
         public string Title
         {
             get { return _title; }
-            set { _title = value.WsNormalized(); }
+            set { _title = value.WsNormalizedOrEmptyIfNull(); }
         }
 
         private string _description = null;
@@ -73,7 +73,7 @@ namespace ScrumPoker.DataContracts.User
             get { return _description; }
             set { _description = value.TrimmedOrNullIfEmpty(); }
         }
-        
+
         private Collection<PlanningMeeting.RecordEntry> _meetings = new Collection<PlanningMeeting.RecordEntry>();
         [DataMember(Name = "meetings", IsRequired = true)]
         /// <summary>
@@ -84,7 +84,7 @@ namespace ScrumPoker.DataContracts.User
             get { return _meetings; }
             set { _meetings = value ?? new Collection<PlanningMeeting.RecordEntry>(); }
         }
-        
+
         private Collection<Epic.RecordEntry> _epics = new Collection<Epic.RecordEntry>();
         [DataMember(Name = "epics", IsRequired = true)]
         /// <summary>

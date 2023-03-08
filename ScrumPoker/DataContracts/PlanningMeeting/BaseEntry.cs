@@ -21,7 +21,7 @@ namespace ScrumPoker.DataContracts.PlanningMeeting
             get { return _id.ToJsonString(); }
             set { _id = value.JsonStringToGuid() ?? Guid.Empty; }
         }
-        
+
         private string _title = "";
         [DataMember(Name = "title", IsRequired = true)]
         /// <summary>
@@ -30,7 +30,7 @@ namespace ScrumPoker.DataContracts.PlanningMeeting
         public string Title
         {
             get { return _title; }
-            set { _title = value.WsNormalized(); }
+            set { _title = value.WsNormalizedOrEmptyIfNull(); }
         }
 
         private string _description = null;

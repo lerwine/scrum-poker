@@ -11,7 +11,7 @@ namespace ScrumPoker.DataContracts.Team
         public string Title
         {
             get { return _title; }
-            set { _title = value.WsNormalized(); }
+            set { _title = value.WsNormalizedOrEmptyIfNull(); }
         }
 
         private string _description;

@@ -41,3 +41,12 @@ This can be used for circumstances the web application is not deployed to a web 
 ### API Routes
 
 - [User Controller](./API%20Routes.md#user-controller)
+
+## References
+
+- [SQLite Data Types](https://learn.microsoft.com/en-us/dotnet/standard/data/sqlite/types)
+- [EF Core](https://learn.microsoft.com/en-us/ef/core/)
+- [Configuration in .NET](https://learn.microsoft.com/en-us/dotnet/core/extensions/configuration)
+- [Make HTTP requests with the HttpClient class](https://learn.microsoft.com/en-us/dotnet/fundamentals/networking/http/httpclient)
+  - [JsonContent Class](https://learn.microsoft.com/en-us/dotnet/api/system.net.http.json.jsoncontent?view=net-7.0)
+  - [StringContent Class](https://learn.microsoft.com/en-us/dotnet/api/system.net.http.stringcontent?view=net-7.0)

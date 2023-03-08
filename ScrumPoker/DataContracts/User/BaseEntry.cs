@@ -36,7 +36,7 @@ namespace ScrumPoker.DataContracts.User
         public string DisplayName
         {
             get { return _displayName; }
-            set { _displayName = value.WsNormalized(); }
+            set { _displayName = value.WsNormalizedOrEmptyIfNull(); }
         }
 
         private string _userName = "";
@@ -47,7 +47,7 @@ namespace ScrumPoker.DataContracts.User
         public string UserName
         {
             get { return _userName; }
-            set { _userName = value.WsNormalized(); }
+            set { _userName = value.WsNormalizedOrEmptyIfNull(); }
         }
 
         private bool _isAdmin = false;

@@ -30,7 +30,7 @@ namespace ScrumPoker.DataContracts.CardColor
         public string Name
         {
             get { return _name; }
-            set { _name = value.WsNormalized(); }
+            set { _name = value.WsNormalizedOrEmptyIfNull(); }
         }
 
         private string _fill = "";

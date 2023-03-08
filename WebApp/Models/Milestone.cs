@@ -5,28 +5,28 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace ScrumPoker.WebApp.Models;
 
 /// <summary>
-/// 
+///
 /// </summary>
 public class Milestone
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public Guid Id { get; set; }
 
     private string _title = "";
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public string Title
     {
         get { return _title; }
-        set { _title = value.WsNormalized(); }
+        set { _title = value.WsNormalizedOrEmptyIfNull(); }
     }
 
     private string? _description;
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public string? Description
     {
@@ -36,7 +36,7 @@ public class Milestone
 
     private DateTime? _startDate;
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public DateTime? StartDate
     {
@@ -46,7 +46,7 @@ public class Milestone
 
     private DateTime? _plannedEndDate;
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public DateTime? PlannedEndDate
     {
@@ -57,7 +57,7 @@ public class Milestone
     // TODO: Need to validate that the Epic belongs to the same team as the current Milestone before being saved to DB
     private readonly FKOptionalNavProperty<Epic> _epic = new(e => e.Id);
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public Guid? EpicId
     {
@@ -66,7 +66,7 @@ public class Milestone
     }
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public Epic? Epic
     {
@@ -95,7 +95,7 @@ public class Milestone
 
     private Collection<PlanningMeeting> _meetings = new();
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public Collection<PlanningMeeting> Meetings
     {

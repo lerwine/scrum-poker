@@ -5,28 +5,28 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace ScrumPoker.WebApp.Models;
 
 /// <summary>
-/// 
+///
 /// </summary>
 public class Initiative
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public Guid Id { get; set; }
 
     private string _title = "";
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public string Title
     {
         get { return _title; }
-        set { _title = value.WsNormalized(); }
+        set { _title = value.WsNormalizedOrEmptyIfNull(); }
     }
 
     private string? _description;
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public string? Description
     {
@@ -37,7 +37,7 @@ public class Initiative
 
     private DateTime? _startDate;
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public DateTime? StartDate
     {
@@ -47,7 +47,7 @@ public class Initiative
 
     private DateTime? _plannedEndDate;
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public DateTime? PlannedEndDate
     {
@@ -76,7 +76,7 @@ public class Initiative
 
     private Collection<PlanningMeeting> _meetings = new();
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public Collection<PlanningMeeting> Meetings
     {

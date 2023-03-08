@@ -5,12 +5,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace ScrumPoker.WebApp.Models;
 
 /// <summary>
-/// 
+///
 /// </summary>
 public class Team
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public Guid Id { get; set; }
 
@@ -21,7 +21,7 @@ public class Team
     public string Title
     {
         get { return _title; }
-        set { _title = value.WsNormalized(); }
+        set { _title = value.WsNormalizedOrEmptyIfNull(); }
     }
 
     private string? _description;
@@ -36,7 +36,7 @@ public class Team
 
     private readonly FKNavProperty<UserProfile> _facilitator = new(e => e.Id);
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public Guid FacilitatorId
     {
@@ -45,7 +45,7 @@ public class Team
     }
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public UserProfile? Facilitator
     {
@@ -55,14 +55,14 @@ public class Team
 
     private Collection<UserProfile> _members = new();
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public Collection<UserProfile> Members
     {
         get { return _members; }
         set { _members = value ?? new Collection<UserProfile>(); }
     }
-    
+
     private Collection<TeamMember> _memberships = new();
     public Collection<TeamMember> Memberships
     {
@@ -72,7 +72,7 @@ public class Team
 
     private Collection<PlanningMeeting> _meetings = new();
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public Collection<PlanningMeeting> Meetings
     {
@@ -82,34 +82,34 @@ public class Team
 
     private Collection<Epic> _epics = new();
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public Collection<Epic> Epics
     {
         get { return _epics; }
         set { _epics = value ?? new Collection<Epic>(); }
     }
-    
+
     private Collection<Initiative> _initiatives = new();
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public Collection<Initiative> Initiatives
     {
         get { return _initiatives; }
         set { _initiatives = value ?? new Collection<Initiative>(); }
     }
-    
+
     private Collection<Milestone> _milestones = new();
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public Collection<Milestone> Milestones
     {
         get { return _milestones; }
         set { _milestones = value ?? new Collection<Milestone>(); }
     }
-    
+
     internal static void OnBuildEntity(EntityTypeBuilder<Team> builder)
     {
         _ = builder.HasKey(nameof(Id));

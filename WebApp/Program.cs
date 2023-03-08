@@ -8,7 +8,7 @@ internal class Program
 
 #pragma warning disable CS8618
     internal static WebApplication CurrentApp { get; private set; }
-    
+
 #pragma warning restore CS8618
 
     private static void Main(string[] args)
@@ -25,7 +25,7 @@ internal class Program
         CurrentApp = builder.Build();
 
         ScrumPokerAppSettings settings = CurrentApp.Configuration.Get<ScrumPokerAppSettings>();
-        string? databaseFilePath = settings.DbFile;
+        string? databaseFilePath = settings.dbFile;
 
         if (string.IsNullOrWhiteSpace(databaseFilePath))
             databaseFilePath = Path.Combine(builder.Environment.WebRootPath, DEFAULT_DB_NAME);
@@ -52,7 +52,7 @@ internal class Program
         CurrentApp.UseRouting();
         CurrentApp.MapControllerRoute(
             name: "default",
-            // 
+            //
             pattern: "{controller}/{action=Index}/{id?}");
 
         CurrentApp.MapFallbackToFile("index.html");

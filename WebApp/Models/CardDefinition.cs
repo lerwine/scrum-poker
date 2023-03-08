@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace ScrumPoker.WebApp.Models;
 
 /// <summary>
-/// 
+///
 /// </summary>
 public class CardDefinition
 {
@@ -13,17 +13,17 @@ public class CardDefinition
 
     private string _title = "";
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public string Title
     {
         get { return _title; }
-        set { _title = value.WsNormalized(); }
+        set { _title = value.WsNormalizedOrEmptyIfNull(); }
     }
 
     private string _symbolText = "";
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public string SymbolText
     {
@@ -33,7 +33,7 @@ public class CardDefinition
 
     private string? _symbolFont;
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public string? SymbolFont
     {
@@ -43,7 +43,7 @@ public class CardDefinition
 
     private string? _upperSymbolPath;
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public string? UpperSymbolPath
     {
@@ -53,7 +53,7 @@ public class CardDefinition
 
     private string? _middleSymbolPath;
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public string? MiddleSymbolPath
     {
@@ -63,7 +63,7 @@ public class CardDefinition
 
     private string? _lowerSymbolPath;
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public string? LowerSymbolPath
     {
@@ -73,7 +73,7 @@ public class CardDefinition
 
     private string? _description;
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public string? Description
     {
@@ -83,7 +83,7 @@ public class CardDefinition
 
     private string? _truncatedDescription;
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public string? TruncatedDescription
     {
@@ -93,7 +93,7 @@ public class CardDefinition
 
     private Collection<DeckCard> _decks = new();
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public Collection<DeckCard> Decks
     {
@@ -125,7 +125,7 @@ public class CardDefinition
     /// The general card type.
     /// </summary>
     public DataContracts.CardType Type { get; set; }
-    
+
     private Collection<Participant> _participants = new();
     /// <summary>
     /// Participants which have selected this card.
@@ -135,7 +135,7 @@ public class CardDefinition
         get { return _participants; }
         set { _participants = value ?? new Collection<Participant>(); }
     }
-    
+
     internal static void OnBuildEntity(EntityTypeBuilder<CardDefinition> builder)
     {
         _ = builder.HasKey(nameof(Id));

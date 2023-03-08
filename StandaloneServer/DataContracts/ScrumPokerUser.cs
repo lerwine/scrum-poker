@@ -108,19 +108,19 @@ namespace ScrumPoker.StandaloneServer.DataContracts
             int index = login.IndexOf('/');
             _displayName = (index < 0 || (login = login.Substring(index + 1).Trim()).Length == 0) ? _userName : login;
         }
-        
+
         public ScrumPokerUser(string login, string displayName)
         {
-            _displayName = displayName.WsNormalized();
+            _displayName = displayName.WsNormalizedOrEmptyIfNull();
             _userName = login.TrimmedOrNullIfEmpty();
         }
-        
+
         public ScrumPokerUser(string login, string password, string displayName)
         {
-            _displayName = displayName.WsNormalized();
+            _displayName = displayName.WsNormalizedOrEmptyIfNull();
             _userName = login.TrimmedOrNullIfEmpty();
         }
-        
+
         public ScrumPokerUser(ScrumPokerUser cloneFrom)
         {
             if (cloneFrom == null)
@@ -131,7 +131,7 @@ namespace ScrumPoker.StandaloneServer.DataContracts
             _sprintCapacity = cloneFrom._sprintCapacity;
             _userName = cloneFrom._userName;
         }
-        
+
         public override string ToString() { return this.ToJSON<ScrumPokerUser>(); }
 
         public static ScrumPokerUser FromJSON(string jsonText) { return jsonText.FromJSON<ScrumPokerUser>(); }

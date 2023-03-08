@@ -17,7 +17,7 @@ public class ColorSchema
         ("Red", ColorModel.NamedColors.MistyRose, ColorModel.NamedColors.DarkRed, ColorModel.NamedColors.Black),
         ("Yellow", ColorModel.NamedColors.LemonChiffon, ColorModel.NamedColors.DarkGoldenRod, ColorModel.NamedColors.Black)
     };
-    
+
     /// <summary>
     /// The unique identifier of the color scheme.
     /// </summary>
@@ -30,7 +30,7 @@ public class ColorSchema
     public string Name
     {
         get { return _name; }
-        set { _name = value.WsNormalized(); }
+        set { _name = value.WsNormalizedOrEmptyIfNull(); }
     }
 
     private ColorModel.CssColor _votingFill;

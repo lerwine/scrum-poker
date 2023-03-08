@@ -2,13 +2,13 @@ namespace ScrumPoker.WebApp.Services;
 
 public class SettingDeck
 {
-    public string? Name { get; set; }
+    public string? name;
 
-    public string? Description { get; set; }
+    public string? description;
 
-    public (string Url, int Width, int Height)? Preview { get; set; }
+    public (string url, int width, int Hheight)? preview;
 
-    public string[]? Cards { get; set; }
+    public string[]? cards;
 
-    public (string URL, int MaxValue)? PrintableSheets { get; set; }
+    public (string url, int maxValue)? printableSheets;
 }

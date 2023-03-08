@@ -21,7 +21,7 @@ public class CardColor
     public string Name
     {
         get { return _name; }
-        set { _name = value.WsNormalized(); }
+        set { _name = value.WsNormalizedOrEmptyIfNull(); }
     }
 
     private ColorModel.CssColor _fill;
@@ -82,7 +82,7 @@ public class CardColor
         get { return _participants; }
         set { _participants = value ?? new Collection<Participant>(); }
     }
-    
+
     internal static void OnBuildEntity(EntityTypeBuilder<CardColor> builder)
     {
         _ = builder.HasKey(nameof(Id));
