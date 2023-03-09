@@ -43,6 +43,7 @@ This can be used for circumstances the web application is not deployed to a web 
 - [User Controller](./API%20Routes.md#user-controller)
 
 ## TODO
+
 - [ ] Seed database if it is a new db: [Seed The Database](https://learn.microsoft.com/en-us/aspnet/core/tutorials/first-mvc-app/working-with-sql?view=aspnetcore-7.0&tabs=visual-studio-code#seed-the-database)
 
 ## References

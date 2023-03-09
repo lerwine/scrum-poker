@@ -1,4 +1,4 @@
-namespace ScrumPoker.WebApp.Services;
+namespace ScrumPoker.WebApp.Services.Settings;
 
 public class CardColorSetting : ColorValuesSetting
 {

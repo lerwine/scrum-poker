@@ -1,6 +1,12 @@
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Security.Claims;
+using System.Security.Principal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.Extensions.Options;
+using ScrumPoker.WebApp.Services;
+using ScrumPoker.WebApp.Services.Settings;
 
 namespace ScrumPoker.WebApp.Models;
 
@@ -79,10 +85,55 @@ public class UserProfile
         set { _participation = value ?? new Collection<Participant>(); }
     }
 
+    public static bool TryGetCurrentIdentityName([MaybeNullWhen(false)] out string result)
+    {
+        IIdentity? identity = ClaimsPrincipal.Current?.Identity;
+        if (identity is not null && identity.IsAuthenticated)
+        {
+            if ((result = identity.Name.NullIfEmpty()) is not null)
+            {
+                result = result.ToLower();
+                return true;
+            }
+        }
+        else
+            result = null;
+        return false;
+    }
+
     internal static void OnBuildEntity(EntityTypeBuilder<UserProfile> builder)
     {
         _ = builder.HasKey(nameof(Id));
         _ = builder.Property(c => c.UserName).UseCollation("SQL_Latin1_General_CP1_CI_AS");
         _ = builder.Property(c => c.DisplayName).UseCollation("SQL_Latin1_General_CP1_CI_AS");
+    }
+
+    internal static bool SeedData(ScrumPokerContext context, IOptions<ScrumPokerAppSettings> settingOption, ILogger<UserProfile> logger)
+    {
+        ScrumPokerAppSettings settings = settingOption.Value;
+        string? adminUserName = settings.adminUserName.TrimmedOrNullIfEmpty();
+        if (adminUserName is null)
+        {
+            if (!context.Profiles.Any(p => p.IsAdmin))
+                logger.LogWarning("Default administrative user not found.");
+            return false;
+        }
+        UserProfile? adminUser = context.Profiles.FirstOrDefault(p => p.UserName == adminUserName);
+        if (adminUser is null)
+            context.Profiles.Add(new()
+            {
+                Id = Guid.NewGuid(),
+                UserName = adminUserName,
+                DisplayName = settings.adminDisplayName.WsNormalizedOrDefaultIfEmpty(adminUserName),
+                IsAdmin = true
+            });
+        else
+        {
+            if (adminUser.IsAdmin)
+                return false;
+            adminUser.IsAdmin = true;
+            context.Profiles.Update(adminUser);
+        }
+        return true;
     }
 }

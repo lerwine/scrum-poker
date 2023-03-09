@@ -116,6 +116,8 @@ namespace ScrumPoker
 
         public static string WsNormalizedOrDefaultIfEmpty(this string value, Func<string> getDefaultValue) { return (value != null && (value = value.Trim()).Length > 0) ? NonNormalizedWhiteSpaceRegex.Replace(value, " ") : getDefaultValue(); }
 
+        public static string WsNormalizedOrDefaultIfEmpty(this string value, string defaultValue) { return (value != null && (value = value.Trim()).Length > 0) ? NonNormalizedWhiteSpaceRegex.Replace(value, " ") : defaultValue; }
+
         public static string EmptyIfNullOrTrimmed(this string value) { return (value == null) ? "" : value.Trim(); }
 
         public static bool ToEmptyIfNullOrTrimmed(this string value, object syncRoot, ref string target)

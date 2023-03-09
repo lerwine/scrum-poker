@@ -1,6 +1,6 @@
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using ScrumPoker.WebApp.Services;
+using Microsoft.Extensions.Options;
 
 internal class Program
 {
@@ -18,27 +18,34 @@ internal class Program
         // Add services to the container.
 
         builder.Services.AddControllersWithViews();
-        builder.Services.Configure<ScrumPokerAppSettings>(builder.Configuration.GetSection("ScrumPoker"));
+        builder.Services.Configure<ScrumPoker.WebApp.Services.Settings.ScrumPokerAppSettings>(builder.Configuration.GetSection("ScrumPoker"));
 
-        // builder.Services.AddSingleton<SessionTokenService>();
-
-        CurrentApp = builder.Build();
-
-        ScrumPokerAppSettings settings = CurrentApp.Configuration.Get<ScrumPokerAppSettings>();
+        ScrumPoker.WebApp.Services.Settings.ScrumPokerAppSettings settings = builder.Configuration.Get<ScrumPoker.WebApp.Services.Settings.ScrumPokerAppSettings>();
         string? databaseFilePath = settings.dbFile;
 
         if (string.IsNullOrWhiteSpace(databaseFilePath))
             databaseFilePath = Path.Combine(builder.Environment.WebRootPath, DEFAULT_DB_NAME);
         else
             databaseFilePath = Path.IsPathFullyQualified(databaseFilePath) ? Path.GetFullPath(databaseFilePath) : Path.Combine(builder.Environment.WebRootPath, databaseFilePath);
-        CurrentApp.Logger.LogInformation("Using database {databaseFilePath}", databaseFilePath);
-        builder.Services.AddDbContext<ScrumPokerContext>(opt =>
+        builder.Services.AddDbContext<ScrumPoker.WebApp.Services.ScrumPokerContext>(opt =>
             opt.UseSqlite(new SqliteConnectionStringBuilder
             {
                 DataSource = databaseFilePath,
                 ForeignKeys = true,
                 Mode = File.Exists(databaseFilePath) ? SqliteOpenMode.ReadWrite : SqliteOpenMode.ReadWriteCreate
             }.ConnectionString));
+
+        CurrentApp = builder.Build();
+        using (var scope = CurrentApp.Services.CreateScope())
+        {
+            IServiceProvider services = scope.ServiceProvider;
+            IOptions<ScrumPoker.WebApp.Services.Settings.ScrumPokerAppSettings> appSettings = services.GetRequiredService<IOptions<ScrumPoker.WebApp.Services.Settings.ScrumPokerAppSettings>>();
+            using ScrumPoker.WebApp.Services.ScrumPokerContext context = new(services.GetRequiredService<DbContextOptions<ScrumPoker.WebApp.Services.ScrumPokerContext>>());
+            ScrumPoker.WebApp.Models.ColorSchema.SeedData(context, appSettings, services.GetRequiredService<ILogger<ScrumPoker.WebApp.Models.ColorSchema>>());
+            ScrumPoker.WebApp.Models.CardDeck.SeedData(context, appSettings, services.GetRequiredService<ILogger<ScrumPoker.WebApp.Models.CardDeck>>());
+            if (ScrumPoker.WebApp.Models.UserProfile.SeedData(context, appSettings, services.GetRequiredService<ILogger<ScrumPoker.WebApp.Models.UserProfile>>()))
+                context.SaveChanges(true);
+        }
 
         // Configure the HTTP request pipeline.
         if (!CurrentApp.Environment.IsDevelopment())

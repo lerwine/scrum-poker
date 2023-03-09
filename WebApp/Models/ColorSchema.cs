@@ -1,7 +1,9 @@
 using System.Collections.ObjectModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.Extensions.Options;
 using ScrumPoker.WebApp.Services;
+using ScrumPoker.WebApp.Services.Settings;
 
 namespace ScrumPoker.WebApp.Models;
 
@@ -87,5 +89,73 @@ public class ColorSchema
     {
         _ = builder.HasKey(nameof(Id));
         _ = builder.Property(c => c.Name).UseCollation("SQL_Latin1_General_CP1_CI_AS");
+    }
+
+    internal static void SeedData(ScrumPokerContext context, IOptions<ScrumPokerAppSettings> appSettings, ILogger<ColorSchema> logger)
+    {
+        if (context.ColorSchemas.Any())
+            return;
+        ColorSchemeSetting[]? defaultColorSchemes = appSettings.Value.defaultColorSchemes;
+        if (defaultColorSchemes is null || defaultColorSchemes.Length == 0)
+        {
+            logger.LogCritical("Database contains no color schemas and no color schemas are defined in settings.");
+            return;
+        }
+        foreach (ColorSchemeSetting colorSchemeSetting in defaultColorSchemes)
+        {
+            ColorValuesSetting votingCard = colorSchemeSetting.votingCard;
+            if (!(ColorModel.CssColor.TryParse(votingCard.fill, out ColorModel.CssColor fill) && ColorModel.CssColor.TryParse(votingCard.stroke, out ColorModel.CssColor stroke) && ColorModel.CssColor.TryParse(votingCard.text, out ColorModel.CssColor text)))
+            {
+                logger.LogCritical("Database contains no color schemas and voting card color values couldn't be parsed.");
+                return;
+            }
+            string schemaName = colorSchemeSetting.name.WsNormalizedOrNullIfEmpty();
+            if (schemaName is null)
+            {
+                logger.LogCritical("Database contains no color schemas and color schema name is empty.");
+                return;
+            }
+            if (colorSchemeSetting.cardColors is null || colorSchemeSetting.cardColors.Length == 0)
+            {
+                logger.LogCritical("Database contains no color schemas and card color scheme {name} has no card color definitions.", schemaName);
+                return;
+            }
+            LinkedList<CardColor> cc = new();
+            Guid id = Guid.NewGuid();
+            foreach (CardColorSetting cardColorSetting in colorSchemeSetting.cardColors)
+            {
+                string n = cardColorSetting.name.WsNormalizedOrNullIfEmpty();
+                if (n is null)
+                {
+                    logger.LogCritical("Database contains no color schemas and card color name is empty for new schema {name}.", schemaName);
+                    return;
+                }
+                if (!(ColorModel.CssColor.TryParse(cardColorSetting.fill, out fill) && ColorModel.CssColor.TryParse(cardColorSetting.stroke, out stroke) && ColorModel.CssColor.TryParse(cardColorSetting.text, out text)))
+                {
+                    logger.LogCritical("Database contains no color schemas and card color values couldn't be parsed for schema {name}.", schemaName);
+                    return;
+                }
+                cc.AddLast(new CardColor()
+                {
+                    Id = Guid.NewGuid(),
+                    SchemaId = id,
+                    Name = n,
+                    Fill = fill,
+                    Stroke = stroke,
+                    Text = text
+                });
+            }
+            context.ColorSchemas.Add(new()
+            {
+                Id = id,
+                Name = schemaName,
+                VotingFill = fill,
+                VotingStroke = stroke,
+                VotingText = text
+            });
+            context.SaveChanges(true);
+            context.CardColors.AddRange(cc);
+            context.SaveChanges(true);
+        }
     }
 }

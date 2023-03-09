@@ -5,6 +5,7 @@ using System.Security.Principal;
 using Microsoft.EntityFrameworkCore;
 using ScrumPoker.WebApp.Models;
 using Microsoft.Extensions.Options;
+using ScrumPoker.WebApp.Services.Settings;
 
 namespace ScrumPoker.WebApp.Services;
 
@@ -13,146 +14,11 @@ public class ScrumPokerContext : DbContext
     private const string DEFAULT_ADMIN_LOGIN = "admin";
 
     private readonly ILogger<ScrumPokerContext> _logger;
-    private readonly string? _adminUserName;
-    private readonly string? _adminDisplayName;
 
-    private bool EnsureColorSchemas(ColorSchemeSetting[] defaultColorSchemes)
-    {
-        if (ColorSchemas.Any())
-            return true;
-        if (defaultColorSchemes is null || defaultColorSchemes.Length == 0)
-        {
-            _logger.LogCritical("Database contains no color schemas and no color schemas are defined in settings.");
-            return true;
-        }
-        foreach (ColorSchemeSetting colorSchemeSetting in defaultColorSchemes)
-        {
-            ColorValuesSetting votingCard = colorSchemeSetting.votingCard;
-            if (!(ColorModel.CssColor.TryParse(votingCard.fill, out ColorModel.CssColor fill) && ColorModel.CssColor.TryParse(votingCard.stroke, out ColorModel.CssColor stroke) && ColorModel.CssColor.TryParse(votingCard.text, out ColorModel.CssColor text)))
-            {
-                _logger.LogCritical("Database contains no color schemas and voting card color values couldn't be parsed.");
-                return true;
-            }
-            string schemaName = colorSchemeSetting.name.WsNormalizedOrNullIfEmpty();
-            if (schemaName is null)
-            {
-                _logger.LogCritical("Database contains no color schemas and color schema name is empty.");
-                return true;
-            }
-            if (colorSchemeSetting.cardColors is null || colorSchemeSetting.cardColors.Length == 0)
-            {
-                _logger.LogCritical("Database contains no color schemas and card color scheme {name} has no card color definitions.", schemaName);
-                return true;
-            }
-            LinkedList<CardColor> cc = new();
-            Guid id = Guid.NewGuid();
-            foreach (CardColorSetting cardColorSetting in colorSchemeSetting.cardColors)
-            {
-                string n = cardColorSetting.name.WsNormalizedOrNullIfEmpty();
-                if (n is null)
-                {
-                    _logger.LogCritical("Database contains no color schemas and card color name is empty for new schema {name}.", schemaName);
-                    return true;
-                }
-                if (!(ColorModel.CssColor.TryParse(cardColorSetting.fill, out fill) && ColorModel.CssColor.TryParse(cardColorSetting.stroke, out stroke) && ColorModel.CssColor.TryParse(cardColorSetting.text, out text)))
-                {
-                    _logger.LogCritical("Database contains no color schemas and card color values couldn't be parsed for schema {name}.", schemaName);
-                    return true;
-                }
-                cc.AddLast(new CardColor()
-                {
-                    Id = Guid.NewGuid(),
-                    SchemaId = id,
-                    Name = n,
-                    Fill = fill,
-                    Stroke = stroke,
-                    Text = text
-                });
-            }
-            ColorSchemas.Add(new()
-            {
-                Id = id,
-                Name = schemaName,
-                VotingFill = fill,
-                VotingStroke = stroke,
-                VotingText = text
-            });
-            SaveChanges(true);
-            CardColors.AddRange(cc);
-            SaveChanges(true);
-        }
-        return false;
-    }
-
-    private bool EnsureDeckTypes(SettingDeck[] defaultDecks, SettingCard[] defaultCards)
-    {
-        if (Decks.Any())
-            return true;
-
-        return false;
-    }
-
-    public ScrumPokerContext(DbContextOptions<ScrumPokerContext> options, IOptions<ScrumPokerAppSettings> settingOption)
+    public ScrumPokerContext(DbContextOptions<ScrumPokerContext> options)
         : base(options)
     {
         _logger = Program.CurrentApp.Services.GetRequiredService<ILogger<ScrumPokerContext>>();
-        ScrumPokerAppSettings settings = settingOption.Value;
-        _adminUserName = settings.adminUserName.TrimmedOrNullIfEmpty();
-        _adminDisplayName = settings.adminDisplayName.WsNormalizedOrNullIfEmpty();
-        // FIXME: The rest of the code should not be be in constructor
-        UserProfile? adminUser;
-        if (Profiles.Any(p => p.IsAdmin))
-        {
-            if (_adminUserName is null)
-                return;
-            if ((adminUser = Profiles.FirstOrDefault(p => p.UserName == _adminUserName)) is null)
-                _logger.LogWarning("Default administrative user not found.");
-        }
-        else
-        {
-            _adminUserName ??= DEFAULT_ADMIN_LOGIN;
-            if ((adminUser = Profiles.FirstOrDefault(p => p.UserName == _adminUserName)) is null && Profiles.Any())
-                _logger.LogWarning("No administrative user found.");
-        }
-        if ((adminUser = Profiles.FirstOrDefault(p => p.UserName == _adminUserName)) is null)
-        {
-            string displayName = _adminDisplayName;
-            if (displayName is null)
-            {
-                int index = _adminUserName.IndexOfAny(new[] { '@', '/', '\\', ':' });
-                displayName = (index < 0) ? _adminUserName : _adminUserName[(index + 1)..].TrimmedOrNullIfEmpty() ?? _adminUserName;
-            }
-            Guid id = Guid.NewGuid();
-            _logger.LogInformation("Adding administrative user: {{ Id = '{Id}', UserName = '{UserName}', DisplayName = {DisplayName} }}", id, _adminUserName, displayName);
-            Profiles.Add(new()
-            {
-                Id = id,
-                UserName = _adminUserName,
-                DisplayName = displayName,
-                IsAdmin = true
-            });
-            EnsureColorSchemas(settings.defaultColorSchemes);
-            EnsureDeckTypes(settings.defaultDecks, settings.defaultCards);
-        }
-        else if (adminUser.IsAdmin)
-        {
-            if (EnsureColorSchemas(settings.defaultColorSchemes))
-            {
-                if (EnsureDeckTypes(settings.defaultDecks, settings.defaultCards))
-                    return;
-            }
-            else
-                EnsureDeckTypes(settings.defaultDecks, settings.defaultCards);
-        }
-        else
-        {
-            _logger.LogInformation("Changing UserProfile to administator: {{ Id = '{Id}', UserName = '{UserName}', DisplayName = {DisplayName} }}", adminUser.Id, adminUser.UserName, adminUser.DisplayName);
-            adminUser.IsAdmin = true;
-            Profiles.Update(adminUser);
-            EnsureColorSchemas(settings.defaultColorSchemes);
-            EnsureDeckTypes(settings.defaultDecks, settings.defaultCards);
-        }
-        SaveChanges(true);
     }
 
     public DbSet<UserProfile> Profiles { get; set; } = null!;
@@ -189,25 +55,9 @@ public class ScrumPokerContext : DbContext
 
     private UserProfile? _userProfile;
 
-    public bool TryGetCurrentIdentityName([MaybeNullWhen(false)] out string result)
-    {
-        IIdentity? identity = ClaimsPrincipal.Current?.Identity;
-        if (identity is not null && identity.IsAuthenticated)
-        {
-            if ((result = identity.Name.NullIfEmpty()) is not null)
-            {
-                result = result.ToLower();
-                return true;
-            }
-        }
-        else
-            result = null;
-        return false;
-    }
-
     public bool TryFindUserProfile(IEnumerable<UserProfile> source, [MaybeNullWhen(false)] out UserProfile userProfile)
     {
-        if (TryGetCurrentIdentityName(out string? userName))
+        if (UserProfile.TryGetCurrentIdentityName(out string? userName))
             return (userProfile = source.FirstOrDefault(p => p.UserName == userName)) is not null;
         userProfile = null;
         return false;
@@ -215,7 +65,7 @@ public class ScrumPokerContext : DbContext
 
     public bool TryFindUserProfile(UserProfile? userProfile, IEnumerable<UserProfile> source, [MaybeNullWhen(false)] out UserProfile result)
     {
-        if (TryGetCurrentIdentityName(out string? userName))
+        if (UserProfile.TryGetCurrentIdentityName(out string? userName))
         {
             // FIXME: Comparison should be case insensitive
             if (userProfile is not null && userProfile.UserName == userName)
@@ -231,7 +81,7 @@ public class ScrumPokerContext : DbContext
 
     public async Task<UserProfile?> GetUserProfileAsync(CancellationToken cancellationToken)
     {
-        if (TryGetCurrentIdentityName(out string? userName))
+        if (UserProfile.TryGetCurrentIdentityName(out string? userName))
         {
             // FIXME: Comparison should be case insensitive
             if (_userProfile is null || _userProfile.UserName != userName)
@@ -244,7 +94,7 @@ public class ScrumPokerContext : DbContext
 
     public async Task<UserProfile?> GetUserProfileAsync(Func<IQueryable<UserProfile>, IQueryable<UserProfile>> onQuery, CancellationToken cancellationToken)
     {
-        if (TryGetCurrentIdentityName(out string? userName))
+        if (UserProfile.TryGetCurrentIdentityName(out string? userName))
             _userProfile = await onQuery(Profiles).FirstOrDefaultAsync(p => p.UserName == userName, cancellationToken);
         else
             _userProfile = null;
@@ -253,7 +103,7 @@ public class ScrumPokerContext : DbContext
 
     public bool TryGetUserProfile([MaybeNullWhen(false)] out UserProfile result)
     {
-        if (TryGetCurrentIdentityName(out string? userName))
+        if (UserProfile.TryGetCurrentIdentityName(out string? userName))
         {
             // FIXME: Comparison should be case insensitive
             if ((_userProfile is not null && _userProfile.UserName == userName) || (_userProfile = Profiles.FirstOrDefault(u => u.UserName == userName)) is not null)

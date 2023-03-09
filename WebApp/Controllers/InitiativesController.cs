@@ -35,7 +35,7 @@ public class InitiativesController : ControllerBase
         string title = request.Title;
         if (title.Length == 0 || (request.StartDate.HasValue && request.PlannedEndDate.HasValue && request.StartDate.Value > request.PlannedEndDate.Value))
             return BadRequest();
-        if (!_context.TryGetCurrentIdentityName(out string? userName))
+        if (!UserProfile.TryGetCurrentIdentityName(out string? userName))
             return Unauthorized();
         Guid teamId = request.TeamId;
         Team? team = await _context.Teams.Where(t => t.Id == teamId).Include(t => t.Facilitator).FirstOrDefaultAsync(token);

@@ -37,7 +37,7 @@ public class EpicsController : ControllerBase
             return BadRequest("Title cannot be empty.");
         if (request.StartDate.HasValue && request.PlannedEndDate.HasValue && request.StartDate.Value > request.PlannedEndDate.Value)
             return BadRequest("startDate cannot be later than plannedEndDate.");
-        if (!_context.TryGetCurrentIdentityName(out string? userName))
+        if (!UserProfile.TryGetCurrentIdentityName(out string? userName))
             return Unauthorized();
         Guid teamId = request.TeamId;
         Team? team = await _context.Teams.Where(t => t.Id == teamId).Include(t => t.Facilitator).FirstOrDefaultAsync(token);
