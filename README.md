@@ -2,6 +2,8 @@
 
 Scrum Planning Poker web application
 
+[Click here to open project](https://github.com/users/lerwine/projects/3)
+
 ## Methods of execution
 
 - **Deployment to web host**: The [WebApp](#deployable-web-application) project can be deployed as a .NET web application.
