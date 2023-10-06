@@ -92,17 +92,17 @@
     }
 
     app.component("deckTypeList", {
-        templateUrl: "deckTypeList.htm",
+        templateUrl: "template/deckTypeList.htm",
         controller: DeckTypeController
     });
 
     app.component("deckCard", {
-        templateUrl: "deckCard.htm",
+        templateUrl: "template/deckCard.htm",
         controller: DeckCardController
     });
 
     app.component("votingCard", {
-        templateUrl: "votingCard.htm",
+        templateUrl: "template/votingCard.htm",
         controller: VotingTypeController
     });
 
@@ -112,12 +112,12 @@
         function ($routeProvider: ng.route.IRouteProvider, $locationProvider: ng.ILocationProvider) {
             $routeProvider
                 .when('/newSession/:deckId', {
-                    templateUrl: "newSession.htm",
+                    templateUrl: "template/newSession.htm",
                     controller: NewSessionController,
                     controllerAs: "controller"
                 })
                 .when('/home', {
-                    templateUrl: "home.htm",
+                    templateUrl: "template/home.htm",
                     controller: HomeController,
                     controllerAs: "controller",
                     resolve: {
